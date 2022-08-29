@@ -1,0 +1,3 @@
+I have made Transpose function, matrix multiplications, shape.
+Only for 2-D matrices
+so far...
