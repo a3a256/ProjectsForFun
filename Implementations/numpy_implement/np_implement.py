@@ -51,3 +51,31 @@ class dot:
                     t.append(value)
                 ans.append(t)
         return ans
+    
+    
+class zeros:
+    def __init__(self, rows, columns):
+        self.n = rows
+        self.m = columns
+
+    def create(self):
+        all = []
+        for i in range(self.n):
+            l = [0]*self.m
+            all.append(l)
+        arr = array(all)
+        return arr.show()
+
+
+class ones:
+    def __init__(self, rows, columns):
+        self.n = rows
+        self.m = columns
+
+    def create(self):
+        all = []
+        for i in range(self.n):
+            l = [1]*self.m
+            all.append(l)
+        arr = array(all)
+        return arr.show()
