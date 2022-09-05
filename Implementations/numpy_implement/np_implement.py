@@ -81,18 +81,26 @@ class ones:
         return arr.show()
 
 
+def logarithm_power(x, y):
+    count = 1
+    while y > x:
+        y = y//x
+        count += 1
+    return count
+
+
 def log(base, target):
     if target == 0:
         raise Exception("Wrong target number, cannot be 0")
-    if base == 1 and target == 1:
+    if base == target:
         return 1
     if target == 1:
         return 0
-    count = 1
-    while target > base:
-        target = target//base
-        count += 1
-    return count
+    count = 0
+    if base < target:
+        return logarithm_power(base, target)
+    else:
+        return -(logarithm_power(target, base))
 
 
 def lg(target):
