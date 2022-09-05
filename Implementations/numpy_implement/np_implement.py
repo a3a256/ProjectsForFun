@@ -79,3 +79,27 @@ class ones:
             all.append(l)
         arr = array(all)
         return arr.show()
+
+
+def log(base, target):
+    if target == 0:
+        raise Exception("Wrong target number, cannot be 0")
+    if base == 1 and target == 1:
+        return 1
+    if target == 1:
+        return 0
+    count = 1
+    while target > base:
+        target = target//base
+        count += 1
+    return count
+
+
+def lg(target):
+    if target == 1:
+        return 0
+    count = 1
+    while target > 10:
+        target = target//10
+        count += 1
+    return count
