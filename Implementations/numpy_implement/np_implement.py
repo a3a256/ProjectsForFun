@@ -100,7 +100,7 @@ def log(base, target):
     if base < target:
         return logarithm_power(base, target)
     else:
-        return -(logarithm_power(target, base))
+        return 1/(logarithm_power(target, base))
 
 
 def lg(target):
