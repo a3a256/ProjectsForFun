@@ -27,14 +27,14 @@ class Activated:
 
 
     def pre_order(self):
-        self.tree.iot(self.tree)
+        self.tree.pot(self.tree)
         outage = self.tree.show()
         label = Label(master=self.gui, text=f'PreOrderTraversal: {outage}', font=('Helvetica', 16))
         self.cv.create_window(205, 630, window=label)
 
 
     def post_order(self):
-        self.tree.iot(self.tree)
+        self.tree.post(self.tree)
         outage = self.tree.show()
         label = Label(master=self.gui, text=f'PostOrderTraversal: {outage}', font=('Helvetica', 16))
         self.cv.create_window(210, 660, window=label)
