@@ -1,10 +1,13 @@
 from tkinter import *
 import to_portray_bst
+import start
+import frontier
 
 class UI:
-    def __init__(self, ui):
+    def __init__(self, ui, option):
         self.ui = ui
         self.first = 0
+        self.option = option
 
     def save_it(self, val):
         self.first += int(val)
@@ -17,17 +20,17 @@ class UI:
         btn = Button(master=self.ui, text='Start with this node', command=lambda: [self.save_it(ent.get()), self.ui.destroy()])
         btn.grid(row=2, column=0)
         self.ui.mainloop()
-        showing = to_portray_bst.Activated(Tk(), self.first)
-        showing.show()
+        if self.option == 'bst':
+            showing = to_portray_bst.Activated(Tk(), self.first)
+            showing.show()
+        if self.option == 'sll':
+            showing = frontier.ListVis(Tk(), self.first)
+            showing.show()
 
 
 
-def main():
+def main(option):
     wn = Tk()
-    ui = UI(wn)
+    ui = UI(wn, option)
     ui.go()
-
-
-if __name__ == '__main__':
-    main()
     
