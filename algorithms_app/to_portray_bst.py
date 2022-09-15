@@ -39,6 +39,12 @@ class Activated:
         label = Label(master=self.gui, text=f'PostOrderTraversal: {outage}', font=('Helvetica', 16))
         self.cv.create_window(210, 660, window=label)
         
+        
+    def get_height(self):
+        outage = 'The height is:'
+        outage += str(self.tree.height(self.tree)+1)
+        lb = Label(master=self.gui, text=outage)
+        self.cv.create_window(900, 330, window=lb)
 
 
     def show(self):
