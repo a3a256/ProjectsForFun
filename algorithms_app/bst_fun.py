@@ -44,6 +44,12 @@ class Binary:
             self.post(tree.left)
             self.post(tree.right)
             self.vals.append(tree.root)
+            
+    def height(self, tree):
+        if tree:
+            return 1+max(self.height(tree.left), self.height(tree.right))
+        else:
+            return -1
 
     def show(self):
         l = ''
