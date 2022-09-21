@@ -3,6 +3,7 @@ from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
 import os
 import tables
+import pandas as pd
 
 class BrowseFile:
     def __init__(self, ui):
@@ -14,8 +15,9 @@ class BrowseFile:
     def file_path(self):
         _filename = filedialog.askopenfilename()
         _filename = r'{}'.format(_filename)
+        df = pd.read_csv(_filename)
         root = Tk()
-        t = tables.DataVis(root, _filename).pack(fill='both', expand=True)
+        t = tables.DataVis(root, df).pack(fill='both', expand=True)
         root.mainloop()
 
 
