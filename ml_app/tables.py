@@ -13,12 +13,11 @@ class DataVis(Frame):
         vsb.pack(side=BOTTOM, fill="x")
         vsb1.pack(side='right', fill="y")
         text.pack(fill="both", expand=True)
-        df = pd.read_csv(path)
-        cols = df.columns
+        cols = path.columns
         col_lengths = []
         cls = []
         for i in cols:
-            ls = [len(str(x)) for x in df.loc[:, i]]
+            ls = [len(str(x)) for x in path.loc[:, i]]
             col_lengths.append(max(ls))
             cls.append(len(str(i)))
         j = 0
@@ -32,14 +31,11 @@ class DataVis(Frame):
         text.insert("end", "\n")
 
         for i in range(20):
-            v = 1
+            v = 0
             for j in range(len(cols)):
-                lb = Label(self, text=df.iloc[i, j])
+                lb = Label(self, text=path.iloc[i, j])
                 text.window_create("end", window=lb)
-                if v < len(cls)-1:
-                    text.insert("end", " "*(cls[v]))
-                else:
-                    text.insert("end", "")
+                text.insert("end", " "*(cls[v]))
                 v += 1
             text.insert("end", "\n")
 
@@ -50,5 +46,5 @@ class DataVis(Frame):
 
 if __name__ == "__main__":
     root = Tk()
-    t = DataVis(root, r'C:\Users\Azamat.Ilyasov\Downloads\breast-cancer.csv').pack(fill='both', expand=True)
+    t = DataVis(root, pd.read_csv(r'C:\Users\Azamat.Ilyasov\Downloads\breast-cancer.csv')).pack(fill='both', expand=True)
     root.mainloop()
