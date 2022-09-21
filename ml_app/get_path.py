@@ -15,7 +15,7 @@ class BrowseFile:
         _filename = filedialog.askopenfilename()
         _filename = r'{}'.format(_filename)
         root = Tk()
-        tables.Example(root, _filename).pack(fill='both', expand=True)
+        t = tables.DataVis(root, _filename).pack(fill='both', expand=True)
         root.mainloop()
 
 
