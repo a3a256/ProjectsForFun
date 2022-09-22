@@ -40,7 +40,7 @@ class Calculations:
 
     def equal(self):
         bb = backend.Distribute(self.equation.get(), self.arg)
-        bb.derive_full()
+        self.equation.set(bb.derive_full())
 
     def exp(self):
         self.intake += "^()"
