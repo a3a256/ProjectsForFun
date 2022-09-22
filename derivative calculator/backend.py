@@ -70,6 +70,8 @@ class Distribute:
         powers = int(self.extract_exponent(val))
         new_weight = str(weight*powers)
         new_powers = str(powers-1)
+        if new_powers == "1":
+            return str(str(new_weight) + str(self.target))
         return str(str(new_weight)+str(self.target)+"^("+str(new_powers)+")")
 
     def derive_full(self):
@@ -77,10 +79,8 @@ class Distribute:
         new_vals = []
         for i in vals:
             new_vals.append(self.derive_one_num(i))
-        print(new_vals)
         new_expression = new_vals[0]
         if len(new_vals) > 1:
             for i in range(1, len(new_vals)):
                 new_expression += self.operands[i-1] + new_vals[i]
-        print(new_expression)
         return new_expression
