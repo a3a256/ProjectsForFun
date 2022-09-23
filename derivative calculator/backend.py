@@ -1,5 +1,5 @@
-from tkinter import E
-
+import process_equation
+    
 
 class Distribute:
     def __init__(self, equation, target):
@@ -102,16 +102,38 @@ class Distribute:
             return str(new_weight)+self.target
         return str(new_weight)+self.target+"^("+str(new_power)+")"
 
+    def arg_equal(self, x1, x2):
+        e1 = self.extract_exponent(x1)
+        e2 = self.extract_exponent(x2)
+        if e1 == e2:
+            return True
+        return False
+
+    def derive_arithmetics(self, val1, val2, op):
+        weight1 = self.get_num(val1)
+        weight2 = self.get_num(val2)
+        e = self.extract_exponent(val1)
+        if op == "+":
+            return str(int(weight1) + int(weight2)) + self.target + "^({})".format(e)
+        if op == "-":
+            if int(weight1) > int(weight2):
+                return str(int(weight1)-int(weight2)) + self.target + "^({})".format(e)
+            else:
+                return "-" + str(int(weight2)-int(weight1)) + self.target + "^({})".format(e)
+
     def derive_full(self):
         vals = self.extract_nums()
+        t = process_equation.PreProcess(vals, self.target, self.operands)
+        print(t.processing())
         new_vals = []
         new_expression = ""
         for i in vals:
             new_vals.append(self.derive_one_num(i))
+        new_expression = new_vals[0]
         if len(new_vals) > 1:
             for i in range(1, len(new_vals)):
                 if self.operands[i-1] in ["*", "/"]:
                     new_expression += self.derivative_mul(new_vals[i], vals[i-1]) + "+" + self.derivative_mul(vals[i], new_vals[i-1])
                 else:
-                    new_expression += new_vals[i-1] + self.operands[i-1] + new_vals[i]
+                    new_expression += self.operands[i-1] + new_vals[i]
         return new_expression
