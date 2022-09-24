@@ -30,7 +30,7 @@ class Tools:
 class PreProcess:
     def __init__(self, equation, target, ops):
         self.eq = equation
-        self.target = equation
+        self.target = target
         self.ops = ops
 
     def exponent_equality(self, x1, x2):
@@ -42,7 +42,7 @@ class PreProcess:
 
     def multiplication(self, val1, val2):
         weight1 = Tools.get_num(val1, self.target)
-        weight2 = Tools.get_hum(val2, self.target)
+        weight2 = Tools.get_num(val2, self.target)
         e1 = Tools.extract_exponent(val1)
         e2 = Tools.extract_exponent(val2)
         new_weight = str(int(weight1)*int(weight2))
