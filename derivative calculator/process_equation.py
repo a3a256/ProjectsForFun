@@ -53,6 +53,24 @@ class PreProcess:
             return new_weight
         return new_weight+self.target+"^({})".format(new_e)
 
+    def process_num(self, val):
+        exp = False
+        weight = Tools.get_num(val, self.target)
+        e = ""
+        if "^" in weight:
+            l = len(val) - 2
+            while weight[l] != "(":
+                e += weight[l]
+                l -= 1
+            i = 0
+            n = ""
+            while val[i] != "^":
+                n += val[i]
+                i += 1
+            return str(int(n)**(int(e)))
+        else:
+            return weight
+
     def division(self, val1, val2):
         weight1 = Tools.get_num(val1, self.target)
         weight2 = Tools.get_hum(val2, self.target)
@@ -132,7 +150,19 @@ class PreProcess:
             while "_" in self.eq:
                 self.eq.remove("_")
             for l in range(len(self.ops)):
-                if self.legit(self.eq[l], self.eq[l+1]):
-                    self.eq[l] = self.distibute(self.eq[l], self.eq[l+1], self.ops[l])
-                    self.ops[l] = "_"
-        return self.eq, self.ops
+                if self.eq[l] != "_":
+                    if self.legit(self.eq[l], self.eq[l+1]):
+                        self.eq[l] = self.distibute(self.eq[l], self.eq[l+1], self.ops[l])
+                        self.eq[l+1] - "_"
+                        self.ops[l] = "_"
+                else:
+                    p = l
+                    while self.eq[l] == "_":
+                        p -= 1
+                    self.eq[p] = self.distibute(self.eq[p], self.eq[l+1], self.ops[l])
+        while "_" in self.ops:
+            self.ops.remove("_")
+        while "_" in self.eq:
+            self.eq.remove("_")
+        print(self.eq)
+        # return self.eq, self.ops
