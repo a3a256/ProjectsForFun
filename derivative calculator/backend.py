@@ -138,6 +138,8 @@ class Distribute:
         new_expression = ""
         for i in vals:
             new_vals.append(self.derive_one_num(i))
-        for i in range(0, len(ops), 2):
-            new_expression += new_vals[i] + ops[i] + new_vals[i+1] + ops[i+1]
+        new_expression += new_vals[0]
+        if len(new_vals)>1:
+            for i in range(1, len(new_vals)):
+                new_expression += ops[i-1] + new_vals[i]
         return new_expression
