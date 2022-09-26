@@ -13,6 +13,8 @@ class Tools:
         return "".join(weight)
 
     def extract_exponent(val):
+        if not Tools.is_exponent(val):
+            return "1"
         length = len(val)
         end = length-2
         e = ""
@@ -73,7 +75,7 @@ class PreProcess:
 
     def division(self, val1, val2):
         weight1 = Tools.get_num(val1, self.target)
-        weight2 = Tools.get_hum(val2, self.target)
+        weight2 = Tools.get_num(val2, self.target)
         e1 = Tools.extract_exponent(val1)
         e2 = Tools.extract_exponent(val2)
         new_weight = str(int(weight1)/int(weight2))
@@ -98,8 +100,6 @@ class PreProcess:
                 return str(int(Tools.get_num(val1)) - int(Tools.get_num(val2))) + self.target + "^({})".format(Tools.extract_exponent(val1))
     
     def legit(self, val1, val2):
-        print(val1)
-        print(val2)
         if (self.target in val1) and (self.target in val2):
             return True
         else:
@@ -122,21 +122,23 @@ class PreProcess:
         elif op == "/":
             return self.division(val1, val2)
         else:
-            return self.basic(val1, val2)
+            return self.basic(val1, val2, op)
     
     def processing(self):
         length = len(self.ops)
-        new_expression = ""
+        new_expression = []
         mul_div_id = []
         if ("*" in self.ops) or ("/" in self.ops):
             for j in range(len(self.ops)):
-                mul_div_id.append(j)
+                if self.ops[j] == "*" or self.ops[j] == "/":
+                    mul_div_id.append(j)
         if mul_div_id:
             for i in mul_div_id:
                 if self.eq[i] != "_":
                     if self.legit(self.eq[i], self.eq[i+1]):
                         if self.eq[i] != "_":
                             self.eq[i] = self.distibute(self.eq[i], self.eq[i+1], self.ops[i])
+                            new_expression.append(self.eq[i])
                             self.eq[i+1] = "_"
                             self.ops[i] = "_"
                 else:
@@ -144,25 +146,23 @@ class PreProcess:
                     while self.eq[j] == "_":
                         j -= 1
                     self.eq[j] = self.distibute(self.eq[l], self.eq[i+1], self.ops[i])
-        else:
-            while "_" in self.ops:
-                self.ops.remove("_")
-            while "_" in self.eq:
-                self.eq.remove("_")
-            for l in range(len(self.ops)):
-                if self.eq[l] != "_":
-                    if self.legit(self.eq[l], self.eq[l+1]):
-                        self.eq[l] = self.distibute(self.eq[l], self.eq[l+1], self.ops[l])
-                        self.eq[l+1] - "_"
-                        self.ops[l] = "_"
-                else:
-                    p = l
-                    while self.eq[l] == "_":
-                        p -= 1
-                    self.eq[p] = self.distibute(self.eq[p], self.eq[l+1], self.ops[l])
         while "_" in self.ops:
             self.ops.remove("_")
         while "_" in self.eq:
             self.eq.remove("_")
-        print(self.eq)
-        # return self.eq, self.ops
+        for l in range(len(self.ops)):
+            if self.eq[l] != "_":
+                if self.legit(self.eq[l], self.eq[l+1]):
+                    self.eq[l] = self.distibute(self.eq[l], self.eq[l+1], self.ops[l])
+                    self.eq[l+1] = "_"
+                    self.ops[l] = "_"
+            else:
+                p = l
+                while self.eq[l] == "_":
+                    p -= 1
+                self.eq[p] = self.distibute(self.eq[p], self.eq[l+1], self.ops[l])
+        while "_" in self.ops:
+            self.ops.remove("_")
+        while "_" in self.eq:
+            self.eq.remove("_")
+        print("kk", new_expression, "ll")
