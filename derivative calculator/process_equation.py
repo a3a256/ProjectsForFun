@@ -166,23 +166,15 @@ class PreProcess:
         while "_" in self.eq:
             self.eq.remove("_")
         for l in range(len(self.ops)):
-            if self.eq[l] != "_":
-                if self.legit(self.eq[l], self.eq[l+1]):
-                    a = self.distibute(self.eq[l], self.eq[l+1], self.ops[l])
-                    if a != "not equal":
-                        self.eq[l] = a
-                        self.eq[l+1] = "_"
-                        self.ops[l] = "_"
-            else:
-                p = l
-                while self.eq[p] == "_":
-                    p -= 1
-                if self.legit(self.eq[p], self.eq[l+1]):
-                    a = self.distibute(self.eq[p], self.eq[l+1], self.ops[l])
-                    if a != "not equal":
-                        self.eq[p] = a
-                        self.eq[l+1] = "_"
-                        self.ops[l] = "_"
+            for q in range(l+1, len(self.eq)):
+                b = ""
+                if self.eq[q] != "_" and self.eq[l] != "_":
+                    if self.legit(self.eq[l], self.eq[q]):
+                        a = self.distibute(self.eq[l], self.eq[q], self.ops[q-1])
+                        if a != "not equal":
+                            self.eq[l] = a
+                            self.eq[q] = "_"
+                            self.ops[q-1] = "_"
         while "_" in self.eq:
             self.eq.remove("_")
         while "_" in self.ops:
