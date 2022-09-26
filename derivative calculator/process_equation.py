@@ -78,7 +78,7 @@ class PreProcess:
         weight2 = Tools.get_num(val2, self.target)
         e1 = Tools.extract_exponent(val1)
         e2 = Tools.extract_exponent(val2)
-        new_weight = str(int(weight1)/int(weight2))
+        new_weight = str(int(int(weight1)/int(weight2)))
         new_e = ""
         if int(e1) < int(e2):
             new_e = str(int(e2) - int(e1))
