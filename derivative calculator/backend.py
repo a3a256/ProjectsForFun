@@ -1,5 +1,5 @@
 import process_equation
-    
+from process_equation import Tools
 
 class Distribute:
     def __init__(self, equation, target):
@@ -20,6 +20,15 @@ class Distribute:
         vals = []
         nums = ""
         self.process()
+        temp = "0"
+        if self.equation[0] == "-" or self.equation[0] == "+":
+            temp = "0"
+            temp += self.equation
+            self.equation = temp
+        else:
+            temp = "0+"
+            temp += self.equation
+            self.equation = temp
         for i in self.equation:
             if i in self.rule:
                 self.operands.append(i)
@@ -124,16 +133,11 @@ class Distribute:
     def derive_full(self):
         vals = self.extract_nums()
         t = process_equation.PreProcess(vals, self.target, self.operands)
-        print(t.processing())
+        vals, ops = t.processing()
         new_vals = []
         new_expression = ""
         for i in vals:
             new_vals.append(self.derive_one_num(i))
-        new_expression = new_vals[0]
-        if len(new_vals) > 1:
-            for i in range(1, len(new_vals)):
-                if self.operands[i-1] in ["*", "/"]:
-                    new_expression += self.derivative_mul(new_vals[i], vals[i-1]) + "+" + self.derivative_mul(vals[i], new_vals[i-1])
-                else:
-                    new_expression += self.operands[i-1] + new_vals[i]
+        for i in range(0, len(ops), 2):
+            new_expression += new_vals[i] + ops[i] + new_vals[i+1] + ops[i+1]
         return new_expression
