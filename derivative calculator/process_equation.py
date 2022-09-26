@@ -93,11 +93,22 @@ class PreProcess:
     def basic(self, val1, val2, op):
         if self.exponent_equality(val1, val2):
             if op == "+":
-                return str(int(Tools.get_num(val1)) + int(Tools.get_num(val2))) + self.target + "^({})".format(Tools.extract_exponent(val1))
+                if int(Tools.extract_exponent(val1)) > 1:
+                    return str(int(Tools.get_num(val1, self.target)) + int(Tools.get_num(val2, self.target))) + self.target + "^({})".format(Tools.extract_exponent(val1))
+                else:
+                    return str(int(Tools.get_num(val1, self.target)) + int(Tools.get_num(val2, self.target))) + self.target
             else:
-                if int(Tools.get_num(val1)) < int(Tools.get_num(val2)):
-                    return "-" + str(int(Tools.get_num(val2)) + int(Tools.get_num(val1))) + self.target + "^({})".format(Tools.extract_exponent(val1))
-                return str(int(Tools.get_num(val1)) - int(Tools.get_num(val2))) + self.target + "^({})".format(Tools.extract_exponent(val1))
+                if int(Tools.get_num(val1, self.target)) < int(Tools.get_num(val2, self.target)):
+                    if int(Tools.extract_exponent(val1)) > 1:
+                        return "-" + str(int(Tools.get_num(val2, self.target)) - int(Tools.get_num(val1, self.target))) + self.target + "^({})".format(Tools.extract_exponent(val1))
+                    else:
+                        return "-" + str(int(Tools.get_num(val2, self.target)) - int(Tools.get_num(val1, self.target))) + self.target
+                if int(Tools.extract_exponent(val1)) > 1:
+                    return str(int(Tools.get_num(val1, self.target)) - int(Tools.get_num(val2, self.target))) + self.target + "^({})".format(Tools.extract_exponent(val1))
+                else:
+                    return str(int(Tools.get_num(val1, self.target)) - int(Tools.get_num(val2, self.target))) + self.target
+        else:
+            return "not equal"
     
     def legit(self, val1, val2):
         if (self.target in val1) and (self.target in val2):
@@ -145,7 +156,11 @@ class PreProcess:
                     j = i
                     while self.eq[j] == "_":
                         j -= 1
-                    self.eq[j] = self.distibute(self.eq[l], self.eq[i+1], self.ops[i])
+                    if self.legit(self.eq[j], self.eq[i+1]):
+                        self.eq[j] = self.distibute(self.eq[j], self.eq[i+1], self.ops[i])
+                        self.eq[i+1] = "_"
+                        self.ops[i] = "_"
+                        new_expression.append(self.eq[j])
         while "_" in self.ops:
             self.ops.remove("_")
         while "_" in self.eq:
@@ -153,16 +168,24 @@ class PreProcess:
         for l in range(len(self.ops)):
             if self.eq[l] != "_":
                 if self.legit(self.eq[l], self.eq[l+1]):
-                    self.eq[l] = self.distibute(self.eq[l], self.eq[l+1], self.ops[l])
-                    self.eq[l+1] = "_"
-                    self.ops[l] = "_"
+                    a = self.distibute(self.eq[l], self.eq[l+1], self.ops[l])
+                    if a != "not equal":
+                        self.eq[l] = a
+                        self.eq[l+1] = "_"
+                        self.ops[l] = "_"
             else:
                 p = l
-                while self.eq[l] == "_":
+                while self.eq[p] == "_":
                     p -= 1
-                self.eq[p] = self.distibute(self.eq[p], self.eq[l+1], self.ops[l])
-        while "_" in self.ops:
-            self.ops.remove("_")
+                if self.legit(self.eq[p], self.eq[l+1]):
+                    a = self.distibute(self.eq[p], self.eq[l+1], self.ops[l])
+                    if a != "not equal":
+                        self.eq[p] = a
+                        self.eq[l+1] = "_"
+                        self.ops[l] = "_"
         while "_" in self.eq:
             self.eq.remove("_")
-        print("kk", new_expression, "ll")
+        while "_" in self.ops:
+            self.ops.remove("_")
+        print(self.eq)
+        return self.eq, self.ops
