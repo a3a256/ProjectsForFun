@@ -1,10 +1,23 @@
 from tkinter import *
 from tkinter import ttk, filedialog
 import pandas as pd
+import list_of_cols
+import common_panel
+
+class Nodd:
+    data = ""
+    arr = []
+
+    def update(arr):
+        Nodd.arr = arr
+
+    def get():
+        return Nodd.arr
 
 class DataVis(Frame):
-    def __init__(self, parent, path):
+    def __init__(self, parent, path, ui, cv):
         Frame.__init__(self, parent)
+        self.lst = list_of_cols.LinkedList(None)
         text = Text(self, wrap="none")
         vsb = Scrollbar(self, orient="horizontal", command=text.xview)
         vsb1 = Scrollbar(self, orient='vertical', command=text.yview)
@@ -13,14 +26,31 @@ class DataVis(Frame):
         vsb.pack(side=BOTTOM, fill="x")
         vsb1.pack(side='right', fill="y")
         text.pack(fill="both", expand=True)
+        self.df = path
         cols = path.columns
+        self.selection = StringVar()
+        self.col_op = []
         col_lengths = []
+        self.ui = ui
+        self.vals = dict()
         cls = []
         for i in cols:
             ls = [len(str(x)) for x in path.loc[:, i]]
             col_lengths.append(max(ls))
             cls.append(len(str(i)))
         j = 0
+        btn_preprocess = Button(self, text="Preprocessing", command=lambda: self.prepare_data())
+        text.window_create("end", window=btn_preprocess)
+        text.insert("end", "")
+        btn_visualise = Button(master=self, text="Visualise the data")
+        text.window_create("end", window=btn_visualise)
+        text.insert("end", "")
+        btn_model = Button(master=self, text="Teach model")
+        text.window_create("end", window=btn_model)
+        text.insert("end", " ")
+        ent_cols = Entry(self, text=self.selection, width=60)
+        text.window_create("end", window=ent_cols)
+        text.insert("end", "\n")
         for col in cols:
             b = Button(self, text=col)
             b.configure(command=lambda x=b: self.hos(x))
@@ -41,10 +71,13 @@ class DataVis(Frame):
 
         text.configure(state="disabled")
 
-    def hos(self, val):
-        print(val.cget('text'))
 
-if __name__ == "__main__":
-    root = Tk()
-    t = DataVis(root, pd.read_csv(r'C:\Users\Azamat.Ilyasov\Downloads\breast-cancer.csv')).pack(fill='both', expand=True)
-    root.mainloop()
+    def hos(self, val):
+        self.lst.add(val.cget('text'))
+        self.col_op.append(val.cget('text'))
+        Nodd.update(self.col_op)
+        self.selection.set(self.lst.show())
+
+    def prepare_data(self):
+        val = common_panel.PreprocessingOption(Tk(), self.df, Nodd.get())
+        val.preprocess()
