@@ -15,7 +15,7 @@ class Nodd:
         return Nodd.arr
 
 class DataVis(Frame):
-    def __init__(self, parent, path, ui, cv):
+    def __init__(self, parent, path, ui):
         Frame.__init__(self, parent)
         self.lst = list_of_cols.LinkedList(None)
         text = Text(self, wrap="none")
