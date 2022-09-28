@@ -14,6 +14,14 @@ class SLL:
         self.nodes.append(self.ui.create_text(x+40, y, text=str(first), font=('bold')))
         self.head = Node(first, None)
 
+    def get_length(self):
+        itr = self.head
+        count = 0
+        while itr:
+            itr = itr.next
+            count += 1
+        return count
+
     def add_start(self, num, x, y):
         itr = self.head
         self.head = Node(num, itr)
@@ -32,6 +40,31 @@ class SLL:
         itr.next = Node(num, None)
         self.arrows.append(self.ui.create_line(x+10, y, x+30, y, width=1.5, arrow=LAST))
         self.nodes.append(self.ui.create_text(x+40, y, text=str(num), font=('bold')))
+
+    def insert_label(self, val, id):
+        x = 50
+        y = 70
+        itr = self.head
+        for i in range(id-1):
+            x += 45
+            itr = itr.next
+        for i, j in zip(self.nodes[id:], self.arrows[id-1:]):
+            self.ui.move(i, 45, 0)
+            self.ui.move(j, 45, 0)
+        self.arrows.append(self.ui.create_line(x+10, y, x+30, y, width=1.5, arrow=LAST))
+        self.nodes.append(self.ui.create_text(x+40, y, text=str(val), font=("bold")))
+
+    def insert_at(self, val, id):
+        if id >= self.get_length():
+            raise Exception("Error! Index is out of bound")
+        else:
+            itr = self.head
+            i = 0
+            while i<id-1:
+                itr = itr.next
+                i += 1
+            itr.next = Node(val, itr.next)
+        self.insert_label(val, id)
 
     def sort(self, x, y, asc=False):
         clear = False
@@ -72,4 +105,3 @@ class SLL:
             l += str(itr.val) + ' --> '
             itr = itr.next
         return l[:-5]
-        
