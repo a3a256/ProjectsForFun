@@ -31,6 +31,26 @@ class SLL:
         self.arrows.append(self.ui.create_line(x+10, y, x+30, y, width=1.5, arrow=LAST))
         self.nodes.append(self.ui.create_text(x+40, y, text=str(num), font=('bold')))
 
+    def deleted_value(self, id):
+        x = 50
+        itr = self.head
+        index = int(id) - 1
+        count = 0
+        while itr:
+            if count == index:
+                itr.next = itr.next.next
+                break
+            x += 45
+            count += 1
+            itr = itr.next
+        self.ui.delete(self.nodes[index+2])
+        self.nodes.pop(index+2)
+        self.ui.delete(self.arrows[index+1])
+        self.arrows.pop(index+1)
+        for i, j in zip(self.nodes[index+2:], self.arrows[index+1:]):
+            self.ui.move(i, -45, 0)
+            self.ui.move(j, -45, 0)
+
     def add_end(self, num, x, y):
         itr = self.head
         x += 45
