@@ -127,11 +127,24 @@ class PreProcess:
         for i in range(length):
             self.eq[i] = self.arg_process(self.eq[i])
 
+    def mix_multiply(self, val1, val2):
+        weight1 = Tools.get_num(val1, self.target)
+        weight2 = Tools.get_num(val2, self.target)
+        e = ""
+        if self.target in val1:
+            e += Tools.extract_exponent(val1)
+        else:
+            e += Tools.extract_exponent(val2)
+        new_weight = int(weight1)*int(weight2)
+        return str(new_weight)+self.target+"^({})".format(e)
+
     def distibute(self, val1, val2, op):
         if op == "*":
             return self.multiplication(val1, val2)
         elif op == "/":
             return self.division(val1, val2)
+        elif self.legit(val1, val2) == "mix":
+            pass
         else:
             return self.basic(val1, val2, op)
     
@@ -147,6 +160,12 @@ class PreProcess:
             for i in mul_div_id:
                 if self.eq[i] != "_":
                     if self.legit(self.eq[i], self.eq[i+1]):
+                        if self.eq[i] != "_":
+                            self.eq[i] = self.distibute(self.eq[i], self.eq[i+1], self.ops[i])
+                            new_expression.append(self.eq[i])
+                            self.eq[i+1] = "_"
+                            self.ops[i] = "_"
+                    elif self.legit(self.eq[i], self.eq[i+1]) == "mix":
                         if self.eq[i] != "_":
                             self.eq[i] = self.distibute(self.eq[i], self.eq[i+1], self.ops[i])
                             new_expression.append(self.eq[i])
@@ -169,6 +188,7 @@ class PreProcess:
             for q in range(l+1, len(self.eq)):
                 b = ""
                 if self.eq[q] != "_" and self.eq[l] != "_":
+                    print(self.eq[l], self.eq[q])
                     if self.legit(self.eq[l], self.eq[q]):
                         a = self.distibute(self.eq[l], self.eq[q], self.ops[q-1])
                         if a != "not equal":
