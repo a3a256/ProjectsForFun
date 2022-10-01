@@ -109,6 +109,14 @@ class PreProcess:
                     return str(int(Tools.get_num(val1, self.target)) - int(Tools.get_num(val2, self.target))) + self.target
         else:
             return "not equal"
+
+    def mix_legit(self, val1, val2):
+        a = self.target in val1
+        b = self.target in val2
+        if a or b:
+            return True
+        else:
+            return False
     
     def legit(self, val1, val2):
         if (self.target in val1) and (self.target in val2):
@@ -165,9 +173,10 @@ class PreProcess:
                             new_expression.append(self.eq[i])
                             self.eq[i+1] = "_"
                             self.ops[i] = "_"
-                    elif self.legit(self.eq[i], self.eq[i+1]) == "mix":
-                        if self.eq[i] != "_":
-                            self.eq[i] = self.distibute(self.eq[i], self.eq[i+1], self.ops[i])
+                    else:
+                        if self.mix_legit(self.eq[i], self.eq[i+1]):
+                            print("Check")
+                            self.eq[i] = self.mix_multiply(self.eq[i], self.eq[i+1])
                             new_expression.append(self.eq[i])
                             self.eq[i+1] = "_"
                             self.ops[i] = "_"
