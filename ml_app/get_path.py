@@ -5,7 +5,6 @@ import os
 import tables
 import pandas as pd
 from tables import Nodd
-import ops
 import common_panel
 
 
