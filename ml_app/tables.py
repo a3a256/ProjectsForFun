@@ -1,8 +1,10 @@
 from tkinter import *
 from tkinter import ttk, filedialog
+from xml.etree.ElementPath import ops
 import pandas as pd
 import list_of_cols
 import common_panel
+import ops
 
 class Nodd:
     data = ""
@@ -42,7 +44,7 @@ class DataVis(Frame):
         btn_preprocess = Button(self, text="Preprocessing", command=lambda: self.prepare_data())
         text.window_create("end", window=btn_preprocess)
         text.insert("end", "")
-        btn_visualise = Button(master=self, text="Visualise the data")
+        btn_visualise = Button(master=self, text="Visualise the data", command=lambda: self.show_data())
         text.window_create("end", window=btn_visualise)
         text.insert("end", "")
         btn_model = Button(master=self, text="Teach model")
@@ -81,3 +83,7 @@ class DataVis(Frame):
     def prepare_data(self):
         val = common_panel.PreprocessingOption(Tk(), self.df, Nodd.get())
         val.preprocess()
+
+    def show_data(self):
+        val = ops.PlotPanel(Tk(), Nodd.get(), self.df)
+        val.plot_options()
