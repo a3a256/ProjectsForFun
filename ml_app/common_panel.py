@@ -12,18 +12,27 @@ class PreprocessingOption:
         self.ui = ui
         self.df = df
         self.cols = feats
+        self.results = []
 
     def info(self):
         root = Tk()
         tables = Description(root, self.df.describe()).pack(fill='both', expand=True)
         root.mainloop()
+        return 0
+
+    def column_removal(self):
+        self.df.drop(self.cols, axis=1, inplace=True)
+        self.results = [self.df, "removal"]
 
     def preprocess(self):
         btn_info = Button(master=self.ui, text="Common info on the dataset", command=lambda: self.info())
         btn_info.grid(row=0, column=0)
         btn_encode = Button(master=self.ui, text="Encode chosen columns")
         btn_encode.grid(row=1, column=0)
+        btn_remove = Button(master=self.ui, text="Remove the column", command=lambda: [self.column_removal(), self.ui.destroy()])
+        btn_remove.grid(row=2, column=0)
         self.ui.mainloop()
+        return self.results
 
 
 class Description(Frame):
@@ -52,7 +61,7 @@ class Description(Frame):
             text.window_create("end", window=lb)
             text.insert("end", "")
             for j in range(len(df.columns)):
-                lb = Label(master=self, text=df.iloc[i, j])
+                lb = Label(master=self, text=str(round(float(df.iloc[i, j]), 2)))
                 text.window_create("end", window=lb)
                 text.insert("end", "  ")
             text.insert("end", "\n")
