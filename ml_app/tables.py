@@ -82,6 +82,8 @@ class DataVis(Frame):
         self.selection.set(self.lst.show())
 
     def preprocessing_result(self, val):
+        if val == []:
+            pass
         if val[1] == "removal":
             root = Tk()
             t = DataVis(root, val[0], self.ui).pack(fill='both', expand=True)
@@ -94,3 +96,5 @@ class DataVis(Frame):
     def show_data(self):
         val = ops.PlotPanel(Tk(), Nodd.get(), self.df)
         val.plot_options()
+        Nodd.arr = []
+        self.lst = list_of_cols.LinkedList(None)
