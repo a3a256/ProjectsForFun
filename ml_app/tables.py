@@ -53,10 +53,11 @@ class DataVis(Frame):
         ent_cols = Entry(self, text=self.selection, width=60)
         text.window_create("end", window=ent_cols)
         text.insert("end", "\n")
+        self.text_window = []
         for col in cols:
             b = Button(self, text=col)
             b.configure(command=lambda x=b: self.hos(x))
-            text.window_create("end", window=b)
+            self.text_window.append(text.window_create("end", window=b))
             text.insert("end", " "*(col_lengths[j]))
             j += 1
 
@@ -80,9 +81,15 @@ class DataVis(Frame):
         Nodd.update(self.col_op)
         self.selection.set(self.lst.show())
 
+    def preprocessing_result(self, val):
+        if val[1] == "removal":
+            root = Tk()
+            t = DataVis(root, val[0], self.ui).pack(fill='both', expand=True)
+            root.mainloop()
+
     def prepare_data(self):
         val = common_panel.PreprocessingOption(Tk(), self.df, Nodd.get())
-        val.preprocess()
+        self.preprocessing_result(val.preprocess())
 
     def show_data(self):
         val = ops.PlotPanel(Tk(), Nodd.get(), self.df)
