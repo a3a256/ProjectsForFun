@@ -68,11 +68,25 @@ class PlotPanel:
         self.ui.mainloop()
 
 class ShowPlots:
-    def __init__(self, x_axis=None, y_axis=None, legend=None):
-        self.x = x_axis
-        self.y = y_axis
-        self.legend = legend
+    def __init__(self, axes):
+        self.axes = axes
 
-    def scatterplot(self):
-        plt.scatter(self.x, self.y)
+    def process(self):
+        hue = len(np.unique(self.axes[0]))
+        if len(self.axes) > 2:
+            for i in self.axes[1:]:
+                if len(np.unique(i)) < hue:
+                    hue = i
+            self.scatterplot_legend(self.axes[0])
+        else:
+            self.scatterplot(self.axes[0], self.axes[1])
+
+    def scatterplot_legend(self, x, y, hue):
+        axes = np.array([x, y])
+        for i in np.unique(hue):
+            plt.scatter(axes[hue==i, 0], axes[hue==i, 1])
+        plt.show()
+
+    def scatterplot(self, x, y):
+        plt.scatter(x, y)
         plt.show()
