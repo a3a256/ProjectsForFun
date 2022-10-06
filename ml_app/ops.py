@@ -20,8 +20,8 @@ class PlotPanel:
         plt.show()
 
     def scatter_plot(self):
-        plot = ShowPlots(self.df[self.selection[0]], self.df[self.selection[1]])
-        plot.scatterplot()
+        plot = ShowPlots(self.df, self.selection)
+        plot.process()
 
     def get(self, val):
         self.val = val
@@ -68,21 +68,30 @@ class PlotPanel:
         self.ui.mainloop()
 
 class ShowPlots:
-    def __init__(self, axes):
+    def __init__(self, df, axes):
         self.axes = axes
+        self.df = df
 
     def process(self):
-        hue = len(np.unique(self.axes[0]))
+        hue = len(np.unique(self.df[self.axes[0]]))
+        lowest_id = 0
         if len(self.axes) > 2:
-            for i in self.axes[1:]:
-                if len(np.unique(i)) < hue:
-                    hue = i
-            self.scatterplot_legend(self.axes[0])
+            for i, j in enumerate(self.df[self.axes[1:]]):
+                if len(np.unique(self.df[j])) < hue:
+                    lowest_id = i
+                    hue = len(np.unique(self.df[j]))
+            axes = []
+            legend = lowest_id
+            for i in range(len(self.axes)):
+                if i != legend:
+                    axes.append(i)
+            cols = [self.axes[axes[0]], self.axes[axes[1]]]
+            vals = self.df.loc[:, cols].values
+            self.scatterplot_legend(vals, self.df[self.axes[legend]])
         else:
-            self.scatterplot(self.axes[0], self.axes[1])
+            self.scatterplot(self.df[self.axes[0]], self.df[self.axes[1]])
 
-    def scatterplot_legend(self, x, y, hue):
-        axes = np.array([x, y])
+    def scatterplot_legend(self, axes, hue):
         for i in np.unique(hue):
             plt.scatter(axes[hue==i, 0], axes[hue==i, 1])
         plt.show()
