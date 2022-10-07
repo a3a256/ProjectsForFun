@@ -57,6 +57,20 @@ class PlotPanel:
             else:
                 plt.bar(self.df[self.selection[0]], self.df[self.selection[1]])
         plt.show()
+
+    def pie_plot(self):
+        if len(self.selection) > 1:
+            length = len(self.selection)
+            ids = []
+            for i in range(length):
+                if np.unique(self.selection[i]) < 10:
+                    ids.append(i)
+            if len(ids) > 1:
+                fig, axes = plt.subplots(nrows=len(ids), ncols=1, figsize=(10, 8))
+                for j in range(len(ids)):
+                    print(ids)
+        plt.pie(self.df[self.selection].value_counts())
+        plt.show()
     
     def plot_options(self):
         btn_scatter = Button(self.ui, text="Scatterplot of selected columns", command=lambda: [self.ui.destroy() ,self.scatter_plot()])
@@ -65,6 +79,8 @@ class PlotPanel:
         btn_bar.grid(row=1, column=0)
         btn_pairplot = Button(self.ui, text="Show pairplot", command=lambda: [self.ui.destroy(), self.pair_plot()])
         btn_pairplot.grid(row=2, column=0)
+        btn_pie = Button(self.ui, text="Show pie chart", command=lambda: [self.ui.destroy(), self.pie_plot()])
+        btn_pie.grid(row=3, column=0)
         self.ui.mainloop()
 
 class ShowPlots:
