@@ -103,13 +103,16 @@ class ShowPlots:
                     axes.append(i)
             cols = [self.axes[axes[0]], self.axes[axes[1]]]
             vals = self.df.loc[:, cols].values
-            self.scatterplot_legend(vals, self.df[self.axes[legend]])
+            self.scatterplot_legend(vals, self.df[self.axes[legend]], cols)
         else:
             self.scatterplot(self.df[self.axes[0]], self.df[self.axes[1]])
 
-    def scatterplot_legend(self, axes, hue):
+    def scatterplot_legend(self, axes, hue, col_names):
         for i in np.unique(hue):
             plt.scatter(axes[hue==i, 0], axes[hue==i, 1])
+        plt.xlabel(col_names[0])
+        plt.ylabel(col_names[1])
+        plt.legend(np.unique(hue))
         plt.show()
 
     def scatterplot(self, x, y):
