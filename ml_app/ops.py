@@ -22,6 +22,7 @@ class PlotPanel:
     def scatter_plot(self):
         plot = ShowPlots(self.df, self.selection)
         plot.process()
+        return
 
     def get(self, val):
         self.val = val
@@ -82,6 +83,7 @@ class PlotPanel:
         btn_pie = Button(self.ui, text="Show pie chart", command=lambda: [self.ui.destroy(), self.pie_plot()])
         btn_pie.grid(row=3, column=0)
         self.ui.mainloop()
+        plt.close()
 
 class ShowPlots:
     def __init__(self, df, axes):
@@ -91,6 +93,7 @@ class ShowPlots:
     def process(self):
         hue = len(np.unique(self.df[self.axes[0]]))
         lowest_id = 0
+        print(self.axes)
         if len(self.axes) > 2:
             for i, j in enumerate(self.df[self.axes[1:]]):
                 if len(np.unique(self.df[j])) < hue:
@@ -106,6 +109,8 @@ class ShowPlots:
             self.scatterplot_legend(vals, self.df[self.axes[legend]], cols)
         else:
             self.scatterplot(self.df[self.axes[0]], self.df[self.axes[1]])
+        plt.close()
+        return
 
     def scatterplot_legend(self, axes, hue, col_names):
         for i in np.unique(hue):
@@ -118,3 +123,4 @@ class ShowPlots:
     def scatterplot(self, x, y):
         plt.scatter(x, y)
         plt.show()
+        plt.close()
