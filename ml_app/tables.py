@@ -10,8 +10,8 @@ class Nodd:
     data = ""
     arr = []
 
-    def update(arr):
-        Nodd.arr = arr
+    def update(val):
+        Nodd.arr = val
 
     def get():
         return Nodd.arr
@@ -95,6 +95,9 @@ class DataVis(Frame):
 
     def show_data(self):
         val = ops.PlotPanel(Tk(), Nodd.get(), self.df)
-        val.plot_options()
         Nodd.arr = []
+        self.col_op = []
+        print(Nodd.get())
         self.lst = list_of_cols.LinkedList(None)
+        self.selection.set("")
+        val.plot_options()
