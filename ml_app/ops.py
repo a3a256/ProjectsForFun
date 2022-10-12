@@ -70,7 +70,12 @@ class PlotPanel:
                 fig, axes = plt.subplots(nrows=len(ids), ncols=1, figsize=(10, 8))
                 for j in range(len(ids)):
                     print(ids)
-        plt.pie(self.df[self.selection].value_counts())
+        ids = []
+        for i in self.df[self.selection].value_counts().index:
+            ids.append(i[0])
+        print(ids)
+        plt.pie(self.df[self.selection].value_counts(), labels=ids,
+        autopct="%1.1f%%")
         plt.show()
     
     def plot_options(self):
