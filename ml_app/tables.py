@@ -88,6 +88,10 @@ class DataVis(Frame):
             root = Tk()
             t = DataVis(root, val[0], self.ui).pack(fill='both', expand=True)
             root.mainloop()
+        if val[1] == "encoding":
+            root = Tk()
+            t = DataVis(root, val[0], self.ui).packl(fill="both", expand=True)
+            root.mainloop()
 
     def prepare_data(self):
         val = common_panel.PreprocessingOption(Tk(), self.df, Nodd.get())
