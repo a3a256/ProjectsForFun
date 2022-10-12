@@ -1,5 +1,6 @@
 from tkinter import *
 import pandas as pd
+from sklearn.preprocessing import LabelEncoder
 
 class Nodes:
     var = []
@@ -24,10 +25,17 @@ class PreprocessingOption:
         self.df.drop(self.cols, axis=1, inplace=True)
         self.results = [self.df, "removal"]
 
+    def column_encoding(self):
+        # encoding to be added
+        le = LabelEncoder()
+        le.fit(self.df[self.cols])
+        self.df[self.cols] = le.transform(self.df[self.cols])
+        self.results = [self.df, "encoding"]
+
     def preprocess(self):
         btn_info = Button(master=self.ui, text="Common info on the dataset", command=lambda: self.info())
         btn_info.grid(row=0, column=0)
-        btn_encode = Button(master=self.ui, text="Encode chosen columns")
+        btn_encode = Button(master=self.ui, text="Encode chosen columns", command=lambda: self.column_encoding())
         btn_encode.grid(row=1, column=0)
         btn_remove = Button(master=self.ui, text="Remove the column", command=lambda: [self.column_removal(), self.ui.destroy()])
         btn_remove.grid(row=2, column=0)
