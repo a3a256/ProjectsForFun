@@ -1,11 +1,9 @@
 from tkinter import *
 from tkinter import ttk, filedialog
 from tkinter.filedialog import askopenfile
-import os
 import tables
 import pandas as pd
 from tables import Nodd
-import common_panel
 
 
 class BrowseFile(Nodd):
