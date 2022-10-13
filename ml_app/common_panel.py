@@ -1,6 +1,7 @@
 from tkinter import *
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+import numpy as np
 
 class Nodes:
     var = []
@@ -32,6 +33,12 @@ class PreprocessingOption:
         self.df[self.cols] = le.transform(self.df[self.cols])
         self.results = [self.df, "encoding"]
 
+    def count_vals(self):
+        frq = self.df[self.cols].value_counts()
+        root = Tk()
+        win = Freqs(root, frq, self.cols[0]).pack(fill="both", expand=True)
+        root.mainloop()
+
     def preprocess(self):
         btn_info = Button(master=self.ui, text="Common info on the dataset", command=lambda: self.info())
         btn_info.grid(row=0, column=0)
@@ -39,8 +46,32 @@ class PreprocessingOption:
         btn_encode.grid(row=1, column=0)
         btn_remove = Button(master=self.ui, text="Remove the column", command=lambda: [self.column_removal(), self.ui.destroy()])
         btn_remove.grid(row=2, column=0)
+        btn_value_counts = Button(master=self.ui, text="Value counts of the column", command=lambda: [self.count_vals(), self.ui.destroy()])
+        btn_value_counts.grid(row=3, column=0)
         self.ui.mainloop()
         return self.results
+
+
+class Freqs(Frame):
+    def __init__(self, parent, df, column):
+        Frame.__init__(self, parent)
+        text = Text(self, wrap="none")
+        text.pack(fill='both', expand=True)
+        index_lengths = [len(x) for x in df.index[0]]
+        maximum_length_index = max(index_lengths)
+        differences = [np.abs(index_lengths[x] - maximum_length_index) for x in range(len(index_lengths))]
+        text.insert("end", f"{column}\n")
+        col_lengths = [len(str(x)) for x in df]
+        max_col_length = max(col_lengths)
+        diffs = [np.abs(col_lengths[x] - max_col_length) for x in range(len(col_lengths))]
+        for i in range(len(df)):
+            text.insert("end", " "*differences[i])
+            lb = Label(self, text=df.index[0][i])
+            text.window_create("end", window=lb)
+            text.insert("end", " "*diffs[i])
+            lb = Label(self, text=df[i])
+            text.window_create("end", window=lb)
+            text.insert("end", "\n")
 
 
 class Description(Frame):
