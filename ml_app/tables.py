@@ -84,11 +84,11 @@ class DataVis(Frame):
     def preprocessing_result(self, val):
         if val == []:
             pass
-        if val[1] == "removal":
+        elif val[1] == "removal":
             root = Tk()
             t = DataVis(root, val[0], self.ui).pack(fill='both', expand=True)
             root.mainloop()
-        if val[1] == "encoding":
+        elif val[1] == "encoding":
             root = Tk()
             t = DataVis(root, val[0], self.ui).packl(fill="both", expand=True)
             root.mainloop()
