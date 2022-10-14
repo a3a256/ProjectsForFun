@@ -6,16 +6,26 @@ def permutations(lis):
     *front, last = lis
     
     for perm in permutations(front):
-        print(perm)
-        print("Step")
         for i in range(len(perm) + 1):
-            print(i)
             new = perm[:i] + [last] + perm[i:]
             output.append(new)
 
     return sorted(output)
 
+lst = [1, 2, 3, 4]
+n = 2
+arr = []
+for i in range(len(lst)):
+    q = [lst[i]]
+    for j in range(len(lst)):
+        if i != j:
+            q.append(lst[j])
+            c = q.copy()
+            if c not in arr:
+                if len(c) < len(lst):
+                    arr.append(c)
+print(arr)
 
-lst = [1,2,3]
 for perm in permutations(lst):
-    print(perm)
+    pass
+    # print(perm)
