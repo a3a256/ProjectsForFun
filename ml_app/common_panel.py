@@ -29,8 +29,8 @@ class PreprocessingOption:
     def column_encoding(self):
         # encoding to be added
         le = LabelEncoder()
-        le.fit(self.df[self.cols])
-        self.df[self.cols] = le.transform(self.df[self.cols])
+        le.fit(self.df[self.cols[0]])
+        self.df[self.cols[0]] = le.transform(self.df[self.cols[0]])
         self.results = [self.df, "encoding"]
 
     def count_vals(self):
