@@ -90,7 +90,7 @@ class DataVis(Frame):
             root.mainloop()
         elif val[1] == "encoding":
             root = Tk()
-            t = DataVis(root, val[0], self.ui).packl(fill="both", expand=True)
+            t = DataVis(root, val[0], self.ui).pack(fill="both", expand=True)
             root.mainloop()
 
     def prepare_data(self):
