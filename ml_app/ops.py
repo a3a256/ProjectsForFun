@@ -77,6 +77,11 @@ class PlotPanel:
         plt.pie(self.df[self.selection].value_counts(), labels=ids,
         autopct="%1.1f%%")
         plt.show()
+
+    def box_plot(self):
+        if len(self.selection):
+            sns.boxplot(self.df[self.selection[0]])
+        plt.show()
     
     def plot_options(self):
         btn_scatter = Button(self.ui, text="Scatterplot of selected columns", command=lambda: [self.ui.destroy() ,self.scatter_plot()])
@@ -87,6 +92,8 @@ class PlotPanel:
         btn_pairplot.grid(row=2, column=0)
         btn_pie = Button(self.ui, text="Show pie chart", command=lambda: [self.ui.destroy(), self.pie_plot()])
         btn_pie.grid(row=3, column=0)
+        btn_boxplot = Button(master=self.ui, text="Show boxplots of selected columns", command=lambda: [self.ui.destroy(), self.box_plot()])
+        btn_boxplot.grid(row=4, column=0)
         self.ui.mainloop()
         plt.close()
 
