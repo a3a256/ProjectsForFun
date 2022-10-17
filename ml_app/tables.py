@@ -5,6 +5,7 @@ import pandas as pd
 import list_of_cols
 import common_panel
 import ops
+import ml_algorithms
 
 class Nodd:
     data = ""
@@ -17,7 +18,7 @@ class Nodd:
         return Nodd.arr
 
 class DataVis(Frame):
-    def __init__(self, parent, path, ui):
+    def __init__(self, parent, path, ui, pathway):
         Frame.__init__(self, parent)
         self.lst = list_of_cols.LinkedList(None)
         text = Text(self, wrap="none")
@@ -36,6 +37,7 @@ class DataVis(Frame):
         self.ui = ui
         self.vals = dict()
         cls = []
+        self.way = pathway
         for i in cols:
             ls = [len(str(x)) for x in path.loc[:, i]]
             col_lengths.append(max(ls))
@@ -47,7 +49,7 @@ class DataVis(Frame):
         btn_visualise = Button(master=self, text="Visualise the data", command=lambda: self.show_data())
         text.window_create("end", window=btn_visualise)
         text.insert("end", "")
-        btn_model = Button(master=self, text="Teach model")
+        btn_model = Button(master=self, text="Teach model", command=lambda: self.model_data())
         text.window_create("end", window=btn_model)
         text.insert("end", " ")
         ent_cols = Entry(self, text=self.selection, width=60)
@@ -92,6 +94,14 @@ class DataVis(Frame):
             root = Tk()
             t = DataVis(root, val[0], self.ui).pack(fill="both", expand=True)
             root.mainloop()
+
+    def model_data(self):
+        ml = ml_algorithms.MLOptions(Tk(), self.way, Nodd.get())
+        Nodd.arr = []
+        self.col_op = []
+        self.lst = list_of_cols.LinkedList(None)
+        self.selection.set("")
+        ml.port()
 
     def prepare_data(self):
         val = common_panel.PreprocessingOption(Tk(), self.df, Nodd.get())
