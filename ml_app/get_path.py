@@ -20,7 +20,7 @@ class BrowseFile(Nodd):
         _filename = r'{}'.format(_filename)
         self.df = pd.read_csv(_filename)
         root = Tk()
-        self.tables = tables.DataVis(root, self.df, self.ui).pack(fill='both', expand=True)
+        self.tables = tables.DataVis(root, self.df, self.ui, _filename).pack(fill='both', expand=True)
         root.mainloop()
 
     def port(self):
