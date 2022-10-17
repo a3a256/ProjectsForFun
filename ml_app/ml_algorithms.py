@@ -1,0 +1,20 @@
+from tkinter import *
+
+class MLOptions:
+    def __init__(self, ui, path, selection):
+        self.ui = ui
+        self.path = path
+        self.selection = selection
+
+    def supervised(self):
+        btn_classification = Button(master=self.ui, text="Classification")
+        btn_classification.grid(row=0, column=0)
+        btn_regression = Button(master=self.ui, text="Regression")
+        btn_regression.grid(row=1, column=0)
+
+    def port(self):
+        btn_supervised = Button(master=self.ui, text="Supervised", command=lambda: [btn_supervised.destroy(), btn_unsupervised.destroy(), self.supervised()])
+        btn_supervised.grid(row=0, column=0)
+        btn_unsupervised = Button(master=self.ui, text="Unsupervised", command=lambda: [btn_supervised.destroy(), btn_unsupervised.destroy()])
+        btn_unsupervised.grid(row=1, column=0)
+        self.ui.mainloop()
