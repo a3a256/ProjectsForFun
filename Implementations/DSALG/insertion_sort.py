@@ -1,3 +1,15 @@
+
+def insertion_sort(arr):
+    length = len(arr)
+    i = 1
+    while i<length:
+        j = i
+        while j > 0 and arr[j-1] > arr[j]:
+            arr[j-1], arr[j] = arr[j], arr[j-1]
+            j -= 1
+        i += 1
+    return arr
+
 def sort(arr): #insertion sort by myself no correct version from internet
     length = len(arr)
     for i in range(1, length):
@@ -16,3 +28,4 @@ def sort(arr): #insertion sort by myself no correct version from internet
 
 
 print(sort([8,3,1,11,5,6,4,5]))
+print(insertion_sort([8,3,1,11,5,6,4,5]))
