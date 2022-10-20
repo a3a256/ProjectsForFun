@@ -88,11 +88,11 @@ class DataVis(Frame):
             pass
         elif val[1] == "removal":
             root = Tk()
-            t = DataVis(root, val[0], self.ui).pack(fill='both', expand=True)
+            t = DataVis(root, val[0], self.ui, self.way).pack(fill='both', expand=True)
             root.mainloop()
         elif val[1] == "encoding":
             root = Tk()
-            t = DataVis(root, val[0], self.ui).pack(fill="both", expand=True)
+            t = DataVis(root, val[0], self.ui, self.way).pack(fill="both", expand=True)
             root.mainloop()
 
     def model_data(self):
