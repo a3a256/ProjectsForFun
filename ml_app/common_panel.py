@@ -1,6 +1,7 @@
 from tkinter import *
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
+from sklearn.preprocessing import StandardScaler
 import numpy as np
 
 class Nodes:
@@ -39,6 +40,12 @@ class PreprocessingOption:
         win = Freqs(root, frq, self.cols[0]).pack(fill="both", expand=True)
         root.mainloop()
 
+    def cols_scaler(self):
+        sc = StandardScaler()
+        sc.fit(self.df[self.cols])
+        self.df[self.cols] = sc.transform(self.df[self.cols])
+        self.results = [self.df, "encoding"]
+
     def preprocess(self):
         btn_info = Button(master=self.ui, text="Common info on the dataset", command=lambda: self.info())
         btn_info.grid(row=0, column=0)
@@ -48,6 +55,8 @@ class PreprocessingOption:
         btn_remove.grid(row=2, column=0)
         btn_value_counts = Button(master=self.ui, text="Value counts of the column", command=lambda: [self.count_vals(), self.ui.destroy()])
         btn_value_counts.grid(row=3, column=0)
+        btn_scale = Button(master=self.ui, text="Scale selected columns", command=lambda: [self.cols_scaler(), self.ui.destroy()])
+        btn_scale.grid(row=4, column=0)
         self.ui.mainloop()
         return self.results
 
