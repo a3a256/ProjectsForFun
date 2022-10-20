@@ -3,7 +3,41 @@
 
 using namespace std;
 
+int minutes(int sec){
+    return sec/60;
+}
+
+int task14_15(){
+    int N;
+    cout << "How many hours passed? - ";
+    cin >> N;
+    int hours = N/3600;
+    int seconds = N - hours*3600;
+    string choice;
+    cout << "Do you want to know minutes(m) or seconds(s) remaining?";
+    cin >> choice;
+    if (choice == "m"){
+        cout << "Remaining minutes: "<< minutes(seconds) << endl;
+    }else{
+        cout << "Remaining seconds: " << seconds << endl;
+    }
+    return 0;
+}
+
 int task12(){
+    int passed;
+    int failed;
+    cout << "How many passed the exam: ";
+    cin >> passed;
+    cout << "How many failed: ";
+    cin >> failed;
+    int res = passed + failed;
+    cout << "Approximately " << ((float)passed/(float)res)*100 << "% of students passed.\n";
+    cout << "Approximately " << ((float)failed/(float)res)*100 << "% of students failed.\n";
+    return 0;
+}
+
+int task13(){
     int val;
     cout << "Enter value: ";
     cin >> val;
@@ -164,6 +198,6 @@ int main(){
     // task9();
     // task10();
     // task11();
-    // task12();
+    // task13();
     return 0;
 }
