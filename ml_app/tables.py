@@ -31,6 +31,19 @@ class DataVis(Frame):
         text.pack(fill="both", expand=True)
         self.df = path
         cols = path.columns
+        col_names_lengths = [len(x) for x in self.df.columns]
+        col_vals_lengths = []
+        for i in range(self.df.shape[1]):
+            a = []
+            for j in range(self.df.shape[0]):
+                a.append(len(str(self.df.iloc[j, i])))
+            col_vals_lengths.append(max(a))
+        col_gaps = []
+        for i, j in zip(col_names_lengths, col_vals_lengths):
+            if i > j:
+                col_gaps.append(i)
+            else:
+                col_gaps.append(j)
         self.selection = StringVar()
         self.col_op = []
         col_lengths = []
@@ -58,20 +71,27 @@ class DataVis(Frame):
         self.text_window = []
         for col in cols:
             b = Button(self, text=col)
+            var = str(col)
+            gap = col_gaps[j] - len(var) - 2
             b.configure(command=lambda x=b: self.hos(x))
+            text.insert("end", " "*(gap))
             self.text_window.append(text.window_create("end", window=b))
-            text.insert("end", " "*(col_lengths[j]))
+            # text.insert("end", "")
             j += 1
 
         text.insert("end", "\n")
+        print(len(cols))
+        print(len(col_gaps))
+        print(col_gaps)
 
         for i in range(20):
-            v = 0
             for j in range(len(cols)):
                 lb = Label(self, text=path.iloc[i, j])
+                var = str(path.iloc[i, j])
+                gap = abs(col_gaps[j] - len(var))-1
+                text.insert("end", " "*gap)
                 text.window_create("end", window=lb)
-                text.insert("end", " "*(cls[v]))
-                v += 1
+                # text.insert("end", "")
             text.insert("end", "\n")
 
         text.configure(state="disabled")
