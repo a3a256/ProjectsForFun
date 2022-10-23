@@ -9,16 +9,18 @@ class MLOptions:
 
     def give_target(self, target):
         self.target = target
+        print(self.target.cget("text"))
 
     def target_select(self, option):
         for i in range(len(self.selection)):
             b = Button(master=self.ui, text=self.selection[i])
             b.grid(row=0, column=i)
+            b.configure(command=lambda x=b: self.give_target(x))
 
     def supervised(self):
         btn_classification = Button(master=self.ui, text="Classification")
         btn_classification.grid(row=0, column=0)
-        btn_regression = Button(master=self.ui, text="Regression", command=lambda: [btn_classification.destroy(), btn_regression.destroy()])
+        btn_regression = Button(master=self.ui, text="Regression", command=lambda: [btn_classification.destroy(), btn_regression.destroy(), self.target_select(self.selection)])
         btn_regression.grid(row=1, column=0)
 
     def port(self):
