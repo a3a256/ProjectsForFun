@@ -18,12 +18,14 @@ class Binary:
                 if self.right:
                     self.right.add(value, text_x+coef, text_y+70, line_x+coef, line_y+70, coef=coef-(coef//2))
                 else:
+                    #self.ui.create_text(text_x+coef, text_y+70, text=str(value),font=('Helvetica', str(16), 'bold'))
                     self.ui.create_line((line_x), line_y+5, (line_x)+coef, (line_y+50), width=1.5)
                     self.right = Binary(value, self.ui, text_x+coef, text_y+80)
             else:
                 if self.left:
                     self.left.add(value, text_x-coef, text_y+70, line_x-coef, line_y+70, coef=coef-(coef//2))
                 else:
+                    #self.ui.create_text(text_x-coef, text_y+70, text=str(value),font=('Helvetica', str(16), 'bold'))
                     self.ui.create_line(line_x, line_y+5, line_x-coef, line_y+50, width=1.5)
                     self.left = Binary(value, self.ui, text_x-coef, text_y+80)
 
@@ -44,7 +46,17 @@ class Binary:
             self.post(tree.left)
             self.post(tree.right)
             self.vals.append(tree.root)
-            
+
+    def bfs(self, tree):
+        queue = [tree]
+        while len(queue) != 0:
+            curNode = queue.pop(0)
+            self.vals.append(curNode.root)
+            if curNode.right:
+                queue.append(curNode.left)
+            if curNode.left:
+                queue.append(curNode.right)
+
     def height(self, tree):
         if tree:
             return 1+max(self.height(tree.left), self.height(tree.right))
