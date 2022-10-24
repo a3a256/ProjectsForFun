@@ -23,28 +23,35 @@ class Activated:
         self.tree.iot(self.tree)
         outage = self.tree.show()
         label = Label(master=self.gui, text=f'InOrderTraversal: {outage}', font=('Helvetica', 16))
-        self.cv.create_window(200, 600, window=label)
+        self.cv.create_window(400, 600, window=label)
 
 
     def pre_order(self):
         self.tree.pot(self.tree)
         outage = self.tree.show()
         label = Label(master=self.gui, text=f'PreOrderTraversal: {outage}', font=('Helvetica', 16))
-        self.cv.create_window(205, 630, window=label)
+        self.cv.create_window(400, 630, window=label)
 
 
     def post_order(self):
         self.tree.post(self.tree)
         outage = self.tree.show()
         label = Label(master=self.gui, text=f'PostOrderTraversal: {outage}', font=('Helvetica', 16))
-        self.cv.create_window(210, 660, window=label)
-        
-        
+        self.cv.create_window(400, 660, window=label)
+
+    def breadth_first_traversal(self):
+        self.tree.bfs(self.tree)
+        outage = self.tree.show()
+        label = Label(master=self.gui, text=f'BreadthFirstTraversal: {outage}', font=('Helvetica', 16))
+        self.cv.create_window(400, 660, window=label)
+
+
     def get_height(self):
         outage = 'The height is:'
         outage += str(self.tree.height(self.tree)+1)
         lb = Label(master=self.gui, text=outage)
         self.cv.create_window(900, 330, window=lb)
+        
 
 
     def show(self):
@@ -60,6 +67,10 @@ class Activated:
         pre_btn_window = self.cv.create_window(900, 210, window=pre_btn)
         post_btn = Button(master=self.gui, text="PostOrderTraversal", command=lambda: self.post_order())
         post_btn_window = self.cv.create_window(900, 240, window=post_btn)
+        bfs_btn = Button(master=self.gui, text="BreadthFirstTraversal", command=lambda: self.breadth_first_traversal())
+        bfs_window = self.cv.create_window(900, 300, window=bfs_btn)
+        height_btn = Button(master=self.gui, text='Click to know the height', command=lambda: self.get_height())
+        height_window = self.cv.create_window(900, 360, window=height_btn)
         self.gui.mainloop()
 
 
