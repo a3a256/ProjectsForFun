@@ -9,8 +9,8 @@ from sklearn.metrics import accuracy_score
 class OneLogisticRegression:
     def __init__(self, alpha=0.001):
         self.alpha = alpha
-        self.b1 = 0
-        self.b0 = 0
+        self.b1 = None
+        self.b0 = None
 
     def log_func(self, x, b1, b0):
         y = b0 + np.dot(b1, x)
@@ -18,7 +18,7 @@ class OneLogisticRegression:
         outcome = (exponent)/(1 + exponent)
         return outcome
 
-    def fit(self, x, y):
+    def _fit(self, x, y):
         k = 0
         for _ in range(100):
             initial = np.array([self.b0, self.b1])
@@ -38,30 +38,48 @@ class OneLogisticRegression:
             self.b0 = eq[0]
             self.b1 = eq[1]
 
+    def fit(self, x, y):
+        n_samples, n_features = x.shape
+        self.b0, self.b1 = 0, np.zeros(n_features)
+        for _ in range(5):
+            yhat = np.dot(x, self.b1) - self.b0
+            lg = self._sigmoid(yhat)
+            error = yhat - y
+            self.b1 -= self.alpha*(1/n_samples)*(np.dot(x.T, error))
+            self.b0 -= self.alpha*(1/n_samples)*(np.sum(error))
+
+        print(self.b1)
+
+    def _sigmoid(self, x):
+        return 1/(1-np.exp(-x))
 
     def prediction(self, x):
+        y = [0 if i < 0.5 else 1 for i in self._sigmoid(np.dot(x, self.b1) - self.b0)]
+        return y
+
+
+    def _prediction(self, x):
         y = [0 if i < 0.5 else 1 for i in self.log_func(x, self.b1, self.b0)]
         return y
 
 
 
 if __name__ == "__main__":
-    df = pd.read_csv(r'...\breast-cancer.csv')
+    df = pd.read_csv(r'C:\Users\Azamat.Ilyasov\OneDrive - Optomany Ltd\Desktop\new_sll\breast-cancer.csv')
     df.drop("id", axis=1, inplace=True)
     le = LabelEncoder()
     le.fit(df.iloc[:, 0])
     df.iloc[:, 0] = le.transform(df.iloc[:, 0])
-    x = df.iloc[50:, 1].values
+    x = df.iloc[50:, 1:4].values
     y = df.iloc[50:, 0].values
-    x_test = df.iloc[:50, 1].values
+    x_test = df.iloc[:50, 1:4].values
     y_test = df.iloc[:50, 0].values
     lr = OneLogisticRegression()
-    lr.fit(x.reshape(-1, 1), y)
-    lg = LogisticRegression(fit_intercept=True)
-    lg.fit(x.reshape(-1, 1), y)
+    lr.fit(x, y)
+    lg = LogisticRegression()
+    lg.fit(x, y)
     print(lg.coef_)
-    print(lg.intercept_)
-    y_hat = lg.predict(x_test.reshape(-1, 1))
+    y_hat = lg.predict(x_test)
     y_pred = lr.prediction(x_test)
     print(accuracy_score(y_hat, y_test))
     print(accuracy_score(y_pred, y_test))
