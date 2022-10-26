@@ -1,21 +1,30 @@
 from tkinter import *
 
 class MLOptions:
-    def __init__(self, ui, path, selection):
+    def __init__(self, ui, path, selection, dataframe):
         self.ui = ui
         self.path = path
         self.selection = selection
         self.target = None
+        self.df = dataframe
+        self.x = None
+        self.y = None
 
     def give_target(self, target):
-        self.target = target
-        print(self.target.cget("text"))
+        self.target = target.cget("text")
+        self.selection.remove(self.target)
+
+    def get_x_y(self, x_axis, y_axis):
+        self.x = self.df.loc[:, x_axis]
+        self.y = self.df.loc[:, y_axis]
 
     def target_select(self, option):
+        lb = Label(master=self.ui, text="Choose the target feature!")
+        lb.grid(row=0, column=0)
         for i in range(len(self.selection)):
             b = Button(master=self.ui, text=self.selection[i])
-            b.grid(row=0, column=i)
-            b.configure(command=lambda x=b: self.give_target(x))
+            b.grid(row=1, column=i)
+            b.configure(command=lambda x=b: [self.give_target(x), self.get_x_y(self.selection, self.target)])
 
     def supervised(self):
         btn_classification = Button(master=self.ui, text="Classification")
