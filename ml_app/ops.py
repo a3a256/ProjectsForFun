@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 import numpy as np
+from dimensions import get_dimensions
 
 class PlotPanel:
     def __init__(self, ui, selection, df):
@@ -11,6 +12,7 @@ class PlotPanel:
         self.ui = ui
         self.selection = selection
         self.val = ""
+        self.legend = None
 
     def pair_plot(self):
         if not self.selection:
@@ -28,27 +30,30 @@ class PlotPanel:
         self.val = val
         return
 
+    def get_legend(self):
+        id_min = None
+        for i in range(len(self.selection)):
+            if id_min is None:
+                id_min = i
+            else:
+                if len(np.unique(self.selection[id_min])) > len(np.unique(self.selection[i])):
+                    id_min = i
+        self.legend = self.selection.pop(id_min)
+
     def bar_plot(self):
         if len(self.selection) > 2:
-            # win = Tk()
-            # lb = Label(master=win, text="Enter dimensions:")
-            # lb.grid(row=0, column=0)
-            # ent = Entry(master=win, text="")
-            # ent.grid(row=1, column=0)
-            # btn = Button(master=win, text="Draw", command=[win.destroy(), self.get(ent.get())])
-            # btn.grid(row=2, column=0)
-            # win.mainloop()
-            # width, height = self.val.split("x")
-            min_ = 0
-            width, height = len(self.selection), 1
-            for i in range(len(self.selection)):
-                if len(np.unique(self.selection[i])) < len(np.unique(self.selection[i])):
-                    min_ = i
-            min_bound = self.selection[min_]
-            self.selection.pop(min_)
-            fig, axes = plt.subplots(ncols=int(width)-1, nrows=int(height), figsize=(10, 8))
-            for j in range(int(width)-1):
-                axes[j].bar(self.df[min_bound], self.df[self.selection[j]])
+            self.get_legend()
+            width, height = get_dimensions(len(self.selection))
+            fig, axes = plt.subplots(ncols=int(width), nrows=int(height), figsize=(10, 8))
+            if height > 1:
+                vool = 0
+                for i in range(height):
+                    for j in range(width):
+                        axes[i][j].bar(self.df[self.legend], self.df[self.selection[vool]])
+                        vool += 1
+            else:
+                for j in range(int(width)-1):
+                    axes[j].bar(self.df[self.legend], self.df[self.selection[j]])
             plt.show()
         elif len(self.selection) == 2:
             col1 = np.unique(self.df[self.selection[0]])
