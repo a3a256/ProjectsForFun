@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
+from dimensions import get_dimensions
 
 class MLOptions:
     def __init__(self, ui, path, selection, dataframe):
@@ -22,7 +23,7 @@ class MLOptions:
 
     def regression_distribute(self):
         if self.message == "LinearRegression":
-            su = SupervisedRegression(self.x, self.y)
+            su = SupervisedRegression(self.x, self.y, self.selection)
             su.linear_regression()
             return
 
@@ -61,9 +62,10 @@ class MLOptions:
 
 
 class SupervisedRegression:
-    def __init__(self, x, y):
+    def __init__(self, x, y, col_names):
         self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, random_state=42, test_size=0.2)
         self.model = None
+        self.names = col_names
 
     def linear_regression(self):
         self.model = LinearRegression()
@@ -71,7 +73,22 @@ class SupervisedRegression:
         self.testing()
 
     def testing(self):
+        width, height = get_dimensions(len(self.names))
+        print(width, height)
         y_hat = self.model.predict(self.x_test)
-        plt.scatter(self.x_test[:, 0], self.y_test)
-        plt.scatter(self.x_test[:, 0], y_hat)
+        fig, axes = plt.subplots(ncols=int(width), nrows=int(height), figsize=(10, 8))
+        v = 0
+        if height > 1:
+            for i in range(height):
+                for j in range(width):
+                    axes[i][j].scatter(self.x_test[:, v], self.y_test)
+                    axes[i][j].scatter(self.x_test[:, v], y_hat)
+                    v += 1
+        else:
+            for i in range(width):
+                axes[i].scatter(self.x_test[:, v], self.y_test)
+                axes[i].scatter(self.x_test[:, v], y_hat)
+                v += 1
+        # plt.scatter(self.x_test[:, 0], self.y_test)
+        # plt.scatter(self.x_test[:, 0], y_hat)
         plt.show()
