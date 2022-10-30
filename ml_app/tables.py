@@ -80,9 +80,6 @@ class DataVis(Frame):
             j += 1
 
         text.insert("end", "\n")
-        print(len(cols))
-        print(len(col_gaps))
-        print(col_gaps)
 
         for i in range(20):
             for j in range(len(cols)):
@@ -116,7 +113,7 @@ class DataVis(Frame):
             root.mainloop()
 
     def model_data(self):
-        ml = ml_algorithms.MLOptions(Tk(), self.way, Nodd.get())
+        ml = ml_algorithms.MLOptions(Tk(), self.way, Nodd.get(), self.df)
         Nodd.arr = []
         self.col_op = []
         self.lst = list_of_cols.LinkedList(None)
