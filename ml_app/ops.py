@@ -110,13 +110,30 @@ class ShowPlots:
     def process(self):
         hue = len(np.unique(self.df[self.axes[0]]))
         lowest_id = 0
-        print(self.axes)
         if len(self.axes) > 2:
             for i, j in enumerate(self.df[self.axes[1:]]):
                 if len(np.unique(self.df[j])) < hue:
                     lowest_id = i
                     hue = len(np.unique(self.df[j]))
             axes = []
+            if hue >= 10:
+                target = self.axes.pop(0)
+                width, height = get_dimensions(len(self.axes))
+                print(width, height)
+                fig, axes = plt.subplots(ncols=width, nrows=height, figsize=(5, 4))
+                v = 0
+                if height == 1 or width == 1:
+                    n = max(height, width)
+                    for k in range(n):
+                        axes[k].scatter(self.df[self.axes[v]], self.df[target])
+                        v += 1
+                else:
+                    for p in range(height):
+                        for j in range(width):
+                            axes[p][j].scatter(self.df[self.axes[v]], self.df[target])
+                            v += 1
+            plt.show()
+            return
             legend = lowest_id
             for i in range(len(self.axes)):
                 if i != legend:
