@@ -132,15 +132,14 @@ class ShowPlots:
                         for j in range(width):
                             axes[p][j].scatter(self.df[self.axes[v]], self.df[target])
                             v += 1
-            plt.show()
-            return
-            legend = lowest_id
-            for i in range(len(self.axes)):
-                if i != legend:
-                    axes.append(i)
-            cols = [self.axes[axes[0]], self.axes[axes[1]]]
-            vals = self.df.loc[:, cols].values
-            self.scatterplot_legend(vals, self.df[self.axes[legend]], cols)
+            else:
+                legend = lowest_id
+                for i in range(len(self.axes)):
+                    if i != legend:
+                        axes.append(i)
+                cols = [self.axes[axes[0]], self.axes[axes[1]]]
+                vals = self.df.loc[:, cols].values
+                self.scatterplot_legend(vals, self.df[self.axes[legend]], cols)
         else:
             self.scatterplot(self.df[self.axes[0]], self.df[self.axes[1]])
         plt.close()
