@@ -4,6 +4,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from dimensions import get_dimensions
+from supervised.classification import naive_bayes_model
 
 class MLOptions:
     def __init__(self, ui, path, selection, dataframe):
@@ -15,6 +16,7 @@ class MLOptions:
         self.x = None
         self.y = None
         self.message = ""
+        self.spec = ""
 
     def give_target(self, target):
         self.target = target.cget("text")
@@ -30,7 +32,10 @@ class MLOptions:
     def get_x_y(self, x_axis, y_axis):
         self.x = self.df.loc[:, x_axis].values
         self.y = self.df.loc[:, y_axis].values
-        self.regression_distribute()
+        if self.spec == "Regression":
+            self.regression_distribute()
+        elif self.spec == "Classification":
+            self.classification_distribute()
         return
 
     def target_select(self, message):
@@ -43,11 +48,23 @@ class MLOptions:
             b.configure(command=lambda x=b: [self.give_target(x), self.get_x_y(self.selection, self.target)])
 
     def regression_options(self):
+        self.spec = "Regression"
         btn_regression = Button(self.ui, text="Linear Regression", command=lambda: [btn_regression.destroy(), self.target_select("LinearRegression")])
         btn_regression.grid(row=0, column=0)
 
+    def classification_distribute(self):
+        if self.message == "GaussianNB":
+            nb = naive_bayes_model.BayesClassifier(self.x, self.y, self.selection, self.target)
+            nb.train()
+            return
+
+    def classification_option(self):
+        self.spec = "Classification"
+        btn_classification = Button(self.ui, text="GaussianNB", command=lambda: [btn_classification.destroy(), self.target_select("GaussianNB")])
+        btn_classification.grid(row=0, column=0)
+
     def supervised(self):
-        btn_classification = Button(master=self.ui, text="Classification")
+        btn_classification = Button(master=self.ui, text="Classification", command=lambda: [btn_classification.destroy(), btn_regression.destroy(), self.classification_option()])
         btn_classification.grid(row=0, column=0)
         btn_regression = Button(master=self.ui, text="Regression", command=lambda: [btn_classification.destroy(), btn_regression.destroy(), self.regression_options()])
         btn_regression.grid(row=1, column=0)
