@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from dimensions import get_dimensions
 from supervised.classification import naive_bayes_model
+from supervised.regression import linear_regression
 
 class MLOptions:
     def __init__(self, ui, path, selection, dataframe):
@@ -25,7 +26,7 @@ class MLOptions:
 
     def regression_distribute(self):
         if self.message == "LinearRegression":
-            su = SupervisedRegression(self.x, self.y, self.selection, self.target)
+            su = linear_regression.SupervisedRegression(self.x, self.y, self.selection, self.target)
             su.linear_regression()
             return
 
@@ -75,50 +76,3 @@ class MLOptions:
         btn_unsupervised = Button(master=self.ui, text="Unsupervised", command=lambda: [btn_supervised.destroy(), btn_unsupervised.destroy()])
         btn_unsupervised.grid(row=1, column=0)
         self.ui.mainloop()
-
-
-
-class SupervisedRegression:
-    def __init__(self, x, y, col_names, target_name):
-        self.x_train, self.x_test, self.y_train, self.y_test = train_test_split(x, y, random_state=42, test_size=0.2)
-        self.model = None
-        self.names = col_names
-        self.target_name = target_name
-
-    def linear_regression(self):
-        self.model = LinearRegression()
-        self.model.fit(self.x_train, self.y_train)
-        self.testing()
-
-    def testing(self):
-        if len(self.names) == 1:
-            y_hat = self.model.predict(self.x_test)
-            plt.scatter(self.x_test, self.y_test)
-            plt.scatter(self.x_test, y_hat)
-            plt.xlabel(self.names[0])
-            plt.ylabel(self.target_name)
-            plt.title("Linear Regression r2_score: {}%".format(round(100*r2_score(y_hat, self.y_test), 2)))
-            plt.show()
-            return
-        width, height = get_dimensions(len(self.names))
-        print(width, height)
-        y_hat = self.model.predict(self.x_test)
-        fig, axes = plt.subplots(ncols=int(width), nrows=int(height), figsize=(9, 4))
-        v = 0
-        if height > 1:
-            for i in range(height):
-                for j in range(width):
-                    axes[i][j].scatter(self.x_test[:, v], self.y_test)
-                    axes[i][j].scatter(self.x_test[:, v], y_hat)
-                    axes[i][j].set_xlabel(self.names[v])
-                    axes[i][j].set_ylabel(self.target_name)
-                    v += 1
-        else:
-            for i in range(width):
-                axes[i].scatter(self.x_test[:, v], self.y_test)
-                axes[i].scatter(self.x_test[:, v], y_hat)
-                v += 1
-        score = r2_score(y_hat, self.y_test)
-        plt.suptitle("Linear Regression r2 score: {}%".format(round(100*score, 2)))
-        plt.tight_layout()
-        plt.show()
