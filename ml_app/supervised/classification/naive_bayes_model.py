@@ -1,5 +1,6 @@
 from sklearn.naive_bayes import GaussianNB
 from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 
 import matplotlib.pyplot as plt
@@ -19,4 +20,6 @@ class BayesClassifier:
 
     def test(self):
         y_hat = self.model.predict(self.x_test)
-        print(accuracy_score(y_hat, self.y_test))
+        sns.heatmap(confusion_matrix(y_hat, self.y_test), annot=True)
+        plt.title("GaussianNB: {}% accuracy".format(round(accuracy_score(y_hat, self.y_test)*100, 2)))
+        plt.show()
