@@ -3,7 +3,7 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 import sys
-sys.path.insert(0, r'C:\Users\Azamat.Ilyasov\OneDrive - Optomany Ltd\Desktop\ml_app')
+sys.path.insert(0, r'...\ml_app')
 from dimensions import get_dimensions
 
 class SupervisedRegression:
