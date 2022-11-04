@@ -4,7 +4,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 import numpy as np
 import sys
-sys.path.insert(0, r'C:\Users\Azamat.Ilyasov\OneDrive - Optomany Ltd\Desktop\ml_app')
+sys.path.insert(0, r'...\ml_app')
 from dimensions import get_dimensions
 
 import matplotlib.pyplot as plt
@@ -42,5 +42,11 @@ class BayesClassifier:
                         axes[i][j].scatter(self.x_test[y_hat==k, v], self.x_test[y_hat==k, -1])
                     axes[i][j].legend(np.unique(self.y_test))
                     v += 1
+        else:
+            for j in range(width):
+                for k in np.unique(self.y_test):
+                    axes[j].scatter(self.x_test[y_hat==k, v], self.x_test[y_hat==k, -1])
+                axes[j].legend(np.unique(self.y_test))
+                v += 1
         plt.tight_layout()
         plt.show()
