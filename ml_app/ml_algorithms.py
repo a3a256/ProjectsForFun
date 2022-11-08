@@ -5,6 +5,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import r2_score
 from dimensions import get_dimensions
 from supervised.classification import naive_bayes_model
+from supervised.classification import logistic_regression_model
 from supervised.regression import linear_regression
 
 class MLOptions:
@@ -58,11 +59,17 @@ class MLOptions:
             nb = naive_bayes_model.BayesClassifier(self.x, self.y, self.selection, self.target)
             nb.train()
             return
+        if self.message == "LogisticRegression":
+            lr = logistic_regression_model.LogisticClassifier(self.x, self.y, self.selection, self.target)
+            lr.train()
+            return
 
     def classification_option(self):
         self.spec = "Classification"
-        btn_classification = Button(self.ui, text="GaussianNB", command=lambda: [btn_classification.destroy(), self.target_select("GaussianNB")])
-        btn_classification.grid(row=0, column=0)
+        btn_gaussiannb = Button(self.ui, text="GaussianNB", command=lambda: [btn_gaussiannb.destroy(), self.target_select("GaussianNB")])
+        btn_gaussiannb.grid(row=0, column=0)
+        btn_lgregression = Button(self.ui, text="LogisticRegression", command=lambda: [btn_lgregression.destroy(), self.target_select("LogisticRegression")])
+        btn_lgregression.grid(row=1, column=0)
 
     def supervised(self):
         btn_classification = Button(master=self.ui, text="Classification", command=lambda: [btn_classification.destroy(), btn_regression.destroy(), self.classification_option()])
