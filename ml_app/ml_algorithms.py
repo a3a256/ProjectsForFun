@@ -6,6 +6,7 @@ from sklearn.metrics import r2_score
 from dimensions import get_dimensions
 from supervised.classification import naive_bayes_model
 from supervised.classification import logistic_regression_model
+from supervised.classification import knn_classifier_model
 from supervised.regression import linear_regression
 
 class MLOptions:
@@ -19,6 +20,7 @@ class MLOptions:
         self.y = None
         self.message = ""
         self.spec = ""
+        self.n = None
 
     def give_target(self, target):
         self.target = target.cget("text")
@@ -54,6 +56,10 @@ class MLOptions:
         btn_regression = Button(self.ui, text="Linear Regression", command=lambda: [btn_regression.destroy(), self.target_select("LinearRegression")])
         btn_regression.grid(row=0, column=0)
 
+    def get_neighbors(self, m):
+        self.n = str(m)
+        return
+
     def classification_distribute(self):
         if self.message == "GaussianNB":
             nb = naive_bayes_model.BayesClassifier(self.x, self.y, self.selection, self.target)
@@ -63,13 +69,24 @@ class MLOptions:
             lr = logistic_regression_model.LogisticClassifier(self.x, self.y, self.selection, self.target)
             lr.train()
             return
+        if self.message == "KNN":
+            n = None
+            en_neighbors = Entry(self.ui, text="")
+            en_neighbors.grid(row=0, column=0)
+            btn_neighbors = Button(self.ui, text="Enter neighbors", command=lambda: [en_neighbors.destroy(), btn_neighbors.destroy(), self.get_neighbors(en_neighbors.get())])
+            btn_neighbors.grid(row=0, column=1)
+            knn = knn_classifier_model.KNN(self.x, self.y, self.selection, self.target, self.n)
+            knn.train()
+            return
 
     def classification_option(self):
         self.spec = "Classification"
-        btn_gaussiannb = Button(self.ui, text="GaussianNB", command=lambda: [btn_gaussiannb.destroy(), self.target_select("GaussianNB")])
+        btn_gaussiannb = Button(self.ui, text="GaussianNB", command=lambda: [btn_gaussiannb.destroy(), btn_lgregression.destroy(), self.target_select("GaussianNB")])
         btn_gaussiannb.grid(row=0, column=0)
-        btn_lgregression = Button(self.ui, text="LogisticRegression", command=lambda: [btn_lgregression.destroy(), self.target_select("LogisticRegression")])
+        btn_lgregression = Button(self.ui, text="LogisticRegression", command=lambda: [btn_gaussiannb.destroy(), btn_lgregression.destroy(), self.target_select("LogisticRegression")])
         btn_lgregression.grid(row=1, column=0)
+        btn_knn = Button(self.ui, text="KNearestNeighbors", command=lambda: [btn_gaussiannb.destroy(), btn_lgregression.destroy(), btn_knn.destroy(), self.target_select("KNN")])
+        btn_knn.grid(row=2, column=0)
 
     def supervised(self):
         btn_classification = Button(master=self.ui, text="Classification", command=lambda: [btn_classification.destroy(), btn_regression.destroy(), self.classification_option()])
