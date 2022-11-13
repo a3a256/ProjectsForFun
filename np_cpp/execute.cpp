@@ -12,10 +12,23 @@ int main(){
     for(int i = 0; i<size; i++){
         std::cout << k[i] << std::endl;
     }
-    int n[2][2] = {{1, 2}, {3, 4}};
-    int p[2][2] = {{5, 6}, {3, 9}};
-    int* l;
+    int n[2][1000] = {{1, 2}, {3, 4}};
+    int p[2][1000] = {{5, 6}, {3, 9}};
+    int** l;
     int rows = 2;
     int cols = 2;
-    transpose_matrix(n, rows, cols);
+    l = transpose_matrix(n, rows, cols);
+    for(int i =0; i<2; i++){
+        for(int j=0; j<2; j++){
+            std::cout<<l[i][j]<<" ";
+        }
+        std::cout<<"\n";
+    }
+    int** d = multiply_matrix(n, p, rows, cols, rows, cols);
+    for(int i =0; i<2; i++){
+        for(int j=0; j<2; j++){
+            std::cout<<d[i][j]<<" ";
+        }
+        std::cout<<"\n";
+    }
 }
