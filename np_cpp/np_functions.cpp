@@ -42,3 +42,34 @@ int* addition_1d(int arr[], int arr2[], int size){
     }
     return new_arr;
 }
+
+float** transform_scaler(int arr[][1000], int rows, int columns){
+    static float** new_arr = 0;
+    static int min[1000];
+    static int max[1000];
+    for(int i = 0; i<columns; i++){
+        min[i] = arr[0][i];
+        max[i] = 1;
+        for(int j = 0; j<rows; j++){
+            if(min[i]>arr[j][i]){
+                min[i] = arr[j][i];
+            }
+            if(max[i]<arr[j][i]){
+                max[i] = arr[j][i];
+            }
+        }
+    }
+    new_arr = new float*[1000];
+    for(int i =0; i<rows; i++){
+        new_arr[i] = new float[1000];
+        for(int j =0; j<columns; j++){
+            new_arr[i][j] = 0;
+        }
+    }
+    for(int i =0; i<columns; i++){
+        for(int j =0; j<rows; j++){
+            new_arr[j][i] = (arr[j][i]-min[i])/(max[i]-min[i]);
+        }
+    }
+    return new_arr;
+}
