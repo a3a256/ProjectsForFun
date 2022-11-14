@@ -31,4 +31,12 @@ int main(){
         }
         std::cout<<"\n";
     }
+    float** f;
+    f = transform_scaler(n, rows, cols);
+    for(int i =0; i<2; i++){
+        for(int j=0; j<2; j++){
+            std::cout<<f[i][j]<<" ";
+        }
+        std::cout<<"\n";
+    }
 }
