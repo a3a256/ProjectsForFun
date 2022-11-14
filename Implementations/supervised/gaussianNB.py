@@ -24,8 +24,6 @@ class NaiveBayesClassifier:
             for i in range(n_features):
                 self.mean[j] += [np.mean(x[y==j, i])]
                 self.std[j] += [np.std(x[y==j, i])]
-        print(self.mean)
-        print(self.std)
 
     def predict(self, x):
         n_samples, n_features = x.shape
