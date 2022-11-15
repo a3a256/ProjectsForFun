@@ -57,7 +57,8 @@ class MLOptions:
         btn_regression.grid(row=0, column=0)
 
     def get_neighbors(self, m):
-        self.n = str(m)
+        print(m)
+        self.n = int(m)
         return
 
     def classification_distribute(self):
@@ -70,13 +71,14 @@ class MLOptions:
             lr.train()
             return
         if self.message == "KNN":
+            def execute(n):
+                knn = knn_classifier_model.KNN(self.x, self.y, self.selection, self.target, self.n)
+                knn.train()
             n = None
             en_neighbors = Entry(self.ui, text="")
             en_neighbors.grid(row=0, column=0)
-            btn_neighbors = Button(self.ui, text="Enter neighbors", command=lambda: [en_neighbors.destroy(), btn_neighbors.destroy(), self.get_neighbors(en_neighbors.get())])
+            btn_neighbors = Button(self.ui, text="Enter neighbors", command=lambda: [en_neighbors.destroy(), btn_neighbors.destroy(), self.get_neighbors(5), execute(self.n)])
             btn_neighbors.grid(row=0, column=1)
-            knn = knn_classifier_model.KNN(self.x, self.y, self.selection, self.target, self.n)
-            knn.train()
             return
 
     def classification_option(self):
