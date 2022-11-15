@@ -3,6 +3,20 @@
 #include <cstdio>
 
 
+int argmax(int arr[], int size){
+    int max=arr[0];
+    int index=0;
+    for(int i=0; i<size; i++){
+        if(arr[i]>max){
+            max = arr[i];
+            index=i;
+        }
+    }
+    return index;
+}
+
+
+
 int** multiply_matrix(int arr1[][1000], int arr2[][1000], int rows1, int rows2, int cols1, int cols2){
     static int** new_arr = 0;
     new_arr = new int*[1000];
