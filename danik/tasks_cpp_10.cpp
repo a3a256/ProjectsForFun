@@ -1,6 +1,118 @@
 #include <iostream>
 #include <string>
 
+void task1(){
+    int m = 5;
+    int n = 4;
+    int arr[m][n];
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            arr[i][j] = 10*(i+1);
+        }
+    }
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            std::cout << arr[i][j] << " ";
+        }
+        std::cout<<"\n";
+    }
+}
+
+void task2(){
+    int m = 5;
+    int n = 4;
+    int arr[m][n];
+    for(int i = 0; i<n; i++){
+        for(int j = 0; j<m; j++){
+            arr[j][i] = 5*(j+1);
+        }
+    }
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            std::cout << arr[i][j] << " ";
+        }
+        std::cout<<"\n";
+    }
+}
+
+void task3(){
+    int m = 5;
+    int n = 4;
+    int arr[n] = {5, 3, 8, 9};
+    int v[m][n];
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            v[i][j] = arr[j];
+        }
+    }
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            std::cout<<v[i][j]<<" ";
+        }
+        std::cout<<"\n";
+    }
+}
+
+void task4(){
+    int m = 5;
+    int n = 4;
+    int arr[m] = {5, 3, 8, 9, 10};
+    int v[m][n];
+    for(int i = 0; i<n; i++){
+        for(int j = 0; j<m; j++){
+            v[j][i] = arr[j];
+        }
+    }
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            std::cout<<v[i][j]<<" ";
+        }
+        std::cout<<"\n";
+    }
+}
+
+void task5(){
+    int arr[5][4] = {{3, 4, 6, 1}, {8, 10, 13, 9}, {19, 34, 1, 99}, {18, 11, 0, 5}, {9, 11, 14, 7}};
+    int k = 2;
+    int m = sizeof(arr)/sizeof(arr[0]);
+    int n = sizeof(arr[0])/sizeof(arr[0][0]);
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            if(i==k){
+                std::cout<<arr[i][j]<<" ";
+            }
+        }
+    }
+}
+
+void task6(){
+    int arr[5][4] = {{3, 4, 6, 1}, {8, 10, 13, 9}, {19, 34, 1, 99}, {18, 11, 0, 5}, {9, 11, 14, 7}};
+    int k = 2;
+    int m = sizeof(arr)/sizeof(arr[0]);
+    int n = sizeof(arr[0])/sizeof(arr[0][0]);
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            if(j==k){
+                std::cout<<arr[i][j]<<" ";
+            }
+        }
+    }
+}
+
+void task7(){
+    int arr[5][4] = {{3, 4, 6, 1}, {8, 10, 13, 9}, {19, 34, 1, 99}, {18, 11, 0, 5}, {9, 11, 14, 7}};
+    int k = 2;
+    int m = sizeof(arr)/sizeof(arr[0]);
+    int n = sizeof(arr[0])/sizeof(arr[0][0]);
+    for(int i = 0; i<m; i++){
+        for(int j = 0; j<n; j++){
+            if(j==k){
+                std::cout<<arr[i][j]<<" ";
+            }
+        }
+    }
+}
+
 void task8(){
     int arr[5][4] = {{3, 4, 6, 1}, {8, 10, 13, 9}, {19, 34, 1, 99}, {18, 11, 0, 5}, {9, 11, 14, 7}};
     int m = sizeof(arr)/sizeof(arr[0]);
