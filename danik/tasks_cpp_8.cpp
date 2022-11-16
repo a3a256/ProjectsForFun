@@ -1,5 +1,75 @@
 #include <iostream>
 
+void task2(){
+    int arr[] = {2, 5, 1, 7, 8, 10, 4, 17, 9 , 23};
+    int length = sizeof(arr)/sizeof(arr[0]);
+    for(int i = 0; i<length; i++){
+        if(i%2 == 0){
+            std::cout << arr[i] << " ";
+        }
+    }
+}
+
+void task3(){
+    int arr[10] = {2, 5, 1, 7, 8, 10, 4, 17, 9 , 23};
+    for(int i = 9; i>=0; i--){
+        if(i%2!=0){
+            std::cout << arr[i] << " ";
+        }
+    }
+}
+
+void task4(){
+    int n=6;
+    int j = 1;
+    int arr[n];
+    for(int i = 0; i<n; i++){
+        arr[i] = j;
+        j += 2;
+        std::cout << arr[i]<<" ";
+    }
+}
+
+void task5(){
+    int n = 6;
+    int arr[n];
+    int v;
+    for(int i = 0; i<n; i++){
+        v = 2;
+        for(int j=0; j<i; j++){
+            v *= 2;
+        }
+        arr[i] = v;
+        std::cout << arr[i] << " ";
+    }
+}
+
+void task6(){
+    int a = 2;
+    int b = 5;
+    int arr[6];
+    arr[0] = a;
+    arr[1] = b;
+    int sum;
+    std::cout << arr[0] << " " << arr[1]<< " ";
+    for(int i = 2; i<6; i++){
+        sum = 0;
+        for(int j = 0; j<i; j++){
+            sum += arr[j];
+        }
+        arr[i] = sum;
+        std::cout << arr[i]<<" ";
+    }
+}
+
+void task7(){
+    int arr[] = {1, 2, 3, 4, 5,6, 7};
+    int size = sizeof(arr)/sizeof(arr[0]);
+    for(int i = size-1; i>=0; i--){
+        std::cout<<arr[i]<<" ";
+    }
+}
+
 void task8(){
     int arr[10] = {2, 5, 1, 7, 8, 10, 4, 17, 9 , 23};
     int length = sizeof(arr)/sizeof(arr[0]);
