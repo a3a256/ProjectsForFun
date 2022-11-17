@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <cstdio>
+#include <cmath>
 
 
 int argmax(int arr[], int size){
@@ -86,4 +87,23 @@ float** transform_scaler(int arr[][1000], int rows, int columns){
         }
     }
     return new_arr;
+}
+
+float std(int arr[], int size){
+    float sum = 0;
+    for(int i = 0; i<size; i++){
+        sum += arr[i];
+    }
+    float n = size;
+    float mean = (float)sum/n;
+    float upper = 0;
+    float a;
+    for(int i = 0; i<size; i++){
+        a = arr[i] - mean;
+        upper += pow(a, 2);
+    }
+    float val;
+    val = (float)upper/(n-1);
+    val = sqrt(val);
+    return val;
 }
