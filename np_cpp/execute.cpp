@@ -5,6 +5,8 @@
 int main(){
     int arr[5] = {0, 1, 2, 3, 4};
     int arr2[5] = {5, 6, 7, 8, 10};
+    float res = std(arr2, 5);
+    std::cout<< res <<std::endl; 
     int size = sizeof(arr)/sizeof(arr[0]);
     int test[5] = {4, 1, 6, 9, 1};
     std::cout<<argmax(test, size)<<std::endl;
