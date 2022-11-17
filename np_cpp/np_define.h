@@ -5,3 +5,4 @@ int** transpose_matrix();
 int** multiply_matrix();
 float** transform_scaler();
 int argmax();
+float std();
