@@ -53,27 +53,33 @@ class StandardScaler:
 
 class ZNormalization:
     def __init__(self):
-        self.stds = []
-        self.means = []
+        self.stds = None
+        self.means = None
 
     def fit(self, x):
-        n_samples, n_features = x.shape
-        if n_features > 1:
-            for i in range(n_features):
+        self.stds = []
+        self.means = []
+        if len(x.shape) > 1:
+            for i in range(x.shape[1]):
                 self.stds += [std(x[:, i])]
                 self.means += [mean(x[:, i])]
         else:
             self.stds += [std(x)]
-            self.mean += [mean(x)]
-        print(self.stds)
-        print(self.means)
+            self.means += [mean(x)]
 
     def transform(self, x):
-        n_samples, n_features = x.shape
-        if n_features:
+        n_samples, n_features = 0, 0
+        if len(x.shape)>1:
+            n_samples, n_features = x.shape
+        else:
+            n_samples = x.shape[0]
+        if n_features>1:
             for i in range(n_samples):
                 for j in range(n_features):
                     x[i, j] = (x[i, j]-self.means[j])/(self.stds[j])
+        else:
+            for i in range(n_samples):
+                x[i] = ((x[i]-self.means[0])/(self.stds[0]))
         return x
 
 
@@ -87,6 +93,8 @@ if __name__ == "__main__":
     sc = ZNormalization()
     sc.fit(df.iloc[:, [0,2]].values)
     print(df.iloc[:10, [0,2]].values)
-    sc.fit(df.iloc[:10, [0,2]].values)
     print(sc.transform(df.iloc[:10, [0,2]].values))
+    print(df.iloc[:10, 0].values)
+    sc.fit(df.iloc[:, 0].values)
+    print(sc.transform(df.iloc[:10, 0].values))
     # print(sc.inverse_transform(sc.transform(df.iloc[:10, [0,2]].values)))
