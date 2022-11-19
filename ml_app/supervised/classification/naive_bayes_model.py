@@ -4,7 +4,7 @@ from sklearn.metrics import confusion_matrix
 from sklearn.model_selection import train_test_split
 import numpy as np
 import sys
-sys.path.insert(0, r'...\ml_app')
+sys.path.insert(0, r'C:\Users\Azamat.Ilyasov\OneDrive - Optomany Ltd\Desktop\ml_app')
 from dimensions import get_dimensions
 
 import matplotlib.pyplot as plt
@@ -27,6 +27,16 @@ class BayesClassifier:
         plt.figure(figsize=(5, 4))
         sns.heatmap(confusion_matrix(y_hat, self.y_test), annot=True)
         plt.title("GaussianNB: {}% accuracy".format(round(accuracy_score(y_hat, self.y_test)*100, 2)))
+        if self.x_test.shape[1] < 2:
+            plt.show()
+            return
+        if self.x_test.shape[1] == 2:
+            plt.figure(figsize=(5, 4))
+            for k in np.unique(self.y_test):
+                plt.scatter(self.x_test[y_hat==k, 0], self.x_test[y_hat==k, 1])
+            plt.legend(np.unique(self.y_test))
+            plt.show()
+            return
         dims = get_dimensions(self.x_test.shape[1]-1)
         width, height = dims
         print(dims)
