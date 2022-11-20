@@ -89,21 +89,26 @@ float** transform_scaler(int arr[][1000], int rows, int columns){
     return new_arr;
 }
 
-float std(int arr[], int size){
-    float sum = 0;
-    for(int i = 0; i<size; i++){
+float* mean(float *arr, int length){
+    static float r[1];
+    float sum = 0.0f;
+    for(int i = 0; i<length; i++){
         sum += arr[i];
     }
-    float n = size;
-    float mean = (float)sum/n;
-    float upper = 0;
-    float a;
-    for(int i = 0; i<size; i++){
-        a = arr[i] - mean;
-        upper += pow(a, 2);
+    r[0] = sum/(float)length;
+    return r;
+}
+
+float standard_deviation(float *arr, int length){
+    static float r[1];
+    float* mn;
+    mn = mean(arr, length);
+    float upper = 0.0f;
+    float temp = 0.0f;
+    for(int i = 0; i<length; i++){
+        temp = arr[i] - mn[0];
+        upper += pow(temp, 2);
     }
-    float val;
-    val = (float)upper/(n-1);
-    val = sqrt(val);
-    return val;
+    r[0] = sqrt(upper/(float)length);
+    return r[0];
 }
