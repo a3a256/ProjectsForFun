@@ -5,8 +5,14 @@
 int main(){
     int arr[5] = {0, 1, 2, 3, 4};
     int arr2[5] = {5, 6, 7, 8, 10};
-    float res = std(arr2, 5);
-    std::cout<< res <<std::endl; 
+    int s = 5;
+    float arr3[5] = {0.5f, 1.2f, 6.5f, 2.6f, 9.1f};
+    float* res;
+    res = mean(arr3, s);
+    std::cout<< res[0] <<std::endl;
+    float sd;
+    sd = standard_deviation(arr3, s);
+    std::cout<< sd<<"\n";
     int size = sizeof(arr)/sizeof(arr[0]);
     int test[5] = {4, 1, 6, 9, 1};
     std::cout<<argmax(test, size)<<std::endl;
