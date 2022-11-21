@@ -66,9 +66,11 @@ class ZNormalization:
         else:
             self.stds += [std(x)]
             self.means += [mean(x)]
+        print(self.stds)
+        print(self.means)
 
     def transform(self, x):
-        n_samples, n_features = 0, 0
+        n_samples, n_features = 0, 1
         if len(x.shape)>1:
             n_samples, n_features = x.shape
         else:
@@ -82,6 +84,22 @@ class ZNormalization:
                 x[i] = ((x[i]-self.means[0])/(self.stds[0]))
         return x
 
+    def inverse_transform(self, x):
+        n_samples, n_features = 0, 1
+        if len(x.shape)>1:
+            n_samples, n_features = x.shape
+        else:
+            n_samples = x.shape[0]
+        if n_features>1:
+            for i in range(n_samples):
+                for j in range(n_features):
+                    x[i, j] = (x[i, j]*self.stds[j]) + self.means[j]
+        else:
+            for i in range(n_samples):
+                x[i] = (x[i]*self.stds[0]) + self.means[0]
+
+        return x
+
 
 if __name__ == "__main__":
     df = pd.read_csv(r'ready_for_nn.csv')
@@ -93,8 +111,7 @@ if __name__ == "__main__":
     sc = ZNormalization()
     sc.fit(df.iloc[:, [0,2]].values)
     print(df.iloc[:10, [0,2]].values)
-    print(sc.transform(df.iloc[:10, [0,2]].values))
-    print(df.iloc[:10, 0].values)
-    sc.fit(df.iloc[:, 0].values)
-    print(sc.transform(df.iloc[:10, 0].values))
+    transformed = sc.transform(df.iloc[:10, [0,2]].values)
+    print(transformed)
+    print(sc.inverse_transform(transformed))
     # print(sc.inverse_transform(sc.transform(df.iloc[:10, [0,2]].values)))
