@@ -25,8 +25,10 @@ class StandardScaler:
         else:
             self.min_x = min(x)
             self.max_x = max(x)
-        print(self.min_x)
-        print(self.max_x)
+
+    def fit_transform(self, x):
+        self.fit(x)
+        return self.transform(x)
 
     def transform(self, x):
         if x.shape[1] > 1:
@@ -66,8 +68,10 @@ class ZNormalization:
         else:
             self.stds += [std(x)]
             self.means += [mean(x)]
-        print(self.stds)
-        print(self.means)
+
+    def fit_transform(self, x):
+        self.fit(x)
+        return self.transform(x)
 
     def transform(self, x):
         n_samples, n_features = 0, 1
@@ -109,9 +113,9 @@ if __name__ == "__main__":
     # print(sc.transform(df.iloc[:10, [0,2]].values))
     # print(sc.inverse_transform(sc.transform(df.iloc[:10, [0,2]].values)))
     sc = ZNormalization()
-    sc.fit(df.iloc[:, [0,2]].values)
+    # sc.fit(df.iloc[:, [0,2]].values)
     print(df.iloc[:10, [0,2]].values)
-    transformed = sc.transform(df.iloc[:10, [0,2]].values)
+    transformed = sc.fit_transform(df.iloc[:10, [0,2]].values)
     print(transformed)
     print(sc.inverse_transform(transformed))
     # print(sc.inverse_transform(sc.transform(df.iloc[:10, [0,2]].values)))
