@@ -20,7 +20,8 @@ class MLOptions:
         self.y = None
         self.message = ""
         self.spec = ""
-        self.n = None
+        self.neighbors = StringVar()
+        self.neighbors.set("1")
 
     def give_target(self, target):
         self.target = target.cget("text")
@@ -56,9 +57,10 @@ class MLOptions:
         btn_regression = Button(self.ui, text="Linear Regression", command=lambda: [btn_regression.destroy(), self.target_select("LinearRegression")])
         btn_regression.grid(row=0, column=0)
 
-    def get_neighbors(self, m):
-        print(m)
-        self.n = int(m)
+    def get_neighbors(self):
+        k = str(self.neighbors.get())
+        print("check", k)
+        self.n = int(k)
         return
 
     def classification_distribute(self):
@@ -75,9 +77,9 @@ class MLOptions:
                 knn = knn_classifier_model.KNN(self.x, self.y, self.selection, self.target, self.n)
                 knn.train()
             n = None
-            en_neighbors = Entry(self.ui, text="")
+            en_neighbors = Entry(self.ui, text=self.neighbors)
             en_neighbors.grid(row=0, column=0)
-            btn_neighbors = Button(self.ui, text="Enter neighbors", command=lambda: [en_neighbors.destroy(), btn_neighbors.destroy(), self.get_neighbors(5), execute(self.n)])
+            btn_neighbors = Button(self.ui, text="Enter neighbors", command=lambda: [en_neighbors.destroy(), btn_neighbors.destroy(), self.get_neighbors(), execute(self.n)])
             btn_neighbors.grid(row=0, column=1)
             return
 
