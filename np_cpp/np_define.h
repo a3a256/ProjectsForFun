@@ -1,9 +1,10 @@
 #include "np_functions.cpp"
 
-int* addition_1d();
-int** transpose_matrix();
-int** multiply_matrix();
+float* addition_1d();
+float** transpose_matrix();
+float** multiply_matrix();
 float** transform_scaler();
 int argmax();
 float* mean();
 float standard_deviation();
+float determinant();
