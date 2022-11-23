@@ -2,6 +2,17 @@
 #include <iomanip>
 #include "np_define.h"
 
+void eye_test(){
+    float** r;
+    r = eye((int)5);
+    for(int i = 0; i<5; i++){
+        for(int j = 0; j<5; j++){
+            std::cout << r[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
+}
+
 void determinant_test(){
     float arr[1000][1000] = {{1.2f, 1.7f, 3.1f}, {5.6f, 1.0f, 1.2f}, {9.8f, 4.5f, 9.9f}};
     float dt;
