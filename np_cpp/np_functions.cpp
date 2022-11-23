@@ -16,6 +16,22 @@ int argmax(int arr[], int size){
     return index;
 }
 
+float** eye(int dim){
+    static float** arr = 0;
+    arr = new float*[1000];
+    for(int i = 0; i<dim; i++){
+        arr[i] = new float[1000];
+        for(int j = 0; j<dim; j++){
+            if(i == j){
+                arr[i][j] = 1.0f;
+            }else{
+                arr[i][j] = 0.0f;
+            }
+        }
+    }
+    return arr;
+}
+
 float determinant(float arr[][1000], int rows, int cols){
     float det = 0.0f;
     if(rows == 2 && cols == 2){
