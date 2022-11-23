@@ -8,3 +8,4 @@ int argmax();
 float* mean();
 float standard_deviation();
 float determinant();
+float** eye();
