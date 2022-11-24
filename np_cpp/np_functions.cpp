@@ -16,6 +16,37 @@ int argmax(int arr[], int size){
     return index;
 }
 
+float* sorting(float arr[], int size){
+    bool sorted = false;
+    float temp=(float)0;
+    while (!(sorted)){
+        sorted = true;
+        for(int i = 1; i<size; i++){
+            if(arr[i]<arr[i-1]){
+                sorted=false;
+                temp = arr[i];
+                arr[i] = arr[i-1];
+                arr[i-1] = temp;
+            }
+        }
+    }
+    return arr;
+}
+
+float* quantiles(float arr[], int size){
+    static float quantile[4];
+    float* modified;
+    std::cout<<"\n";
+    modified = sorting(arr, size);
+    int quarter = size/4;
+    int three_quarter = quarter*3;
+    quantile[0] = modified[0];
+    quantile[1] = modified[quarter];
+    quantile[2] = modified[three_quarter];
+    quantile[3] = modified[size-1];
+    return quantile;
+}
+
 float** eye(int dim){
     static float** arr = 0;
     arr = new float*[1000];
