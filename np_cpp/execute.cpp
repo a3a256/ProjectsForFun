@@ -2,6 +2,16 @@
 #include <iomanip>
 #include "np_define.h"
 
+void quantile_test(){
+    float * q;
+    float arr[] = {3.5f, 1.2f, 9.6f, 2.3f, 9.098f, 0.5f};
+    q = quantiles(arr, (int)6);
+    for(int i = 0; i<4; i++){
+        std::cout << q[i] << " ";
+    }
+    std::cout << "\n";
+}
+
 void eye_test(){
     float** r;
     r = eye((int)5);
@@ -21,7 +31,7 @@ void determinant_test(){
 }
 
 int main(){
-    determinant_test();
+    quantile_test();
     return 0;
 }
 
