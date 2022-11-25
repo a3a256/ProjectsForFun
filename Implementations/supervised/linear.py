@@ -4,15 +4,27 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 
 class LinearRgeression:
-    def __init__(self, x, y, alpha=0.01):
-        self.x = x
-        self.y = y
-        self.n_samples, self.n_features = self.x.shape
+    def __init__(self, alpha=0.01, fit_intercept=False, n_iter = 500):
+        self.m = None
         self.alpha = alpha
-        self.n, self.m = 0, np.zeros(self.n_features)
+        self.iters = n_iter
 
-    def fit(self):
-        for j in range(50):
+    def fit(self, x, y):
+        n_samples, n_features = x.shape
+        # self.m = np.random.rand(n_features)
+        self.m = np.array([0.0001]*n_features)
+        for j in range(self.iters):
+            for i in range(n_samples):
+                y_hat = self.solve(x[i, :], self.m)
+                grad = -2*self.m*(y[i] - y_hat)
+                self.m -= self.alpha*grad
+        print(self.m)
+
+    def fit_failed(self, x, y):
+        n_samples, n_features = x.shape
+        self.m = np.random.rand(n_features)
+        for j in range(self.iters):
+
             y_hat = self.solve(self.x, self.m, self.n)
             error = self.y - y_hat
             grad = np.dot(self.x.T, error)
@@ -23,11 +35,11 @@ class LinearRgeression:
         print(self.m)
 
     def predict1(self, x):
-        a = x.dot(self.m) + self.n
+        a = x.dot(self.m)
         return a
 
-    def solve(self, x, weight, bias):
-        return np.dot(x, weight) + bias
+    def solve(self, x, weight):
+        return np.dot(x, weight.T)
 
 
 def r2_score(y_true, y_pred):
@@ -44,8 +56,8 @@ if __name__ == "__main__":
     l1 = LinearRegression()
     l1.fit(x_train, y_train)
     print(l1.coef_)
-    lr = LinearRgeression(x_train, y_train)
-    lr.fit()
+    lr = LinearRgeression()
+    lr.fit(x_train, y_train)
     yhat = lr.predict1(x_test)
     pred = l1.predict(x_test)
     print(r2_score(y_test, yhat))
