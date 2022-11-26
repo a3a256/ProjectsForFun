@@ -2,6 +2,17 @@
 #include <iomanip>
 #include "np_define.h"
 
+void percentile_test(){
+    float* p;
+    float arr[] = {3.5f, 1.2f, 9.6f, 2.3f, 9.098f, 0.5f};
+    int per[] = {25, 75};
+    p = percentile(arr, per, (int)6, (int)2);
+    for(int i = 0; i<2; i++){
+        std::cout << p[i] << " ";
+    }
+    std::cout << "\n";
+}
+
 void quantile_test(){
     float * q;
     float arr[] = {3.5f, 1.2f, 9.6f, 2.3f, 9.098f, 0.5f};
@@ -31,7 +42,7 @@ void determinant_test(){
 }
 
 int main(){
-    quantile_test();
+    percentile_test();
     return 0;
 }
 

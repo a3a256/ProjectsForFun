@@ -3,7 +3,6 @@
 #include <cstdio>
 #include <cmath>
 
-
 int argmax(int arr[], int size){
     int max=arr[0];
     int index=0;
@@ -31,6 +30,20 @@ float* sorting(float arr[], int size){
         }
     }
     return arr;
+}
+
+float* percentile(float arr[], int percs[], int arr_size, int perc_size){
+    static float percentages[100];
+    float* modified;
+    modified = sorting(arr, arr_size);
+    int ids[perc_size];
+    for(int i = 0; i<perc_size; i++){
+        ids[i] = ((arr_size*percs[i])/100);
+    }
+    for(int i = 0; i<perc_size; i++){
+        percentages[i] = modified[ids[i]];
+    }
+    return percentages;
 }
 
 float* quantiles(float arr[], int size){
