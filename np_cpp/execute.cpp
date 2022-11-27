@@ -2,6 +2,16 @@
 #include <iomanip>
 #include "np_define.h"
 
+void unique_test(){
+    int* s;
+    int pr[] = {0, 0, 1, 0, 2, 3};
+    s = unique(pr, (int)5);
+    for(int i = 0; i<3; i++){
+        std::cout << s[i] << " ";
+    }
+    std::cout << "\n";
+}
+
 void percentile_test(){
     float* p;
     float arr[] = {3.5f, 1.2f, 9.6f, 2.3f, 9.098f, 0.5f};
@@ -42,7 +52,7 @@ void determinant_test(){
 }
 
 int main(){
-    percentile_test();
+    unique_test();
     return 0;
 }
 

@@ -11,3 +11,4 @@ float determinant();
 float** eye();
 float* quantiles();
 float* Percentile();
+int* unique();

@@ -15,6 +15,26 @@ int argmax(int arr[], int size){
     return index;
 }
 
+int* unique(int arr[], int size){
+    static int u[50];
+    u[0] = arr[0];
+    int length = 1;
+    bool exists=false;
+    for(int i = 0; i<size; i++){
+        exists=false;
+        for(int j = 0; j<length; j++){
+            if(u[j] == arr[i]){
+                exists = true;
+            }
+        }
+        if(!(exists)){
+            u[length] = arr[i];
+            length ++;
+        }
+    }
+    return u;
+}
+
 float* sorting(float arr[], int size){
     bool sorted = false;
     float temp=(float)0;
