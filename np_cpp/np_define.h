@@ -12,3 +12,4 @@ float** eye();
 float* quantiles();
 float* Percentile();
 int* unique();
+int classes();

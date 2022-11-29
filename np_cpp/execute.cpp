@@ -2,6 +2,13 @@
 #include <iomanip>
 #include "np_define.h"
 
+void classes_test(){
+    int s;
+    int pr[] = {0, 0, 1, 0, 2, 3};
+    s = classes(pr, (int)5);
+    std::cout << s << "\n";
+}
+
 void unique_test(){
     int* s;
     int pr[] = {0, 0, 1, 0, 2, 3};
@@ -52,7 +59,7 @@ void determinant_test(){
 }
 
 int main(){
-    unique_test();
+    classes_test();
     return 0;
 }
 
