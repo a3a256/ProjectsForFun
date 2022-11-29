@@ -5,12 +5,14 @@ from sklearn.preprocessing import LabelEncoder
 import numpy.linalg as LA
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
 
 class OneLogisticRegression:
-    def __init__(self, alpha=0.001):
+    def __init__(self, alpha=0.01, n_iters=100):
         self.alpha = alpha
         self.b1 = None
         self.b0 = None
+        self.n_iters = n_iters
 
     def log_func(self, x, b1, b0):
         y = b0 + np.dot(b1, x)
@@ -40,6 +42,21 @@ class OneLogisticRegression:
 
     def fit(self, x, y):
         n_samples, n_features = x.shape
+        self.b1 = np.random.randn(n_features)
+        for i in range(self.n_iters):
+            for j in range(n_samples):
+                yhat = np.dot(x[j, :], self.b1.T)
+                error = 0
+                if y[j] == 0:
+                    error = 1/(1-yhat)
+                else:
+                    error = -(1/yhat)
+                self.b1 += self.alpha*error*self.b1
+        
+        print(self.b1)
+
+    def failed_fit(self, x, y):
+        n_samples, n_features = x.shape
         self.b0, self.b1 = 0, np.zeros(n_features)
         for _ in range(5):
             yhat = np.dot(x, self.b1) - self.b0
@@ -54,7 +71,7 @@ class OneLogisticRegression:
         return 1/(1-np.exp(-x))
 
     def prediction(self, x):
-        y = [0 if i < 0.5 else 1 for i in self._sigmoid(np.dot(x, self.b1) - self.b0)]
+        y = [0 if i < 0.5 else 1 for i in self._sigmoid(np.dot(x, self.b1.T))]
         return y
 
 
@@ -65,21 +82,20 @@ class OneLogisticRegression:
 
 
 if __name__ == "__main__":
-    df = pd.read_csv(r'C:\Users\Azamat.Ilyasov\OneDrive - Optomany Ltd\Desktop\new_sll\breast-cancer.csv')
+    df = pd.read_csv(r'breast-cancer.csv')
     df.drop("id", axis=1, inplace=True)
     le = LabelEncoder()
     le.fit(df.iloc[:, 0])
     df.iloc[:, 0] = le.transform(df.iloc[:, 0])
-    x = df.iloc[50:, 1:4].values
-    y = df.iloc[50:, 0].values
-    x_test = df.iloc[:50, 1:4].values
-    y_test = df.iloc[:50, 0].values
+    x = df.iloc[:, 1:4].values
+    y = df.iloc[:, 0].values
+    x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42, test_size=0.2)
     lr = OneLogisticRegression()
-    lr.fit(x, y)
+    lr.fit(x_train, y_train)
     lg = LogisticRegression()
-    lg.fit(x, y)
+    lg.fit(x_train, y_train)
     print(lg.coef_)
     y_hat = lg.predict(x_test)
     y_pred = lr.prediction(x_test)
-    print(accuracy_score(y_hat, y_test))
-    print(accuracy_score(y_pred, y_test))
+    print("Real model: ", accuracy_score(y_hat, y_test))
+    print("Implemented: ", accuracy_score(y_pred, y_test))
