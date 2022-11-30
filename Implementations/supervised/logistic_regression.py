@@ -6,9 +6,10 @@ import numpy.linalg as LA
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 class OneLogisticRegression:
-    def __init__(self, alpha=0.01, n_iters=100):
+    def __init__(self, alpha=0.01, n_iters=2000):
         self.alpha = alpha
         self.b1 = None
         self.b0 = None
@@ -42,7 +43,8 @@ class OneLogisticRegression:
 
     def fit(self, x, y):
         n_samples, n_features = x.shape
-        self.b1 = np.random.randn(n_features)
+        self.b1 = np.array([0.00001]*n_features)
+        self.b1 = np.random.rand(n_features)
         for i in range(self.n_iters):
             for j in range(n_samples):
                 yhat = np.dot(x[j, :], self.b1.T)
@@ -51,7 +53,9 @@ class OneLogisticRegression:
                     error = 1/(1-yhat)
                 else:
                     error = -(1/yhat)
-                self.b1 += self.alpha*error*self.b1
+                self.b1 -= self.alpha*error*self.b1
+            if i%1000 == 0:
+                print("Loss: ", error)
         
         print(self.b1)
 
@@ -88,6 +92,8 @@ if __name__ == "__main__":
     le.fit(df.iloc[:, 0])
     df.iloc[:, 0] = le.transform(df.iloc[:, 0])
     x = df.iloc[:, 1:4].values
+    sc = StandardScaler()
+    x = sc.fit_transform(x)
     y = df.iloc[:, 0].values
     x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42, test_size=0.2)
     lr = OneLogisticRegression()
@@ -99,3 +105,5 @@ if __name__ == "__main__":
     y_pred = lr.prediction(x_test)
     print("Real model: ", accuracy_score(y_hat, y_test))
     print("Implemented: ", accuracy_score(y_pred, y_test))
+    print(y_test)
+    print(y_pred)
