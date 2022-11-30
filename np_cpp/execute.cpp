@@ -2,6 +2,18 @@
 #include <iomanip>
 #include "np_define.h"
 
+void bincount_test(){
+    int* frequencies;
+    int categories[] = {0, 0, 0, 0, 1, 1, 1, 1, 0};
+    int length = sizeof(categories)/sizeof(categories[0]);
+    frequencies = bincount(categories, length);
+    int n = classes(categories, length);
+    for(int i = 0; i<n; i++){
+        std::cout << frequencies[i] << " ";
+    }
+    std::cout << "\n";
+}
+
 void classes_test(){
     int s;
     int pr[] = {0, 0, 1, 0, 2, 3};
@@ -59,7 +71,7 @@ void determinant_test(){
 }
 
 int main(){
-    classes_test();
+    bincount_test();
     return 0;
 }
 

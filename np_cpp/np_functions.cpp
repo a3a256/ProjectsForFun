@@ -55,6 +55,24 @@ int* unique(int arr[], int size){
     return u;
 }
 
+int* bincount(int arr[], int size){
+    static int counts[50];
+    int freq;
+    int* n_classes;
+    n_classes = unique(arr, size);
+    int n = classes(arr, size);
+    for(int i = 0; i<n; i++){
+        freq = 0;
+        for(int j = 0; j<size; j++){
+            if(n_classes[i] == arr[j]){
+                freq ++;
+            }
+        }
+        counts[i] = freq;
+    }
+    return counts;
+}
+
 float* sorting(float arr[], int size){
     bool sorted = false;
     float temp=(float)0;

@@ -13,3 +13,4 @@ float* quantiles();
 float* Percentile();
 int* unique();
 int classes();
+int* bincount();
