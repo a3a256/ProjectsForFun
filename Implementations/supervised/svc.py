@@ -5,9 +5,10 @@ from sklearn.metrics import accuracy_score
 from sklearn.linear_model import LinearRegression
 from sklearn.svm import SVC
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
 
 class SVM:
-    def __init__(self, C=0.1, alpha=0.01, fit_intercept=False, n_iters=100):
+    def __init__(self, C=0.001, alpha=0.01, fit_intercept=False, n_iters=100):
         self.alpha = alpha
         self.C = C
         self.w = None
@@ -53,6 +54,7 @@ class SVM:
                 predict[i] = -1
             elif predict[i] > 0:
                 predict[i] = 1
+        print(predict)
         return predict
 
 
@@ -66,16 +68,13 @@ if __name__ == "__main__":
     df.iloc[:, 0] = le.transform(df.iloc[:, 0])
     for i in range(len(df)):
         df.iloc[i, 0] = -1 if df.iloc[i, 0] == 0 else 1
-    # x = df.iloc[50:, [1, 2]].values
-    # y = df.iloc[50:, 0].values
-    # x_test = df.iloc[:50, [1, 2]].values
-    # y_test = df.iloc[:50, 0].values
     x = df.iloc[:, [1, 2]].values
+    sc = StandardScaler()
+    x = sc.fit_transform(x)
     y = df.iloc[:, 0].values
     x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42, test_size=0.2)
     sv = SVM()
     sv.fit(x_train, y_train)
-    # print(sv.predict(x_test))
     print("Implemented: {}".format(accuracy_score(y_test, sv.predict(x_test))))
     svc = SVC(C=0.001, kernel="linear")
     svc.fit(x_train, y_train)
