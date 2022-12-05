@@ -2,9 +2,13 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import StandardScaler
+import random
 
-class LinearRgeression:
-    def __init__(self, alpha=0.01, fit_intercept=False, n_iter = 500):
+class Regression:
+    def __init__(self, alpha=0.01, fit_intercept=False, n_iter = 1000):
         self.m = None
         self.alpha = alpha
         self.iters = n_iter
@@ -12,12 +16,16 @@ class LinearRgeression:
     def fit(self, x, y):
         n_samples, n_features = x.shape
         # self.m = np.random.rand(n_features)
-        self.m = np.array([0.0001]*n_features)
+        self.m = np.array([random.random()]*n_features)
         for j in range(self.iters):
             for i in range(n_samples):
                 y_hat = self.solve(x[i, :], self.m)
-                grad = -2*self.m*(y[i] - y_hat)
-                self.m -= self.alpha*grad
+                loss = 2*y_hat*(y_hat-y[i])
+                for k in range(n_features):
+                    self.m[k] -= self.alpha*(loss*self.m[k])
+                # grad = y_hat*(y[i] - y_hat)
+            if j%100 == 0:
+                print("Loss: ", loss)
         print(self.m)
 
     def fit_failed(self, x, y):
@@ -32,7 +40,6 @@ class LinearRgeression:
             db = (1/self.n_samples) * np.sum(error)
             self.m -= self.alpha*dw
             self.n -= self.alpha*db
-        print(self.m)
 
     def predict1(self, x):
         a = x.dot(self.m)
@@ -42,23 +49,27 @@ class LinearRgeression:
         return np.dot(x, weight.T)
 
 
-def r2_score(y_true, y_pred):
-        corr_matrix = np.corrcoef(y_true, y_pred)
-        corr = corr_matrix[0, 1]
-        return corr ** 2
-
 if __name__ == "__main__":
     df = pd.read_csv(r'breast-cancer.csv')
     df = df.dropna()
-    x = df.iloc[:, 2:5].values
+    sc = StandardScaler()
+    x = df.iloc[:, 2:7].values
+    x = sc.fit_transform(x)
     y = df.iloc[:, 7].values
     x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42, test_size=0.2)
     l1 = LinearRegression()
     l1.fit(x_train, y_train)
-    print(l1.coef_)
-    lr = LinearRgeression()
+    lr = Regression()
     lr.fit(x_train, y_train)
     yhat = lr.predict1(x_test)
     pred = l1.predict(x_test)
-    print(r2_score(y_test, yhat))
-    print(r2_score(y_test, pred))
+    print("Implemnted: ", mean_squared_error(y_test, yhat))
+    print("Real: ", mean_squared_error(y_test, pred))
+    fig, axes = plt.subplots(nrows=1, ncols=3)
+    axes[0].scatter(x_test[:, 0], y_test)
+    axes[0].set_title("Original")
+    axes[1].scatter(x_test[:, 0], yhat)
+    axes[1].set_title("Implemented")
+    axes[2].scatter(x_test[:, 0], pred)
+    axes[2].set_title("Real model")
+    plt.show()
