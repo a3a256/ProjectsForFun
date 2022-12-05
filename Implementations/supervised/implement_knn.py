@@ -3,10 +3,16 @@ import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
 
 class KNeighborsModel:
-    def __init__(self, n_neighbors, x, y):
+    def __init__(self, n_neighbors):
         self.k = n_neighbors
+        self.x = None
+        self.y = None
+
+
+    def fit(self, x, y):
         self.x = x
         self.y = y
 
@@ -47,6 +53,54 @@ class KNeighborsModel:
         s = sorted(classify, key=lambda x: (-classify[x]))
         return s[0]
 
+    def predict_multi(self, x):
+        preds = []
+        for i in range(len(x)):
+            preds += [self.multivariable_one(x[i, :])]
+
+        return preds
+
+
+    def multivariable_one(self, x):
+        classes = dict()
+        first = 0
+        while first < self.x.shape[1]-1:
+            for j in range(first+1, self.x.shape[1]):
+                second = j
+                distances = dict()
+                x_axis = x[first]
+                y_axis = x[second]
+                for i in range(self.x.shape[0]):
+                    d = self.distance(x_axis, y_axis, self.x[i, first], self.x[i, second])
+                    if d not in distances:
+                        distances[d] = [[self.x[i, first], self.x[i, second], self.y[i]]]
+                    else:
+                        distances[d] += [[self.x[i, first], self.x[i, second], self.y[i]]]
+
+                categories = []
+                dist = [i for  i in distances.keys()]
+                dist = sorted(dist)
+                t = 0
+                n = 0
+                classify = dict()
+                while t < self.k:
+                    for i in distances[dist[n]]:
+                        if i[2] not in classify:
+                            classify[i[2]] = 1
+                        else:
+                            classify[i[2]] += 1
+                        t += 1
+                    n += 1
+                
+                s = sorted(classify, key=lambda x: (-classify[x]))
+            if s[0] not in classes:
+                classes[s[0]] = 1
+            else:
+                classes[s[0]] += 1
+            first += 1
+        predictions = sorted(classify, key=lambda x: (-classify[x]))
+        return predictions[0]
+
 
 
     def distance(self, x, y, x1, y1):
@@ -57,15 +111,15 @@ class KNeighborsModel:
 if __name__ == "__main__":
     df = pd.read_csv(r'breast-cancer.csv')
     le = LabelEncoder()
-    x = df.iloc[:, [2, 3]].values
+    x = df.iloc[:, [2, 3, 4, 5]].values
     y = df.iloc[:, 1].values
     y = le.fit_transform(y)
-    knn = KNeighborsModel(n_neighbors=3, x=x, y=y)
+    x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42, test_size=0.2)
+    knn = KNeighborsModel(n_neighbors=3)
+    knn.fit(x_train, y_train)
     kp = KNeighborsClassifier(n_neighbors=3)
-    kp.fit(x[:-50, :], y[:-50])
-    to_pred = x[-50:, :]
-    test = y[-50:]
-    model = accuracy_score(kp.predict(to_pred), test)
-    m = accuracy_score(knn.predict(to_pred), test)
+    kp.fit(x_train, y_train)
+    model = accuracy_score(kp.predict(x_test), y_test)
+    m = accuracy_score(knn.predict_multi(x_test), y_test)
     print(model)
     print(m)
