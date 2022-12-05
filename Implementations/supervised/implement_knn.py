@@ -17,11 +17,47 @@ class KNeighborsModel:
         self.y = y
 
     def predict(self, x):
+        print(len(x.shape))
         predictions = []
         for i in range(len(x)):
             arr = [x[i, 0], x[i, 1]]
             predictions += [self.predict_value(arr)]
         return predictions
+
+    def pred_one_variable(self, x):
+        preds = []
+        for i in range(len(x)):
+            preds += [self.predict_var(x[i])]
+        return preds
+
+    def predict_var(self, x):
+        distances = dict()
+        for i in range(self.x.shape[0]):
+            d = abs(self.x[i] - x)
+            if d not in distances:
+                distances[d] = [y[i]]
+            else:
+                distances[d] += [y[i]]
+        dist = [i for i in distances.keys()]
+        categories = []
+        n = 0
+        k = 0
+        while n < self.k:
+            for i in distances[dist[k]]:
+                categories = [i]
+            else:
+                categories += [i]
+                n += 1
+            k += 1
+        classify = dict()
+        for i in categories:
+            if i not in classify:
+                classify[i] = 1
+            else:
+                classify[i] += 1
+        s = sorted(classify, key=lambda x: (-classify[x]))
+        return s[0]
+            
 
     def predict_value(self, x):
         distances = dict()
@@ -111,15 +147,15 @@ class KNeighborsModel:
 if __name__ == "__main__":
     df = pd.read_csv(r'breast-cancer.csv')
     le = LabelEncoder()
-    x = df.iloc[:, [2, 3, 4, 5]].values
+    x = df.iloc[:, 2].values
     y = df.iloc[:, 1].values
     y = le.fit_transform(y)
     x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42, test_size=0.2)
     knn = KNeighborsModel(n_neighbors=3)
     knn.fit(x_train, y_train)
     kp = KNeighborsClassifier(n_neighbors=3)
-    kp.fit(x_train, y_train)
-    model = accuracy_score(kp.predict(x_test), y_test)
-    m = accuracy_score(knn.predict_multi(x_test), y_test)
+    kp.fit(x_train.reshape(-1, 1), y_train)
+    model = accuracy_score(kp.predict(x_test.reshape(-1, 1)), y_test)
+    m = accuracy_score(knn.pred_one_variable(x_test), y_test)
     print(model)
     print(m)
