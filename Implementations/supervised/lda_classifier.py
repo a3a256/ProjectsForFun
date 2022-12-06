@@ -4,6 +4,7 @@ from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.metrics import accuracy_score
 from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_iris
 
 
 class LDAClassifier:
@@ -20,15 +21,34 @@ class LDAClassifier:
             self.covariances += [np.cov(x[y==i, :].T)]
 
     def predict(self, x):
+        if len(self.priors) == 2:
+            return self.predict_binary(x)
+        else:
+            return self.predict_multi(x)
+
+    def multi_equation(self, x):
+        res = []
+        for i in range(self.priors):
+            first = np.dot(np.dot(self.means[i].T, np.linalg.inv(self.covariances[i])), x.T)
+            second = 0.5*np.dot(np.dot(self.means[i].T, np.linalg.inv(self.covariances[i])), self.means[i])
+            end = np.log(self.priors[i])
+            res += [first-second+end]
+        return np.argmax(res)
+
+    def predict_multi(self, x):
+        res = []
+        for i in range(len(x)):
+            res += [self.multi_equation(x[i, :])]
+        return res
+
+    def predict_binary(self, x):
         res = []
         answers = []
-        for i in range(1):
-            kk = (self.means[0]-self.means[1]).T
-            first_part = np.dot(2*np.dot(np.linalg.inv(self.covariances[i]), (self.means[0] - self.means[1])).T, x.T)
-            second_part = np.dot(np.dot((self.means[0]-self.means[1]).T, np.linalg.inv(self.covariances[i])), (self.means[0]-self.means[1]))
-            end = 2*np.log(self.priors[1]/self.priors[0])
-            res += [first_part+second_part+end]
-            # answers += np.dot(2*np.dot(np.linalg.inv(self.covariances[i]), (self.means[i][0] - self.means[i][1])).T, x.T) + np.dot(np.dot((self.means[i][0]-self.means[i][1]).reshape(1, -1), np.linalg.inv(self.covariances[i])), (self.means[i][0]-self.means[i][1])) + 2*np.log(self.priors[0]/self.priors[1])
+        kk = (self.means[0]-self.means[1]).T
+        first_part = np.dot(2*np.dot(np.linalg.inv(self.covariances[i]), (self.means[0] - self.means[1])).T, x.T)
+        second_part = np.dot(np.dot((self.means[0]-self.means[1]).T, np.linalg.inv(self.covariances[i])), (self.means[0]-self.means[1]))
+        end = 2*np.log(self.priors[1]/self.priors[0])
+        res += [first_part+second_part+end]
         answers = [0 if i > 0 else 1 for i in res[0][0]]
         return answers
 
