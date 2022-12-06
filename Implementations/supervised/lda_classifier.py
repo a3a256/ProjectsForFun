@@ -45,8 +45,8 @@ class LDAClassifier:
         res = []
         answers = []
         kk = (self.means[0]-self.means[1]).T
-        first_part = np.dot(2*np.dot(np.linalg.inv(self.covariances[i]), (self.means[0] - self.means[1])).T, x.T)
-        second_part = np.dot(np.dot((self.means[0]-self.means[1]).T, np.linalg.inv(self.covariances[i])), (self.means[0]-self.means[1]))
+        first_part = np.dot(2*np.dot(np.linalg.inv(self.covariances[0]), (self.means[0] - self.means[1])).T, x.T)
+        second_part = np.dot(np.dot((self.means[0]-self.means[1]).T, np.linalg.inv(self.covariances[0])), (self.means[0]-self.means[1]))
         end = 2*np.log(self.priors[1]/self.priors[0])
         res += [first_part+second_part+end]
         answers = [0 if i > 0 else 1 for i in res[0][0]]
