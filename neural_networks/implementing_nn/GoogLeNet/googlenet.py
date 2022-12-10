@@ -36,7 +36,7 @@ class InceptionBlock(nn.Module):
         conv = Block
         self.conv1_11 = conv(in_channels=in_channels, out_channels=in_channels+10, kernel=1)
         self.conv1_12 = conv(in_channels=in_channels, out_channels=in_channels+10, kernel=1)
-        self.pool1_1 = conv(in_channels=in_channels, out_channels=in_channels+10, kernel=3, padding=1)
+        self.pool1_1 = conv(in_channels=in_channels, out_channels=in_channels+10, kernel=3, stride=1, padding=1)
         self.conv2_11 = conv(in_channels=in_channels, out_channels=in_channels+20, kernel=1)
         self.conv2_31 = conv(in_channels=in_channels+10, out_channels=in_channels+20, kernel=3, padding=1)
         self.conv2_51 = conv(in_channels=in_channels+10, out_channels=in_channels+20, kernel=5, padding=2)
@@ -48,12 +48,9 @@ class InceptionBlock(nn.Module):
         second = self.conv2_31(second)
         third = self.conv1_12(x)
         third = self.conv2_51(third)
-        end = F.max_pool2d(self.pool1_1(x), kernel_size=3, padding=1)
-        print(end.shape)
+        end = F.max_pool2d(self.pool1_1(x), kernel_size=3, padding=1, stride=1)
         end = self.conv2_12(end)
         res = [first, second, third, end]
-        for i in res:
-            print(i.shape)
         return torch.cat(res, 1)
 
 
