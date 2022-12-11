@@ -17,15 +17,15 @@ class GoogLeNet(nn.Module):
         self.inception2 = InceptionBlock(192, 128, 96)
         self.inception3 = InceptionBlock(384, 192, 128)
         self.inception4 = InceptionBlock(512, 192, 64)
-        self.auxiliary1 = AuxiliaryClassifier(512, 192)
+        self.auxiliary1 = AuxiliaryClassifier(512, 384, 64)
         self.inception5 = InceptionBlock(256, 128, 32)
         self.inception6 = InceptionBlock(128, 64, 32)
         self.inception7 = InceptionBlock(128, 64, 32)
-        self.auxiliary2 = AuxiliaryClassifier(128, 64)
+        self.auxiliary2 = AuxiliaryClassifier(128, 96, 64)
         self.inception8 = InceptionBlock(128, 64, 32)
         self.inception9 = InceptionBlock(128, 64, 32)
         self.pool3 = conv(128, 64, 7, 1, 3)
-        self.linear = nn.Linear(720, 1)
+        self.linear = nn.Linear(1000, 1)
 
     def forward(self, x):
         x = self.conv1(x)
@@ -49,6 +49,7 @@ class GoogLeNet(nn.Module):
         x = F.avg_pool2d(self.pool3(x), kernel_size=7, stride=1, padding=3)
         transform = nn.AdaptiveMaxPool2d(1000)
         x = transform(x)
+        x = self.linear(x)
         return softmax0, softmax1, F.softmax(x, dim=2)
 
 
@@ -82,11 +83,11 @@ class InceptionBlock(nn.Module):
 
 
 class AuxiliaryClassifier(nn.Module):
-    def __init__(self, in_channels, out_channels):
+    def __init__(self, in_channels, mid_channels, out_channels):
         super(AuxiliaryClassifier, self).__init__()
         conv = Block
-        self.pool = conv(in_channels, out_channels, 5, padding=2)
-        self.conv1 = conv(out_channels, out_channels+16, 1)
+        self.pool = conv(in_channels, mid_channels, 5, padding=2)
+        self.conv1 = conv(mid_channels, out_channels, 1)
         self.fc = nn.Linear(1000, 1)
 
     def forward(self, x):
