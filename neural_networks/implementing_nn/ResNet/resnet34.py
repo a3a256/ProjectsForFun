@@ -11,6 +11,7 @@ class ResNet34(nn.Module):
         self.conv3 = Conv3(64, 128)
         self.conv4 = Conv4(128, 256)
         self.conv5 = Conv5(256, 512)
+        self.end = EndLayer()
 
     def forward(self, x):
         x = self.conv1(x)
@@ -18,7 +19,7 @@ class ResNet34(nn.Module):
         x = self.conv3(x)
         x = self.conv4(x)
         x = self.conv5(x)
-        x = F.avg_pool2d(x, kernel_size=1)
+        x = self.end(x)
         return x
 
 
@@ -122,6 +123,18 @@ class Conv5(nn.Module):
         fx2 = self.branch(fx1)
         fx2 = fx2 + fx1
         return F.relu(fx2, inplace=True)
+
+
+class EndLayer(nn.Module):
+    def __init__(self):
+        super(EndLayer, self).__init__()
+        self.fc = nn.Linear(1000, 1)
+    
+    def forward(self, x):
+        x = F.avg_pool2d(x, kernel_size=1)
+        ref = nn.AdaptiveAvgPool2d(1000)
+        x = ref(x)
+        return F.softmax(self.fc(x), dim=2)
 
 
 
