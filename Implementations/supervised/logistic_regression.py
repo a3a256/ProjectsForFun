@@ -9,11 +9,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 
 class OneLogisticRegression:
-    def __init__(self, alpha=0.01, n_iters=2000):
+    def __init__(self, alpha=0.001, n_iters=200):
         self.alpha = alpha
         self.b1 = None
         self.b0 = None
+        self.a1 = 0.999
+        self.a2 = 0.9
         self.n_iters = n_iters
+        self.epsilon = 10**(-8)
 
     def log_func(self, x, b1, b0):
         y = b0 + np.dot(b1, x)
@@ -58,6 +61,28 @@ class OneLogisticRegression:
                 print("Loss: ", error)
         
         print(self.b1)
+    
+    def adam_fit(self, x, y):
+        n_samples, n_features = x.shape
+        self.b1 = np.array([abs(np.random.normal(0, 0.0001, 1)) for _ in range(n_features)])
+        self.b1 = self.b1.T
+        for _ in range(self.n_iters):
+            m0 = 0
+            v0 = 0
+            t = 0
+            for i in range(n_samples):
+                t += 1
+                c = np.dot(x[i, :], self.b1.T)
+                g = self._sigmoid(c)
+                if y[i] == 0:
+                    g = 1/(1-g)
+                else:
+                    g = -(1/g)
+                m0 = self.a1*m0 + (1-self.a1)*g
+                v0 =self.a2*v0 + (1-self.a2)*np.square(g)
+                mhat = m0/(1-self.a1**t)
+                vhat = v0/(1-self.a2**t)
+                self.b1 -= (self.alpha*mhat)/(np.sqrt(vhat) + self.epsilon)
 
     def failed_fit(self, x, y):
         n_samples, n_features = x.shape
@@ -97,7 +122,7 @@ if __name__ == "__main__":
     y = df.iloc[:, 0].values
     x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42, test_size=0.2)
     lr = OneLogisticRegression()
-    lr.fit(x_train, y_train)
+    lr.adam_fit(x_train, y_train)
     lg = LogisticRegression()
     lg.fit(x_train, y_train)
     print(lg.coef_)
@@ -105,5 +130,5 @@ if __name__ == "__main__":
     y_pred = lr.prediction(x_test)
     print("Real model: ", accuracy_score(y_hat, y_test))
     print("Implemented: ", accuracy_score(y_pred, y_test))
-    print(y_test)
-    print(y_pred)
+    # print(y_test)
+    # print(y_pred)
