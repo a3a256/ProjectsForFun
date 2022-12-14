@@ -8,7 +8,7 @@ from sklearn.preprocessing import StandardScaler
 import random
 
 class Regression:
-    def __init__(self, alpha=0.001, fit_intercept=False, n_iter = 20):
+    def __init__(self, alpha=0.001, fit_intercept=False, n_iter = 100):
         self.w = None
         self.alpha = alpha
         self.iters = n_iter
@@ -17,25 +17,27 @@ class Regression:
         self.epsilon = 10**(-8)
 
     def fit(self, x, y):
-        self.w = np.array([abs(np.random.normal(0, 0.01, 1)) for _ in range(x.shape[1])])
+        self.w = np.array([abs(np.random.normal(0, self.alpha, 1)) for _ in range(x.shape[1])])
+        self.w = self.w.T
         for _ in range(self.iters):
             m0 = 0
             v0 = 0
             t = 0
             for i in range(x.shape[0]):
                 t += 1
-                g = [self.w[j]*x[i, j] for j in range(len(self.w))]
-                g = np.array(g)
+                g = np.dot(x[i, :], self.w.T)
+                g = y[i] - g
+                g = -2*x[i, :]*g
                 m0 = self.b1*m0 + (1-self.b1)*g
                 v0 =self.b2*v0 + (1-self.b2)*np.square(g)
                 mhat = m0/(1-self.b1**t)
                 vhat = v0/(1-self.b2**t)
-                self.w -= (self.alpha*mhat)/(np.sqrt(vhat)+self.epsilon)
+                self.w -= (self.alpha*mhat)/(np.sqrt(vhat) + self.epsilon)
         
         # print(self.w.reshape(1, -1))
 
     def predict(self, x):
-        return np.dot(x, self.w)
+        return np.dot(x, self.w.T)
 
 
 if __name__ == "__main__":
