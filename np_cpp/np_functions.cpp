@@ -2,6 +2,16 @@
 #include <iomanip>
 #include <cstdio>
 #include <cmath>
+#include <vector>
+
+std::vector<std::vector <int>> square(std::vector<std::vector<int>> vec){
+    for(int i = 0; i<vec.size(); i++){
+        for(int j = 0; j<vec[0].size(); j++){
+            vec[i][j] = vec[i][j]*vec[i][j];
+        }
+    }
+    return vec;
+}
 
 int argmax(int arr[], int size){
     int max=arr[0];

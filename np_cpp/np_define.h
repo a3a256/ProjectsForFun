@@ -1,4 +1,5 @@
 #include "np_functions.cpp"
+#include <vector>
 
 float* addition_1d();
 float** transpose_matrix();
@@ -14,3 +15,4 @@ float* Percentile();
 int* unique();
 int classes();
 int* bincount();
+std::vector<std::vector <int>> square();

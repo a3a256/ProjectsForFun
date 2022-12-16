@@ -1,6 +1,11 @@
 #include <iostream>
 #include <iomanip>
 #include "np_define.h"
+#include <vector>
+
+void square_test(){
+    std::vector<std::vector <int>> arr;
+}
 
 void bincount_test(){
     int* frequencies;
