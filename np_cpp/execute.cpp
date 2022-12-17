@@ -5,6 +5,21 @@
 
 void square_test(){
     std::vector<std::vector <int>> arr;
+    for(int i = 0; i<3; i++){
+        std::vector<int> temp;
+        for(int j = 0; j<3; j++){
+            temp.push_back(i+j);
+        }
+        arr.push_back(temp);
+    }
+    std::vector<std::vector <int>> renew;
+    renew = square(arr);
+    for(int i = 0; i<3; i++){
+        for(int j = 0; j<3; j++){
+            std::cout << renew[i][j] << " ";
+        }
+        std::cout << "\n";
+    }
 }
 
 void bincount_test(){
@@ -76,7 +91,7 @@ void determinant_test(){
 }
 
 int main(){
-    bincount_test();
+    square_test();
     return 0;
 }
 
