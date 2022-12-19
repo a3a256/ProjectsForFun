@@ -83,12 +83,12 @@ int* bincount(int arr[], int size){
     return counts;
 }
 
-float* sorting(float arr[], int size){
+std::vector<float> sorting(std::vector<float> arr){
     bool sorted = false;
     float temp=(float)0;
     while (!(sorted)){
         sorted = true;
-        for(int i = 1; i<size; i++){
+        for(int i = 1; i<arr.size(); i++){
             if(arr[i]<arr[i-1]){
                 sorted=false;
                 temp = arr[i];
@@ -100,15 +100,15 @@ float* sorting(float arr[], int size){
     return arr;
 }
 
-float* percentile(float arr[], int percs[], int arr_size, int perc_size){
-    static float percentages[100];
-    float* modified;
-    modified = sorting(arr, arr_size);
-    int ids[perc_size];
-    for(int i = 0; i<perc_size; i++){
-        ids[i] = ((arr_size*percs[i])/100);
+std::vector<float> percentile(std::vector<float> arr, std::vector<float> percs){
+    std::vector<float> modified;
+    modified = sorting(arr);
+    std::vector<float> ids;
+    std::vector<float> percentages;
+    for(int i = 0; i<percs.size(); i++){
+        ids[i] = ((arr.size()*percs[i])/100);
     }
-    for(int i = 0; i<perc_size; i++){
+    for(int i = 0; i<percs.size(); i++){
         percentages[i] = modified[ids[i]];
     }
     return percentages;
