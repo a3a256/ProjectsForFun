@@ -114,17 +114,16 @@ std::vector<float> percentile(std::vector<float> arr, std::vector<float> percs){
     return percentages;
 }
 
-float* quantiles(float arr[], int size){
-    static float quantile[4];
-    float* modified;
-    std::cout<<"\n";
-    modified = sorting(arr, size);
-    int quarter = size/4;
+std::vector<float> quantiles(std::vector<float> arr){
+    std::vector<float> quantile;
+    std::vector<float> modified;
+    modified = sorting(arr);
+    int quarter = arr.size()/4;
     int three_quarter = quarter*3;
     quantile[0] = modified[0];
     quantile[1] = modified[quarter];
     quantile[2] = modified[three_quarter];
-    quantile[3] = modified[size-1];
+    quantile[3] = modified[arr.size()-1];
     return quantile;
 }
 
