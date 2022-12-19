@@ -91,7 +91,7 @@ void determinant_test(){
 }
 
 int main(){
-    percentile_test();
+    quantile_test();
     return 0;
 }
 

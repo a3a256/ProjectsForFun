@@ -103,13 +103,13 @@ std::vector<float> sorting(std::vector<float> arr){
 std::vector<float> percentile(std::vector<float> arr, std::vector<int> percs){
     std::vector<float> modified;
     modified = sorting(arr);
-    std::vector<float> ids;
+    std::vector<int> ids;
     std::vector<float> percentages;
     for(int i = 0; i<percs.size(); i++){
-        ids[i] = ((arr.size()*percs[i])/100);
+        ids.push_back((arr.size()*percs[i])/100);
     }
     for(int i = 0; i<percs.size(); i++){
-        percentages[i] = modified[ids[i]];
+        percentages.push_back(modified[ids[i]]);
     }
     return percentages;
 }
@@ -120,10 +120,10 @@ std::vector<float> quantiles(std::vector<float> arr){
     modified = sorting(arr);
     int quarter = arr.size()/4;
     int three_quarter = quarter*3;
-    quantile[0] = modified[0];
-    quantile[1] = modified[quarter];
-    quantile[2] = modified[three_quarter];
-    quantile[3] = modified[arr.size()-1];
+    quantile.push_back(modified[0]);
+    quantile.push_back(modified[quarter]);
+    quantile.push_back(modified[three_quarter]);
+    quantile.push_back(modified[arr.size()-1]);
     return quantile;
 }
 
