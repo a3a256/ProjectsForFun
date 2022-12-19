@@ -52,10 +52,10 @@ void unique_test(){
 }
 
 void percentile_test(){
-    float* p;
-    float arr[] = {3.5f, 1.2f, 9.6f, 2.3f, 9.098f, 0.5f};
-    int per[] = {25, 75};
-    p = percentile(arr, per, (int)6, (int)2);
+    std::vector<float> p;
+    std::vector<float> arr {3.5f, 1.2f, 9.6f, 2.3f, 9.098f, 0.5f};
+    std::vector<int> per {25, 75};
+    p = percentile(arr, per);
     for(int i = 0; i<2; i++){
         std::cout << p[i] << " ";
     }
@@ -63,9 +63,9 @@ void percentile_test(){
 }
 
 void quantile_test(){
-    float * q;
-    float arr[] = {3.5f, 1.2f, 9.6f, 2.3f, 9.098f, 0.5f};
-    q = quantiles(arr, (int)6);
+    std::vector<float> q;
+    std::vector<float> arr {3.5f, 1.2f, 9.6f, 2.3f, 9.098f, 0.5f};
+    q = quantiles(arr);
     for(int i = 0; i<4; i++){
         std::cout << q[i] << " ";
     }
@@ -91,7 +91,7 @@ void determinant_test(){
 }
 
 int main(){
-    square_test();
+    percentile_test();
     return 0;
 }
 

@@ -100,7 +100,7 @@ std::vector<float> sorting(std::vector<float> arr){
     return arr;
 }
 
-std::vector<float> percentile(std::vector<float> arr, std::vector<float> percs){
+std::vector<float> percentile(std::vector<float> arr, std::vector<int> percs){
     std::vector<float> modified;
     modified = sorting(arr);
     std::vector<float> ids;
