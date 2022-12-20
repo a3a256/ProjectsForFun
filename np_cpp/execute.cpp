@@ -23,12 +23,10 @@ void square_test(){
 }
 
 void bincount_test(){
-    int* frequencies;
-    int categories[] = {0, 0, 0, 0, 1, 1, 1, 1, 0};
-    int length = sizeof(categories)/sizeof(categories[0]);
-    frequencies = bincount(categories, length);
-    int n = classes(categories, length);
-    for(int i = 0; i<n; i++){
+    std::vector<int> frequencies;
+    std::vector<int> categories {0, 0, 0, 0, 1, 1, 1, 1, 0};
+    frequencies = bincount(categories);
+    for(int i = 0; i<frequencies.size(); i++){
         std::cout << frequencies[i] << " ";
     }
     std::cout << "\n";
@@ -42,9 +40,9 @@ void classes_test(){
 }
 
 void unique_test(){
-    int* s;
-    int pr[] = {0, 0, 1, 0, 2, 3};
-    s = unique(pr, (int)5);
+    std::vector<int> s;
+    std::vector<int> pr {0, 0, 1, 0, 2, 3};
+    s = unique(pr);
     for(int i = 0; i<3; i++){
         std::cout << s[i] << " ";
     }
@@ -91,7 +89,7 @@ void determinant_test(){
 }
 
 int main(){
-    quantile_test();
+    unique_test();
     return 0;
 }
 

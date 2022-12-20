@@ -50,7 +50,7 @@ std::vector<int> unique(std::vector<int> arr){
     u.push_back(arr[0]);
     int length = 1;
     bool exists=false;
-    for(int i = 0; i<size; i++){
+    for(int i = 0; i<arr.size(); i++){
         exists=false;
         for(int j = 0; j<length; j++){
             if(u[j] == arr[i]){
@@ -58,7 +58,7 @@ std::vector<int> unique(std::vector<int> arr){
             }
         }
         if(!(exists)){
-            u[length] = arr[i];
+            u.push_back(arr[i]);
             length ++;
         }
     }
@@ -68,17 +68,16 @@ std::vector<int> unique(std::vector<int> arr){
 std::vector<int> bincount(std::vector<int> arr){
     std::vector<int> counts;
     int freq;
-    int* n_classes;
-    n_classes = unique(arr, size);
-    int n = classes(arr, size);
-    for(int i = 0; i<n; i++){
+    std::vector<int> n_classes;
+    n_classes = unique(arr);
+    for(int i = 0; i<n_classes.size(); i++){
         freq = 0;
-        for(int j = 0; j<size; j++){
+        for(int j = 0; j<arr.size(); j++){
             if(n_classes[i] == arr[j]){
                 freq ++;
             }
         }
-        counts[i] = freq;
+        counts.push_back(freq);
     }
     return counts;
 }
