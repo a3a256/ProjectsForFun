@@ -45,9 +45,9 @@ int classes(int arr[], int size){
     return length;
 }
 
-int* unique(int arr[], int size){
-    static int u[50];
-    u[0] = arr[0];
+std::vector<int> unique(std::vector<int> arr){
+    std::vector<int> u;
+    u.push_back(arr[0]);
     int length = 1;
     bool exists=false;
     for(int i = 0; i<size; i++){
@@ -65,8 +65,8 @@ int* unique(int arr[], int size){
     return u;
 }
 
-int* bincount(int arr[], int size){
-    static int counts[50];
+std::vector<int> bincount(std::vector<int> arr){
+    std::vector<int> counts;
     int freq;
     int* n_classes;
     n_classes = unique(arr, size);
