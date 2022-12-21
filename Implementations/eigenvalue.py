@@ -2,6 +2,19 @@ import numpy as np
 
 matrix = [[40, -30, 60, -35], [-30, 300, -675, 420], [60, -675, 1620, -1050], [-35, 420, -1050, 700]]
 
+def eye(m, n):
+    res = []
+    for i in range(m):
+        temp = []
+        for j in range(n):
+            if i == j:
+                temp += [1]
+            else:
+                temp += [0]
+        res += [temp]
+    
+    return res
+
 def maxind(k, matrix):
     m = 0
     for i in range(1, len(matrix)):
@@ -35,6 +48,63 @@ def rotate(k, l, i, j, c, s, matrix):
         result += [temp]
 
     return result[0][0], result[1][0]
+
+def transpose(m):
+    result = []
+    for i in range(len(m[0])):
+        temp = []
+        for j in range(len(m)):
+            temp += [m[i][j]]
+        result += [temp]
+    return result
+
+def dot(one, two):
+    result = []
+    for i in range(len(one)):
+        temp = []
+        for j in range(len(two[0])):
+            _sum = 0
+            for k in range(len(one[0])):
+                _sum += one[i][k]*two[k][j]
+            temp += [_sum]
+        result += [temp]
+
+    return result
+
+def largest(s):
+    v = s[0][0]
+    row = 0
+    column = 0
+    for i in range(s):
+        for j in range(s[0]):
+            if s[i][j] > v:
+                row = i
+                column = j
+                v = s[i][j]
+    return v, i, j
+
+def theta(s):
+    _max, i, j = largest(s)
+    if s[j][j] == s[i][i]:
+        value = np.pi/4
+    else:
+        value = (2*_max)/(s[j][j]-s[i][i])
+    angle = np.arctan(value)/2
+    return angle
+
+def shape(m):
+    return (len(m), len(m[0]))
+
+def correct_jacobi(s):
+    rows, columns = shape(s)
+    vector = eye(rows, columns)
+    large, k, l = largest(s)
+    angle = theta(s)
+    b = eye(rows, columns)
+    b[k][k] = np.cos(angle)
+    b[k][l] = -np.sin(angle)
+    b[l][k] = np.sin(angle)
+    b[l][l] = np.cos(angle)
 
 def jacobi(matrix):
     vector = []
