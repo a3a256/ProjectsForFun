@@ -1,6 +1,7 @@
 import numpy as np
 
 matrix = [[40, -30, 60, -35], [-30, 300, -675, 420], [60, -675, 1620, -1050], [-35, 420, -1050, 700]]
+k = [[1,2,3,4], [5,6,7,8]]
 
 def eye(m, n):
     res = []
@@ -54,7 +55,7 @@ def transpose(m):
     for i in range(len(m[0])):
         temp = []
         for j in range(len(m)):
-            temp += [m[i][j]]
+            temp += [m[j][i]]
         result += [temp]
     return result
 
@@ -75,8 +76,8 @@ def largest(s):
     v = s[0][0]
     row = 0
     column = 0
-    for i in range(s):
-        for j in range(s[0]):
+    for i in range(len(s)):
+        for j in range(len(s[0])):
             if s[i][j] > v:
                 row = i
                 column = j
@@ -95,6 +96,14 @@ def theta(s):
 def shape(m):
     return (len(m), len(m[0]))
 
+def removeError(l):
+    row, col = shape(l)
+    for i in range(row):
+        for j in range(col):
+            if(abs(l[i][j]) <= 10**(-5)):
+                l[i][j] = 0
+    return l
+
 def correct_jacobi(s):
     rows, columns = shape(s)
     vector = eye(rows, columns)
@@ -105,6 +114,25 @@ def correct_jacobi(s):
     b[k][l] = -np.sin(angle)
     b[l][k] = np.sin(angle)
     b[l][l] = np.cos(angle)
+    d = dot(dot(transpose(b), s), s)
+    d = removeError(d)
+    vector = dot(vector, b)
+    while(isDiagonal(d)):
+        row, col = shape(d)
+        angle = theta(d)
+        large, k, l = largest(d)
+
+        b = eye(k, l)
+        b[k][k] = np.cos(angle)
+        b[k][l] = -np.sin(angle)
+        b[l][k] = np.sin(angle)
+        b[l][l] = np.cos(angle)
+
+        d = dot(dot(transpose(b), d), b)
+        d = removeError(d)
+        vector = dot(vector, b)
+    print(vector)
+    print(d)
 
 def jacobi(matrix):
     vector = []
@@ -181,7 +209,8 @@ def isDiagonal(arr):
                     return False
     return True
 
-print(np.diagflat(np.diag(matrix)))
-# print(jacobi(matrix))
-print(isDiagonal([[1, 0, 0], [0, 2, 0], [0, 5, 3]]))
-print(np.linalg.eig(matrix))
+# print(np.diagflat(np.diag(matrix)))
+# # print(jacobi(matrix))
+# print(isDiagonal([[1, 0, 0], [0, 2, 0], [0, 5, 3]]))
+# print(np.linalg.eig(matrix))
+print(correct_jacobi(matrix))
