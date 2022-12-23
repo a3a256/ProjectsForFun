@@ -9,7 +9,7 @@ int argmax();
 float* mean();
 float standard_deviation();
 float determinant();
-float** eye();
+std::vector<std::vector<float>> eye();
 std::vector<float> quantiles();
 std::vector<float> percentile();
 std::vector<int> unique();

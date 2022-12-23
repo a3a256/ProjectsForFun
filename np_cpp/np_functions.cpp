@@ -126,20 +126,27 @@ std::vector<float> quantiles(std::vector<float> arr){
     return quantile;
 }
 
-float** eye(int dim){
-    static float** arr = 0;
-    arr = new float*[1000];
-    for(int i = 0; i<dim; i++){
-        arr[i] = new float[1000];
-        for(int j = 0; j<dim; j++){
+std::vector<std::vector<float>> eye(std::vector<int> dim){
+    std::vector<std::vector<float>> res;
+    int rows, columns;
+    if(dim.size() == 1){
+        rows = dim.at(0);
+        columns = dim.at(0);
+    }else{
+        rows = dim.at(0);
+        columns = dim.at(1);
+    }
+    for(int i = 0; i<rows; i++){
+        std::vector<float> temp;
+        for(int j = 0; j<columns; j++){
             if(i == j){
-                arr[i][j] = 1.0f;
+                temp.push_back((float)1);
             }else{
-                arr[i][j] = 0.0f;
+                temp.push_back((float)0);
             }
         }
     }
-    return arr;
+    return res;
 }
 
 float determinant(float arr[][1000], int rows, int cols){
