@@ -28,11 +28,11 @@ class LDAClassifier:
 
     def multi_equation(self, x):
         res = []
-        for i in range(self.priors):
-            first = np.dot(np.dot(self.means[i].T, np.linalg.inv(self.covariances[i])), x.T)
-            second = 0.5*np.dot(np.dot(self.means[i].T, np.linalg.inv(self.covariances[i])), self.means[i])
-            end = np.log(self.priors[i])
-            res += [first-second+end]
+        for i in range(len(self.priors)):
+            first = np.dot(np.dot(self.means[i].T, np.linalg.inv(self.covariances[0])), x.reshape(-1, 1))
+            second = 1/2*(np.dot(np.dot(self.means[i].T, np.linalg.inv(self.covariances[0])), self.means[i]))
+            third = np.log(self.priors[i])
+            res += [first - second + third]
         return np.argmax(res)
 
     def predict_multi(self, x):
@@ -59,10 +59,20 @@ if __name__ == '__main__':
     le = LabelEncoder()
     sc = StandardScaler()
     df['diagnosis'] = le.fit_transform(df['diagnosis'])
-    x = df.iloc[:, [2, 3]].values
+    x = df.iloc[:, [2, 5]].values
     x = sc.fit_transform(x)
     y = df.iloc[:, 1].values
     x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42, test_size=0.2)
+    ld = LinearDiscriminantAnalysis()
+    ld.fit(x_train, y_train)
+    lda.fit(x_train, y_train)
+    yhat = lda.predict(x_test)
+    real = ld.predict(x_test)
+    data = load_iris()
+    x = data.data
+    y = data.target
+    x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=42, test_size=0.2)
+    lda = LDAClassifier()
     ld = LinearDiscriminantAnalysis()
     ld.fit(x_train, y_train)
     lda.fit(x_train, y_train)
