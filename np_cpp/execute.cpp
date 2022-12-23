@@ -71,10 +71,11 @@ void quantile_test(){
 }
 
 void eye_test(){
-    float** r;
-    r = eye((int)5);
-    for(int i = 0; i<5; i++){
-        for(int j = 0; j<5; j++){
+    std::vector<std::vector<float>> r;
+    std::vector<int> dims {3, 3};
+    r = eye(dims);
+    for(int i = 0; i<r.size(); i++){
+        for(int j = 0; j<r[0].size(); j++){
             std::cout << r[i][j] << " ";
         }
         std::cout << "\n";
@@ -89,7 +90,7 @@ void determinant_test(){
 }
 
 int main(){
-    unique_test();
+    eye_test();
     return 0;
 }
 

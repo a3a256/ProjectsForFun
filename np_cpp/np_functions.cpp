@@ -145,6 +145,7 @@ std::vector<std::vector<float>> eye(std::vector<int> dim){
                 temp.push_back((float)0);
             }
         }
+        res.push_back(temp);
     }
     return res;
 }
