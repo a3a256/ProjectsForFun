@@ -118,6 +118,10 @@ def decompose(arr):
             r[i][j] -= to_norm[t]
             t += 1
 
+        q_change = []
+        for k in range(j, len(q[0])):
+            q_change = None
+
     print(r)
         
 
