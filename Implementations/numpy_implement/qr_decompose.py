@@ -67,14 +67,17 @@ def transpose(arr):
     return res
 
 
-def mult(arr, arr1):
+def mult(arr1, arr2):
+    print(len(arr1))
+    print(len(arr2))
     ans = []
-    for i in range(len(arr)):
+    for i in range(len(arr1)):
         t = []
-        for z in range(len(arr1[0])):
+        for j in range(len(arr2[0])):
             value = 0
-            for j in range(len(arr[0])):
-                value += arr[i][j]*arr1[j][i]
+            for k in range(len(arr1[0])):
+                print(k)
+                value += arr1[i][k]*arr2[k][j]
             t.append(value)
         ans.append(t)
     return ans
@@ -119,8 +122,20 @@ def decompose(arr):
             t += 1
 
         q_change = []
-        for k in range(j, len(q[0])):
-            q_change = None
+        for z in range(len(q)):
+            temper = []
+            for k in range(j, len(q[0])):
+                temper += [q[z][k]]
+            q_change += [temper]
+        q_t = [tu*tau for tu in w]
+        print(transpose([w]))
+        print(mult(q_change, transpose([w])))
+
+        h_q = mult(transpose(mult(q_change, transpose([w]))), transpose([q_t]))
+        print(h_q)
+        # for z in range(len(q)):
+        #     for k in range(j, len(q[0])):
+        #         q[z][k] 
 
     print(r)
         
