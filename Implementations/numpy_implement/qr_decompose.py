@@ -14,13 +14,10 @@ def eye(size):
 
     elif isinstance(size, int):
         for i in range(size):
-            temp = []
-            for j in range(size):
-                if i == j:
-                    temp += [1]
-                else:
-                    temp += [0]
-            res += [temp]
+            if i == 0:
+                res += [1]
+            else:
+                res += [0]
 
         return res
 
@@ -68,15 +65,12 @@ def transpose(arr):
 
 
 def mult(arr1, arr2):
-    print(len(arr1))
-    print(len(arr2))
     ans = []
     for i in range(len(arr1)):
         t = []
         for j in range(len(arr2[0])):
             value = 0
             for k in range(len(arr1[0])):
-                print(k)
                 value += arr1[i][k]*arr2[k][j]
             t.append(value)
         ans.append(t)
@@ -117,35 +111,44 @@ def decompose(arr):
             to_norm[k] *= v
 
 
-        for k in range(j, len(r[0])):
-            r[i][j] -= to_norm[t]
+        for k in range(j, len(r)):
+            for mn in range(len(r[0])):
+                r[k][mn] -= to_norm[t]
             t += 1
 
         q_change = []
-        for z in range(len(q)):
-            temper = []
-            for k in range(j, len(q[0])):
-                temper += [q[z][k]]
-            q_change += [temper]
+        for k in range(j, len(q)):
+            q_change += [q[k]]
         q_t = [tu*tau for tu in w]
-        print(transpose([w]))
-        print(mult(q_change, transpose([w])))
 
-        h_q = mult(transpose(mult(q_change, transpose([w]))), transpose([q_t]))
-        print(h_q)
-        # for z in range(len(q)):
-        #     for k in range(j, len(q[0])):
-        #         q[z][k] 
+        h_q = mult(transpose(mult([q_change], transpose([w]))), transpose([q_t]))[0][0]
+        for z in range(j, len(q)):
+            q[z] -= h_q
 
     print(r)
+
+    return q, r
         
 
 
 
 import numpy as np
 
-print(np.linalg.norm([1,2,3,4,5]))
+# print(np.linalg.norm([1,2,3,4,5]))
 
-print(norm([1,2,3,4,5]))
+# print(norm([1,2,3,4,5]))
 
 decompose([[1,2,3], [4,5,6], [7,8,9]])
+
+def qr_algorithm(A, tol=0.0001):
+    Q, R = np.linalg.qr(A)
+    previous = np.empty(shape=Q.shape)
+    for i in range(500):
+        previous[:] = Q
+        X = R @ Q
+        Q, R = np.linalg.qr(X)
+        if np.allclose(X, np.triu(X), atol=tol): 
+            break
+    return Q
+
+print(np.linalg.qr([[1,2,3], [4,5,6], [7,8,9]]))
