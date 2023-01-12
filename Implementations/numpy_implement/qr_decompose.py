@@ -80,7 +80,7 @@ def mult(arr1, arr2):
 
 
 def decompose(arr):
-    q = eye(len(arr))
+    q = eye((len(arr), len(arr)))
     r = arr
 
 
@@ -118,14 +118,16 @@ def decompose(arr):
 
         q_change = []
         for k in range(j, len(q)):
-            q_change += [q[k]]
+            temp = []
+            for l in range(len(q)):
+                temp += [q[l][k]]
+            q_change += [temp]
+
         q_t = [tu*tau for tu in w]
-
-        h_q = mult(transpose(mult([q_change], transpose([w]))), transpose([q_t]))[0][0]
-        for z in range(j, len(q)):
-            q[z] -= h_q
-
-    print(r)
+        h_q = mult(mult(transpose(q_change), transpose([w])), [q_t])[0][0]
+        for k in range(j, len(q)):
+            for z in range(len(q)):
+                q[k][z] -= h_q
 
     return q, r
         
@@ -141,14 +143,22 @@ import numpy as np
 decompose([[1,2,3], [4,5,6], [7,8,9]])
 
 def qr_algorithm(A, tol=0.0001):
-    Q, R = np.linalg.qr(A)
-    previous = np.empty(shape=Q.shape)
+    Q, R = decompose(A)
+    previous = np.empty(shape=len(A))
     for i in range(500):
-        previous[:] = Q
-        X = R @ Q
-        Q, R = np.linalg.qr(X)
+        previous = Q
+        X = mult(R, Q)
+        Q, R = decompose(X)
         if np.allclose(X, np.triu(X), atol=tol): 
             break
     return Q
 
-print(np.linalg.qr([[1,2,3], [4,5,6], [7,8,9]]))
+print(qr_algorithm([[1,2,3], [4,5,6], [7,8,9]]))
+
+print(np.linalg.eig([[1,2,3], [4,5,6], [7,8,9]]))
+
+# print('parrot' ,np.linalg.qr([[1,2,3], [4,5,6], [7,8,9]])[:])
+
+print('parrot ', np.empty(shape=3))
+
+# print(np.linalg.qr([[1,2,3], [4,5,6], [7,8,9]]))
