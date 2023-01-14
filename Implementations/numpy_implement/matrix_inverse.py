@@ -25,6 +25,29 @@ def is_diagonal(arr):
                     return False
     return True
 
+def row_closest(arr, row, column):
+    close_row = None
+    close_column = None
+    dd = dict()
+    for i in range(len(arr)):
+        if i != row:
+            diff = arr[row][column] - arr[i][column]
+            if abs(diff) not in dd:
+                if arr[i][column] != 0:
+                    dd[abs(diff)] = [[i, column]]
+            else:
+                if arr[i][column] != 0:
+                    dd[abs(diff)] += [[i, column]]
+
+    sorted_keys = sorted(dd, key=lambda x: x)
+
+def augment(arr, ide):
+    for i in range(len(arr)):
+        for j in range(len(arr[0])):
+            if i != j:
+                if arr[i][j] != 0:
+                    pass
+
 def inverse(arr):
     identity = eye(len(arr))
     for i in range(len(arr)):
