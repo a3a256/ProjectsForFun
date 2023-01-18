@@ -1,6 +1,8 @@
 import numpy as np
 from copy import deepcopy
 
+from matrix_inverse import inverse
+
 def out_matrix(arr):
     for i in arr:
         for j in i:
@@ -115,11 +117,14 @@ def house_holder_reflections(matrix):
         # out_matrix(ref_e)
         # print()
         cop = dot(ref_e, r)
-        r = deepcopy(aproximate(cop))
-        es += [deepcopy(r)]
+        r = deepcopy(cop)
+        es += [deepcopy(ref_e)]
         length -= 1
-    out_matrix(dot(es[0], es[1]))
-    q = dot(dot(es[0], es[1]), es[2])
+    # out_matrix(dot(es[0], es[1]))
+    q = deepcopy(es[0])
+    print()
+    for i in es[1:]:
+        q = dot(deepcopy(q), deepcopy(i))
 
     for i in es:
         out_matrix(i)
@@ -133,9 +138,14 @@ matrix = [[2, -2, 18], [2, 1, 0], [1, 2, 0]]
 q, r = house_holder_reflections(matrix)
 
 qq, rr = np.linalg.qr(matrix)
+
+print("*"*5, "Real Algorithm", "*"*5)
+
 print("Q ", qq)
 
 print("R ", rr)
+
+print("*"*5, "Implemented", "*"*5)
 
 print("Q")
 out_matrix(q)
