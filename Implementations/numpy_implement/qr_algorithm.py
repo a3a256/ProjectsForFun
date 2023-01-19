@@ -170,10 +170,44 @@ def qr_algorithm(matrix, iter=5000):
     return ak, qq
 
 
+def eigenvector(matrix):
+    vals, _ = qr_algorithm(matrix)
+
+    values = diag(vals)
+
+    vectors = []
+
+    for _ in range(len(values)):
+        temp = deepcopy(matrix)
+
+        for i in range(len(matrix)):
+            for j in range(len(matrix)):
+                if i == j:
+                    temp[i][j] -= values[i]
+
+        _val, k = qr_algorithm(temp)
+
+        vectors += [diag(_val)]
+
+
+    return vectors
+
+
 matrix = [[1.2, 3.1, 6.7], [5.3, 6.6, 1.9], [4.5, 7.2, 8.9]]
 
 a, q = qr_algorithm(matrix)
 
+print("***Implemented***Eigenvalue")
 print(diag(a))
+print("***Implemented***Eigenvector")
+out_matrix(eigenvector(matrix))
 
-print(np.linalg.eigvals(matrix))
+print()
+
+vals, vecs = np.linalg.eig(matrix)
+
+print("***Real***Eigenvalue")
+print(vals)
+
+print("***Real***Eigenvector")
+print(vecs)
