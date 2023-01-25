@@ -139,8 +139,10 @@ def house_holder_reflections(matrix):
 
 
 def qr_algorithm(matrix, iter=5000):
+    # qq, _ = house_holder_reflections(deepcopy(matrix))
     qq = eye(len(matrix))
     ak = deepcopy(matrix)
+    save = []
     for _ in range(iter):
         s = ak[-1][-1]
         iden = eye(len(qq))
@@ -162,12 +164,72 @@ def qr_algorithm(matrix, iter=5000):
                 ak[i][j] = reverse[i][j] + shift[i][j]
 
         qq = dot(qq, q)
+        save += [deepcopy(q)]
 
-        if is_trangular(ak):
+        if is_trangular(deepcopy(ak)):
             break
+
+    # end = save[0]
+
+    # for i in save[1:]:
+    #     end = dot(end, i)
 
 
     return ak, qq
+
+
+def conjugate(a, b):
+    x = [[1]*len(a)]
+    x = transpose(x)
+    ans = dot(a, x)
+    p0 = []
+    for i in range(len(ans)):
+        temp = []
+        for j in range(len(ans[0])):
+            temp += [b[i][j] - ans[i][j]]
+        p0 += [temp]
+    r0 = deepcopy(p0)
+    alpha = dot(transpose(p0), p0)[0][0]/dot(dot(transpose(p0), a), p0)[0][0]
+    for i in range(len(x)):
+        x[i][0] += alpha*p0[i][0]
+    for _ in range(1, len(b)):
+        mp = dot(a, p0)
+        second = transpose([[alpha*mp[k][0] for k in range(len(mp))]])
+        r_next = transpose([[r0[k][0] - second[k][0] for k in range(len(second))]])
+        beta = dot(transpose(r_next), r_next)[0][0]/dot(transpose(r0), r0)[0][0]
+        p_next = transpose([[r_next[k][0] + beta*p0[k][0] for k in range(len(r_next))]])
+        alpha = dot(transpose(r_next), r_next)[0][0]/dot(dot(transpose(p_next), a), p_next)[0][0]
+        for i in range(len(x)):
+            x[i][0] += alpha*p_next[i][0]
+
+        r0 = deepcopy(r_next)
+        p0 = deepcopy(p_next)
+
+
+    return transpose(x)[0]
+
+
+def zeros(size):
+    zero = []
+    if isinstance(size, int):
+        for i in range(size):
+            temp = []
+            for j in range(size):
+                temp += [0]
+            zero += [temp]
+
+        return zero
+
+    if isinstance(size, tuple):
+        for i in range(size[0]):
+            temp = []
+            for j in range(size[1]):
+                temp += [0]
+
+            zero += [temp]
+
+        return zero
+
 
 
 def eigenvector(matrix):
@@ -177,15 +239,39 @@ def eigenvector(matrix):
 
     vectors = []
 
-    for _ in range(len(values)):
+    for k in range(len(values)):
         temp = deepcopy(matrix)
 
+        zero = zeros((len(matrix), 1))
         for i in range(len(matrix)):
             for j in range(len(matrix)):
                 if i == j:
-                    temp[i][j] -= values[i]
+                    temp[i][j] -= values[k]
 
-        _val, k = qr_algorithm(temp)
+        _val = conjugate(deepcopy(temp), zero)
+
+        vectors += [deepcopy(_val)]
+
+    return vectors
+
+
+def eigenvector1(matrix):
+    vals, _ = qr_algorithm(matrix)
+
+    values = diag(vals)
+
+    vectors = []
+
+    for k in range(len(values)):
+        temp = deepcopy(matrix)
+
+        zero = zeros((len(matrix), 1))
+        for i in range(len(matrix)):
+            for j in range(len(matrix)):
+                if i == j:
+                    temp[i][j] -= values[k]
+
+        _val, _ = qr_algorithm(temp)
 
         vectors += [diag(_val)]
 
@@ -193,21 +279,27 @@ def eigenvector(matrix):
     return vectors
 
 
-matrix = [[1.2, 3.1, 6.7], [5.3, 6.6, 1.9], [4.5, 7.2, 8.9]]
+matrix = [[1.2, 3.1, 6.7, 7.7], [5.3, 6.6, 1.9, 2.2], [4.5, 7.2, 8.9, 6.6], [3.7, 8.1, 9, 1]]
 
 a, q = qr_algorithm(matrix)
 
-print("***Implemented***Eigenvalue")
-print(diag(a))
+# gg = eigenvector(matrix)
+
+# out_matrix(a)
+
+print()
+
+# print("***Implemented***Eigenvalue")
+# print(diag(a))
 print("***Implemented***Eigenvector")
-out_matrix(eigenvector(matrix))
+out_matrix(q)
 
 print()
 
 vals, vecs = np.linalg.eig(matrix)
 
-print("***Real***Eigenvalue")
-print(vals)
+# print("***Real***Eigenvalue")
+# print(vals)
 
 print("***Real***Eigenvector")
-print(vecs)
+out_matrix(vecs)
