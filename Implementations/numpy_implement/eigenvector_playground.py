@@ -1,14 +1,29 @@
 import numpy as np
 from copy import deepcopy
 
-def is_triangular(matrix):
-    for i in range(len(matrix)):
-        for j in range(len(matrix[0])):
-            if j < i:
-                if abs(matrix[i][j] - 0) > 10**(-10):
-                    return True
+def allclose(one, two, tol=0.00001):
+    if abs(one-two) <= tol:
+        return True
+    else:
+        return False
 
-    return False
+
+def aproximate(arr):
+    for i in range(len(arr)):
+        for j in range(len(arr[0])):
+            if j < i:
+                if allclose(arr[i][j], 0):
+                    arr[i][j] = 0
+    return arr
+
+def is_triangular(arr):
+    arr = aproximate(arr)
+    for i in range(len(arr)):
+        for j in range(len(arr[0])):
+            if j < i:
+                if arr[i][j] != 0:
+                    return False
+    return True
 
 def out_matrix(arr):
     for i in arr:
@@ -213,7 +228,7 @@ def qr(matrix):
 
 
 
-def eigenvalues(matrix, iter=50000):
+def eigenvalues(matrix, iter=500):
     qq = eye(len(matrix))
     ak = deepcopy(matrix)
 
@@ -249,6 +264,7 @@ def eigenvalues(matrix, iter=50000):
         qq = dot(qq, q)
 
         if is_triangular(ak):
+            print(iter)
             break
 
     return diag(ak)
@@ -332,32 +348,44 @@ def eigenvector(matrix, iter=10):
 
 
 
-matrix = [[1.2, 3.1, 6.7, 7.7], [5.3, 6.6, 1.9, 2.2], [4.5, 7.2, 8.9, 6.6], [3.7, 8.1, 9, 1]]
+# matrix = [[1.2, 3.1, 6.7, 7.7], [5.3, 6.6, 1.9, 2.2], [4.5, 7.2, 8.9, 6.6], [3.7, 8.1, 9, 1]]
 
-q, r = qr(matrix)
+# q, r = qr(matrix)
 
-out_matrix(q)
+# out_matrix(q)
 
-q, r = np.linalg.qr(matrix)
+# q, r = np.linalg.qr(matrix)
 
-print(q)
+# print(q)
 
-v, _ = qr_algorithm(matrix)
+# v, _ = qr_algorithm(matrix)
 
-print(diag(v))
+# print(diag(v))
 
-vectors_implemented = eigenvector(matrix)
+# vectors_implemented = eigenvector(matrix)
 
-vals, vectors_real = np.linalg.eig(matrix)
+# vals, vectors_real = np.linalg.eig(matrix)
 
-print(vals)
+# print(vals)
 
-print("***Implemented***")
+# print("***Implemented***")
 
-out_matrix(vectors_implemented)
+# out_matrix(vectors_implemented)
 
-print()
+# print()
 
-print("***Real***")
+# print("***Real***")
 
-out_matrix(vectors_real)
+# out_matrix(vectors_real)
+
+matrix = [[-16, -28, -19], [42, 69, 46], [-42, -72, -49]]
+
+a = eigenvalues(matrix)
+
+print(a)
+
+out_matrix(eigenvector(matrix))
+
+a = np.linalg.eigvals(matrix)
+
+print(a)
