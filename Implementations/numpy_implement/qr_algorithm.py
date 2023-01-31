@@ -1,6 +1,47 @@
 import numpy as np
 from copy import deepcopy
 
+
+def mean(arr):
+    return sum(arr)/len(arr)
+
+
+def variance(arr):
+    return sum([(i - mean(arr))**2 for i in arr])/len(arr)
+
+
+def covar(x, y):
+    mean_x = mean(x)
+    mean_y = mean(y)
+    upper = [(i-mean_x)*(j-mean_y) for i, j in zip(x, y)]
+    return sum(upper)/len(x)
+
+
+def cov(arr):
+    res = []
+    row = []
+    x = []
+    y = []
+    for k in range(len(arr[0])):
+        for i in range(len(arr[0])):
+            for j in range(len(arr)):
+                if i == k:
+                    x += [arr[j][i]]
+                else:
+                    x += [arr[j][k]]
+                    y += [arr[j][i]]
+            if i == k:
+                row += [variance(x)]
+            else:
+                row += [covar(x, y)]
+            x = []
+            y = []
+        res += [row]
+        row = []
+
+    
+    return res
+
 def diag(arr):
     new_matrix = []
     for i in range(len(arr)):
@@ -140,12 +181,12 @@ def house_holder_reflections(matrix):
 
 def qr_algorithm(matrix, iter=5000):
     # qq, _ = house_holder_reflections(deepcopy(matrix))
-    qq = eye(len(matrix))
+    # qq = eye(len(matrix))
     ak = deepcopy(matrix)
     save = []
     for _ in range(iter):
         s = ak[-1][-1]
-        iden = eye(len(qq))
+        iden = eye(len(matrix))
         shift = []
         for i in range(len(iden)):
             temp = []
@@ -163,19 +204,19 @@ def qr_algorithm(matrix, iter=5000):
             for j in range(len(ak[0])):
                 ak[i][j] = reverse[i][j] + shift[i][j]
 
-        qq = dot(qq, q)
+        # qq = dot(qq, q)
         save += [deepcopy(q)]
 
         if is_trangular(deepcopy(ak)):
             break
 
-    # end = save[0]
+    end = save[0]
 
-    # for i in save[1:]:
-    #     end = dot(end, i)
+    for i in save[1:]:
+        end = dot(end, i)
 
 
-    return ak, qq
+    return ak, end
 
 
 def conjugate(a, b):
@@ -279,27 +320,55 @@ def eigenvector1(matrix):
     return vectors
 
 
-matrix = [[1.2, 3.1, 6.7, 7.7], [5.3, 6.6, 1.9, 2.2], [4.5, 7.2, 8.9, 6.6], [3.7, 8.1, 9, 1]]
+# matrix = [[1.2, 3.1, 6.7, 7.7], [5.3, 6.6, 1.9, 2.2], [4.5, 7.2, 8.9, 6.6], [3.7, 8.1, 9, 1]]
 
-a, q = qr_algorithm(matrix)
+# a, q = qr_algorithm(matrix)
 
-# gg = eigenvector(matrix)
+# # gg = eigenvector(matrix)
 
-# out_matrix(a)
+# # out_matrix(a)
 
-print()
+# print()
 
 # print("***Implemented***Eigenvalue")
 # print(diag(a))
-print("***Implemented***Eigenvector")
-out_matrix(q)
+# print("***Implemented***Eigenvector")
+# out_matrix(q)
 
-print()
+# print()
 
-vals, vecs = np.linalg.eig(matrix)
+# vals, vecs = np.linalg.eig(matrix)
 
 # print("***Real***Eigenvalue")
 # print(vals)
 
-print("***Real***Eigenvector")
-out_matrix(vecs)
+# print("***Real***Eigenvector")
+# out_matrix(vecs)
+
+
+
+matrix = [[-16, -28, -19], [42, 69, 46], [-42, -72, -49]]
+
+covd = cov(matrix)
+
+out_matrix(covd)
+
+a, q = qr_algorithm(covd)
+
+r, t = qr_algorithm(covd)
+
+print(diag(a))
+
+print("-"*10)
+
+out_matrix(t)
+
+vv = eigenvector(matrix)
+
+# out_matrix(vv)
+
+a, b = np.linalg.eig(covd)
+
+print(a, b)
+
+print("Cov", np.cov(transpose(matrix)))
