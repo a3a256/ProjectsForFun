@@ -122,6 +122,23 @@ def determinant(arr):
     return det
 
 
+def matrix_equations(matrix, answers):
+    orig_det = determinant(matrix)
+
+    arguments = []
+
+    temp = []
+
+    for i in range(len(matrix)):
+        temp = deepcopy(matrix)
+        for j in range(len(matrix)):
+            temp[j][i] = answers[j]
+
+        arguments += [determinant(temp)/orig_det]
+
+    return arguments
+
+
 def cofactor_matrix(matrix):
     new_matrix = []
     for i in range(len(matrix)):
@@ -344,6 +361,20 @@ def eigenvector(matrix, iter=10):
     return vectors
 
 
+def vectors(matrix):
+    values = eigenvalues(matrix)
+    vecs = []
+    for i in values:
+        temp_matrix = deepcopy(matrix)
+        for j in range(len(matrix)):
+            for k in range(len(matrix)):
+                if j == k:
+                    temp_matrix[j][k] -= i
+        vecs += [matrix_equations(temp_matrix, [0]*len(matrix))]
+
+    return vecs
+
+
 
 
 
@@ -384,8 +415,19 @@ a = eigenvalues(matrix)
 
 print(a)
 
-out_matrix(eigenvector(matrix))
+out_matrix(vectors(matrix))
 
-a = np.linalg.eigvals(matrix)
+a, r = np.linalg.eig(matrix)
 
 print(a)
+
+print(r)
+
+
+pp = [[-21, -28, -19], [42, 64, 46], [-42, -72, -53]]
+
+print(matrix_equations(pp, [0, 0, 0]))
+
+print(matrix_equations([[1, 4], [-4, -7]], [0, 0]))
+
+print(np.linalg.eig([[0, 1], [-2, -3]]))
