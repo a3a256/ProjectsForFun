@@ -123,9 +123,16 @@ def determinant(arr):
 
 
 def matrix_equations(matrix, answers):
-    orig_det = determinant(matrix)
+    matrix.pop()
+    answers.pop()
 
-    arguments = []
+    arguments = [1]
+
+    for i in range(len(matrix)):
+        answers[i] = matrix[i].pop(0)
+        answers[i] = answers[i]*(-1)
+
+    orig_det = deepcopy(determinant(matrix))
 
     temp = []
 
@@ -372,6 +379,11 @@ def vectors(matrix):
                     temp_matrix[j][k] -= i
         vecs += [matrix_equations(temp_matrix, [0]*len(matrix))]
 
+    for i in range(len(vecs)):
+        d = l2_norm(vecs[i])
+        for j in range(len(vecs)):
+            vecs[i][j] = vecs[i][j]/d
+
     return vecs
 
 
@@ -415,7 +427,9 @@ a = eigenvalues(matrix)
 
 print(a)
 
-out_matrix(vectors(matrix))
+vvs = vectors(matrix)
+
+out_matrix(transpose(vvs))
 
 a, r = np.linalg.eig(matrix)
 
