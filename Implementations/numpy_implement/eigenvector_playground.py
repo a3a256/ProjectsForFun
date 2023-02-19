@@ -371,13 +371,20 @@ def eigenvector(matrix, iter=10):
 def vectors(matrix):
     values = eigenvalues(matrix)
     vecs = []
+    count = 1
+    single = []
     for i in values:
         temp_matrix = deepcopy(matrix)
         for j in range(len(matrix)):
             for k in range(len(matrix)):
                 if j == k:
                     temp_matrix[j][k] -= i
-        vecs += [matrix_equations(temp_matrix, [0]*len(matrix))]
+        single = matrix_equations(temp_matrix, [0]*len(matrix))
+        if count == 1:
+            for j in range(len(single)):
+                single[j] *= -1
+            count += 1
+        vecs += [single]
 
     for i in range(len(vecs)):
         d = l2_norm(vecs[i])
@@ -425,17 +432,19 @@ matrix = [[-16, -28, -19], [42, 69, 46], [-42, -72, -49]]
 
 a = eigenvalues(matrix)
 
-print(a)
+print("Implemented eigvalues\n", a)
 
 vvs = vectors(matrix)
+
+print("Implemented eigvectors\n")
 
 out_matrix(transpose(vvs))
 
 a, r = np.linalg.eig(matrix)
 
-print(a)
+print("Real eigvalues using numpy\n", a)
 
-print(r)
+print("Real eigvectors using numpy\n", r)
 
 
 pp = [[-21, -28, -19], [42, 64, 46], [-42, -72, -53]]
