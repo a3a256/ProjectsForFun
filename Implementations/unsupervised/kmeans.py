@@ -23,10 +23,11 @@ class KMeansClustering:
     def fit(self, x):
 
         initial_centroids = self.split(x)
+        print(initial_centroids)
 
         classified = np.array(self.classify(x, initial_centroids))
 
-        for _ in range(20):
+        for _ in range(500):
             means = []
             for i in np.unique(classified):
                 feat_ = []
@@ -40,12 +41,24 @@ class KMeansClustering:
                 means += [np.array(feat_)]
 
             classified = self.classify(x, means)
+            if self.centroids:
+                # print(self.centroids)
+                if not np.allclose(self.centroids, means):
+                    # print(np.array(self.centroids) - np.array(means))
+                    self.centroids = means
+                else:
+                    print("net")
+                    break
+
+            else:
+                self.centroids = means
+        
 
         self.centroids = np.array(means)
         print(self.centroids)
 
 
-    def predict(self, x):
+    def _predict(self, x):
 
         return self.classify(x, self.centroids)
 
@@ -64,7 +77,7 @@ class KMeansClustering:
                 for k in range(self.k):
                     distances += [self.distance(x[i, j], centroids[k][j])]
 
-                temp_cluster += [np.argmax(distances)]
+                temp_cluster += [np.argmin(distances)]
             classes = Counter(temp_cluster)
 
             c = sorted(classes, key = lambda x: (-classes[x]))
@@ -91,11 +104,13 @@ class KMeansClustering:
 
 
 if __name__ == "__main__":
-    df = pd.read_csv(r'breast-cancer.csv')
+    df = pd.read_csv(r"breast-cancer.csv")
+
+    df.dropna(inplace=True)
+
+    df.iloc[:, 1] = LabelEncoder().fit_transform(df.iloc[:, 1])
 
     y = df.iloc[:, 1].values
-
-    y = LabelEncoder().fit_transform(y)
 
     x = df.iloc[:, 4:8].values
 
@@ -104,14 +119,23 @@ if __name__ == "__main__":
 
     kmeans = KMeansClustering(k=2)
 
+    km = KMeans(n_clusters=2)
+
 
     kmeans.fit(x_train)
 
-    yhat = kmeans.predict(x_test)
+    km.fit(x_train)
+
+    yhat = kmeans._predict(x_test)
+
+    pr = km.predict(x_test)
 
     print(accuracy_score(yhat, y_test))
 
+    print(accuracy_score(y_test, pr))
+    print(km.cluster_centers_)
+
     for i in np.unique(yhat):
-        plt.scatter(x_test[yhat==i, 0], x_test[yhat==i, 1])
+        plt.scatter(x_test[yhat==i, 1], x_test[yhat==i, 2])
 
     plt.show()
