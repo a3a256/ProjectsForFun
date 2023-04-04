@@ -4,6 +4,20 @@ class Tree:
         self.left = None
         self.right = None
         self.arr = []
+        
+    def search(self, tree, val):
+        if tree:
+            if tree.root == val:
+                return True
+
+            elif val > tree.root:
+                return self.search(tree.right, val)
+
+            elif val < tree.root:
+                return self.search(tree.left, val)
+
+        else:
+            return False
 
     def add(self, value):
         if self.root:
@@ -60,3 +74,4 @@ if __name__ == '__main__':
     print(t.show())
     t.pot_1(t)
     print(t.show())
+    print(t.search(t, 1))
