@@ -42,6 +42,6 @@ function insertion_sort(arr){
     return arr;
 }
 
-var res = bubble_sort(arr);
+var res = insertion_sort(arr);
 
 console.log(res);
