@@ -23,6 +23,25 @@ function bubble_sort(arr){
     return arr;
 }
 
+function insertion_sort(arr){
+    var len = arr.length;
+    var i = 1;
+    var j = 0;
+    var temp = 0;
+    while (i<len){
+        j = i
+        while(j>0 && arr[j-1] > arr[j]){
+            temp = arr[j];
+            arr[j] = arr[j-1];
+            arr[j-1] = temp;
+            j -= 1;
+        }
+        i += 1;
+    }
+
+    return arr;
+}
+
 var res = bubble_sort(arr);
 
 console.log(res);
