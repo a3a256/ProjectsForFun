@@ -9,3 +9,8 @@ function binary_search(arr, start, end, target){
     }
     return -1;
 }
+
+
+var arr = [3, 5, 6, 7, 12, 14, 19, 23];
+
+console.log(binary_search(arr, 0, arr.length-1, 12));
