@@ -25,3 +25,15 @@ function merge(left, right){
 
     return res;
 }
+
+
+function mergeSort(arr){
+    if(arr.length == 1){
+        return arr;
+    }
+
+    var mid = parseInt(arr.length/2);
+
+
+    return merge(mergeSort(arr.slice(0, mid)), mergeSort(mid, arr.length));
+}
