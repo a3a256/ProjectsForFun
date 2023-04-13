@@ -3,7 +3,7 @@ function merge(left, right){
     var j = 0;
     var res = [];
     var l_length = left.length;
-    var r_right = right.length;
+    var r_length = right.length;
     while(i<l_length && j<r_length){
         if(left[i] < right[j]){
             res.push(left[i]);
@@ -35,5 +35,10 @@ function mergeSort(arr){
     var mid = parseInt(arr.length/2);
 
 
-    return merge(mergeSort(arr.slice(0, mid)), mergeSort(mid, arr.length));
+    return merge(mergeSort(arr.slice(0, mid)), mergeSort(arr.slice(mid, arr.length)));
 }
+
+
+var arr = [3, 1, 5, 2, 9, 12, 7];
+
+console.log(mergeSort(arr));
