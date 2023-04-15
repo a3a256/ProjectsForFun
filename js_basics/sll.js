@@ -8,20 +8,40 @@ class Node{
 
 class SLL{
     constructor(num){
-        this.head = Node(num);
+        this.head = new Node(num);
     }
 
 
     insert_at_start = function(num){
-        var node = Node(num);
-        if(head == null){
+        var node = new Node(num);
+        if(this.head == null){
             head = Node(num);
             return;
         }
 
-        node.next = head;
+        node.next = this.head;
 
-        head = Node(node.val);
-        head.next = node.next;
+        this.head = new Node(node.val);
+        this.head.next = node.next;
+    }
+
+    show = function(){
+        var itr = this.head;
+        var line = "";
+        while(itr != null){
+            line += itr.val;
+            line += "->";
+            itr = itr.next;
+        }
+
+
+        console.log(line.slice(0, -2));
     }
 }
+
+
+var sll = new SLL(1);
+
+sll.insert_at_start(2);
+
+sll.show();
