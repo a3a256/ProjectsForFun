@@ -25,6 +25,16 @@ class SLL{
         this.head.next = node.next;
     }
 
+    insert_at_end = function(num){
+        var node = new Node(num);
+        var itr = this.head;
+        while(itr.next != null){
+            itr = itr.next;
+        }
+
+        itr.next = node;
+    }
+
     show = function(){
         var itr = this.head;
         var line = "";
@@ -43,5 +53,9 @@ class SLL{
 var sll = new SLL(1);
 
 sll.insert_at_start(2);
+
+sll.show();
+
+sll.insert_at_end(4);
 
 sll.show();
