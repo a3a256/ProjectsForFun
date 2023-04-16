@@ -58,6 +58,17 @@ class SLL{
 
         return count;
     }
+
+
+    remove_at_index = function(index){
+        var itr = this.head;
+        if(index == 0){
+            var begin = itr.next.val;
+            this.head = new Node(begin);
+            this.head.next = itr.next.next;
+            return;
+        }
+    }
 }
 
 
@@ -72,3 +83,7 @@ sll.insert_at_end(4);
 sll.show();
 
 console.log(sll.length());
+
+sll.remove_at_index(0);
+
+sll.show();
