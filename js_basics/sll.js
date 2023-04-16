@@ -47,6 +47,17 @@ class SLL{
 
         console.log(line.slice(0, -2));
     }
+
+    length = function(){
+        var itr = this.head;
+        var count = 0;
+        while(itr != null){
+            count += 1;
+            itr = itr.next;
+        }
+
+        return count;
+    }
 }
 
 
@@ -59,3 +70,5 @@ sll.show();
 sll.insert_at_end(4);
 
 sll.show();
+
+console.log(sll.length());
