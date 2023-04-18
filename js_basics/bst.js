@@ -19,8 +19,14 @@ class BST{
         if(head == null){
             this.root = new BST(num);
         }else{
-            if(num > this.root.val){
+            if(num >= this.root.val){
                 if(this.root.right != null){
+                    this.right.add(num);
+                }else{
+                    this.right = new BST(num);
+                }
+            }else{
+                if(this.root.left != null){
                     this.left.add(num);
                 }else{
                     this.left = new BST(num);
