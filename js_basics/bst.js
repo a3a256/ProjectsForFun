@@ -12,6 +12,7 @@ class BST{
         this.root = num;
         this.left = null;
         this.right = null;
+        this.arr = [];
     }
 
     add = function(num){
@@ -32,6 +33,14 @@ class BST{
                     this.left = new BST(num);
                 }
             }
+        }
+    }
+
+    iot = function(tree){
+        if(tree != null){
+            iot(tree.left);
+            arr.push(tree.val);
+            iot(tree.right);
         }
     }
 }
