@@ -21,13 +21,13 @@ class BST{
             this.root = new BST(num);
         }else{
             if(num >= this.root.val){
-                if(this.root.right != null){
+                if(this.right != null){
                     this.right.add(num);
                 }else{
                     this.right = new BST(num);
                 }
             }else{
-                if(this.root.left != null){
+                if(this.left != null){
                     this.left.add(num);
                 }else{
                     this.left = new BST(num);
@@ -38,9 +38,21 @@ class BST{
 
     iot = function(tree){
         if(tree != null){
-            iot(tree.left);
-            arr.push(tree.val);
-            iot(tree.right);
+            this.iot(tree.left);
+            console.log(tree.val);
+            this.iot(tree.right);
         }
     }
 }
+
+
+var bst = new BST(5);
+
+bst.add(2);
+bst.add(3);
+bst.add(1);
+bst.add(7);
+bst.add(6);
+bst.add(8);
+
+bst.iot(bst);
