@@ -20,7 +20,7 @@ class BST{
         if(head == null){
             this.root = new BST(num);
         }else{
-            if(num >= this.root.val){
+            if(num >= this.root){
                 if(this.right != null){
                     this.right.add(num);
                 }else{
@@ -39,7 +39,7 @@ class BST{
     iot = function(tree){
         if(tree != null){
             this.iot(tree.left);
-            console.log(tree.val);
+            console.log(tree.root);
             this.iot(tree.right);
         }
     }
