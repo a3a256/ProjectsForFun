@@ -43,6 +43,14 @@ class BST{
             this.iot(tree.right);
         }
     }
+
+    pot = function(tree){
+        if(tree != null){
+            console.log(tree.val);
+            this.pot(tree.left);
+            this.pot(tree.right);
+        }
+    }
 }
 
 
