@@ -46,7 +46,7 @@ class BST{
 
     pot = function(tree){
         if(tree != null){
-            console.log(tree.val);
+            console.log(tree.root);
             this.pot(tree.left);
             this.pot(tree.right);
         }
@@ -64,3 +64,4 @@ bst.add(6);
 bst.add(8);
 
 bst.iot(bst);
+bst.pot(bst);
