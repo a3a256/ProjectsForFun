@@ -51,6 +51,14 @@ class BST{
             this.pot(tree.right);
         }
     }
+
+    post = function(tree){
+        if(tree != null){
+            this.post(tree.left);
+            this.post(tree.right);
+            console.log(tree.root);
+        }
+    }
 }
 
 
@@ -63,5 +71,6 @@ bst.add(7);
 bst.add(6);
 bst.add(8);
 
-bst.iot(bst);
-bst.pot(bst);
+// bst.iot(bst);
+// bst.pot(bst);
+bst.post(bst);
