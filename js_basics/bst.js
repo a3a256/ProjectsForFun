@@ -99,4 +99,6 @@ bst.add(8);
 
 // bst.iot(bst);
 // bst.pot(bst);
-bst.post(bst);
+// bst.post(bst);
+
+console.log(bst.lot(bst));
