@@ -59,6 +59,32 @@ class BST{
             console.log(tree.root);
         }
     }
+
+    lot = function(tree){
+        var queue = [tree];
+        var arr = [];
+        var n;
+        while(queue.length != 0){
+            n = queue.length;
+            var temp = [];
+            while(n > 0){
+                var curNode = queue.shift();
+                temp.push(curNode.root);
+                if(curNode.left != null){
+                    queue.push(curNode.left);
+                }
+                if(curNode.right != null){
+                    queue.push(curNode.right);
+                }
+
+                n -= 1;
+            }
+
+            arr.push(temp);
+        }
+
+        return arr;
+    }
 }
 
 
