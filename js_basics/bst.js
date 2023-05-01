@@ -85,6 +85,14 @@ class BST{
 
         return arr;
     }
+
+    height = function(tree){
+        if(tree != null){
+            return 1+Math.max(this.height(tree.left), this.height(tree.right));
+        }
+
+        return 0;
+    }
 }
 
 
@@ -102,3 +110,5 @@ bst.add(8);
 // bst.post(bst);
 
 console.log(bst.lot(bst));
+
+console.log(bst.height(bst));
