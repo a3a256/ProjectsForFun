@@ -26,3 +26,12 @@ class NTree{
         }
     }
 }
+
+
+var tree = new NTree(5);
+
+tree.add(6);
+tree.add(3);
+tree.add(7);
+tree.add(10);
+tree.add(2);
