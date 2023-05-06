@@ -1,7 +1,7 @@
 function sort(left, right, pivot){
     var arr = left;
-    arr.push(right);
-    arr = arr.concat(pivot);
+    arr.push(pivot);
+    arr = arr.concat(right);
 
     return arr;
 }
@@ -25,3 +25,10 @@ function quickSort(arr){
 
     return sort(quickSort(l), quickSort(r), pivot);
 }
+
+
+var arr = [9, 8, 1,3, 5, 10];
+
+arr = quickSort(arr);
+
+console.log(arr);
