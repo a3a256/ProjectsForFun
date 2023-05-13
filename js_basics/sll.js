@@ -69,6 +69,22 @@ class SLL{
             return;
         }
     }
+
+    sort = function(){
+        var sorted = false;
+        while(!(sorted)){
+            sorted = true;
+            var itr = this.head;
+            while(itr.next != null){
+                if(itr.val > itr.next.val){
+                    sorted = false;
+                    var temp = itr.val;
+                    itr.val = itr.next.val;
+                    itr.next.val = temp;
+                }
+            }
+        }
+    }
 }
 
 
