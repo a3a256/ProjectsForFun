@@ -82,6 +82,7 @@ class SLL{
                     itr.val = itr.next.val;
                     itr.next.val = temp;
                 }
+                itr = itr.next;
             }
         }
     }
@@ -100,6 +101,6 @@ sll.show();
 
 console.log(sll.length());
 
-sll.remove_at_index(0);
+sll.sort();
 
 sll.show();
