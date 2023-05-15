@@ -70,6 +70,14 @@ class SLL{
         }
     }
 
+    insert_at = function(index, val){
+        var itr = this.head;
+        if(index == 0){
+            this.head = new Node(val);
+            this.head.next= itr;
+        }
+    }
+
     sort = function(){
         var sorted = false;
         while(!(sorted)){
@@ -101,6 +109,6 @@ sll.show();
 
 console.log(sll.length());
 
-sll.sort();
+sll.insert_at(0, 6)
 
 sll.show();
