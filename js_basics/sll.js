@@ -75,7 +75,18 @@ class SLL{
         if(index == 0){
             this.head = new Node(val);
             this.head.next= itr;
+            return;
         }
+
+        for(let i=0; i<index; i++){
+            itr = itr.next;
+        }
+
+        var temp = itr;
+        // console.log(itr.val);
+        itr = new Node(val);
+        itr.next = temp;
+        console.log(itr.val);
     }
 
     sort = function(){
@@ -109,6 +120,8 @@ sll.show();
 
 console.log(sll.length());
 
-sll.insert_at(0, 6)
+sll.insert_at(0, 6);
+
+sll.insert_at(2, 9);
 
 sll.show();
