@@ -105,6 +105,10 @@ class SLL{
             }
         }
     }
+
+    reverse = function(){
+        var sorted = false;
+    }
 }
 
 
