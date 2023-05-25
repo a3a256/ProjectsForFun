@@ -11,9 +11,9 @@ function perms(arr){
     for(let perm in perms(arr)){
         for(let i = 0; i<perm.length + 1; i++){
             var f = perm.slice(0, i);
-            var l = perm.slice(i);
             console.log(f);
-            f.push(last);
+            f.push(last)
+            var l = perm.slice(i);
             var ne = f.concat(l);
             output.push(ne);
         }
