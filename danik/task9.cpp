@@ -2,11 +2,11 @@
 
 int main(){
     int op1 = 50;
-    int op2 = 40;
-    int op3 = 30;
+    int op2 = 45;
+    int op3 = 55;
     int discount1 = 10;
-    int discount2 = 20;
-    int discount3 = 30;
+    int discount2 = 8;
+    int discount3 = 12;
     int min1, min2, min3;
     int wmin1, wmin2, wmin3;
     std::cout << "Minutes during weekdays for operator 1: ";
