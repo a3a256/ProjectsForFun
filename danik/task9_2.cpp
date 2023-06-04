@@ -4,7 +4,6 @@
 
 
 std::vector<float> solve(float a, float b, float x, float z){
-    float z = exp(x);
     float first = a*pow(sin(x), 2) + b*cos(z*x+a);
     float second = pow((a+b*x), 2) - sin(a+z*x);
     float third = sqrt(x-(sin(b*x+z)));
