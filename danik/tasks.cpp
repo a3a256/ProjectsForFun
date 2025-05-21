@@ -1,11 +1,38 @@
 #include <iostream>
 #include <iomanip>
+#include <vector>
 
 using namespace std;
 
-int minutes(int sec){
-    return sec/60;
-}
+// solved task number 73
+
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        vector<int> r, c;
+        int i, j;
+        for(i=0; i<matrix.size(); i++){
+            for(j=0; j<matrix[i].size(); j++){
+                if(matrix[i][j] == 0){
+                    r.push_back(i);
+                    c.push_back(j);
+                }
+            }
+        }
+        for(i=0; i<r.size(); i++){
+            for(j=0; j<matrix[0].size(); j++){
+                matrix[r[i]][j] = 0;
+            }
+        }
+        for(i=0; i<matrix.size(); i++){
+            for(j=0; j<c.size(); j++){
+                matrix[i][c[j]] = 0;
+            }
+        }
+    }
+};
+
+int minutes(int sec){return sec/60;}
 
 int task14_15(){
     int N;
